@@ -1,0 +1,27 @@
+"GameInfo"
+{
+	"game"		"Portal Swarm"
+	"title"		"    "	// asw - leave this blank as we have a texture logo
+	"type"		"singleplayer_only"
+	GameData	"swarm.fgd"
+	InstancePath "tilegen/instances/"
+	
+	SupportsDX8     0
+	
+	"FileSystem"
+	{
+		"SteamAppId"	"630"
+		"ToolsAppId"	"211"
+		
+		"SearchPaths"
+		{
+			"Game"	"|gameinfo_path|pak01_dir"
+			"Game"	"|gameinfo_path|."
+			"Game"	"|all_source_engine_paths|../Portal/portal"
+			//"Game"	"swarm"
+			"Game"	"swarm_base"
+			"Game"	"../SourceFilmmaker/game/hl2"			// This is workaround for hl2 content mounting
+			"Game"	"platform"
+		}
+	}
+}
