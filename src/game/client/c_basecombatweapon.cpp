@@ -62,13 +62,17 @@ void C_BaseCombatWeapon::NotifyShouldTransmit( ShouldTransmitState_t state )
 }
 
 
-
+//-----------------------------------------------------------------------------
+// Purpose: To wrap PORTAL mod specific functionality into one place
+//-----------------------------------------------------------------------------
 static inline bool ShouldDrawLocalPlayer( C_BasePlayer *pl )
 {
-
+#if defined( PORTAL )
+	return true;
+#else
 	Assert( pl );
 	return pl->ShouldDrawLocalPlayer();
-
+#endif
 }
 
 //-----------------------------------------------------------------------------
