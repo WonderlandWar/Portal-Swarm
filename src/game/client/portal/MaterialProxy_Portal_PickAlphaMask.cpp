@@ -12,6 +12,7 @@
 #include "toolframework_client.h"
 #include "portalrenderable_flatbasic.h"
 #include <KeyValues.h>
+#include "imaterialproxydict.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -119,4 +120,4 @@ void CPortalPickAlphaMaskProxy::OnBind( void *pBind )
 	}
 }
 
-EXPOSE_INTERFACE( CPortalPickAlphaMaskProxy, IMaterialProxy, "PortalPickAlphaMask" IMATERIAL_PROXY_INTERFACE_VERSION );
+EXPOSE_MATERIAL_PROXY( CPortalPickAlphaMaskProxy, PortalPickAlphaMask );

@@ -10,6 +10,7 @@
 #include "materialsystem/imaterialvar.h"
 #include "materialsystem/imaterialsystem.h"
 #include <KeyValues.h>
+#include "imaterialproxydict.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -107,4 +108,4 @@ IMaterial *CShieldProxy::GetMaterial()
 	return m_AlphaVar->GetOwningMaterial();
 }
 
-EXPOSE_INTERFACE( CShieldProxy, IMaterialProxy, "Shield" IMATERIAL_PROXY_INTERFACE_VERSION );
+EXPOSE_MATERIAL_PROXY( CShieldProxy, Shield );

@@ -20,6 +20,7 @@
 #include "ProxyEntity.h"
 #include "materialsystem/IMaterial.h"
 #include "materialsystem/IMaterialVar.h"
+#include "imaterialproxydict.h"
 
 #define NUM_INTERIOR_PARTICLES	8
 
@@ -597,4 +598,4 @@ IMaterial *CVortEmissiveProxy::GetMaterial()
 		return NULL;
 }
 
-EXPOSE_INTERFACE( CVortEmissiveProxy, IMaterialProxy, "VortEmissive" IMATERIAL_PROXY_INTERFACE_VERSION );
+EXPOSE_MATERIAL_PROXY( CVortEmissiveProxy, VortEmissive );
