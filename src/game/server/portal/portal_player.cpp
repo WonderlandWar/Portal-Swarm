@@ -532,8 +532,6 @@ bool CPortal_Player::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelind
 //-----------------------------------------------------------------------------
 void CPortal_Player::UpdateExpression( void )
 {
-	// Swarm response rules :(
-#if 0
 	if ( !m_pExpresser )
 		return;
 
@@ -542,11 +540,13 @@ void CPortal_Player::UpdateExpression( void )
 	{
 		iConcept = CONCEPT_CHELL_DEAD;
 	}
-
+	
 	GetExpresser()->SetOuter( this );
 
 	ClearExpression();
-	AI_Response *result = SpeakFindResponse( g_pszChellConcepts[iConcept] );
+	AI_Response response;
+	CAI_Concept concept( g_pszChellConcepts[iConcept] );
+	bool result = FindResponse( response, concept );
 	if ( !result )
 	{
 		m_flExpressionLoopTime = gpGlobals->curtime + RandomFloat(30,40);
@@ -554,7 +554,7 @@ void CPortal_Player::UpdateExpression( void )
 	}
 
 	char szScene[ MAX_PATH ];
-	result->GetResponse( szScene, sizeof( szScene ) );
+	response.GetResponse( szScene, sizeof( szScene ) );
 
 	// Ignore updates that choose the same scene
 	if ( m_iszExpressionScene != NULL_STRING && stricmp( STRING(m_iszExpressionScene), szScene ) == 0 )
@@ -568,7 +568,6 @@ void CPortal_Player::UpdateExpression( void )
 	m_iszExpressionScene = AllocPooledString( szScene );
 	float flDuration = InstancedScriptedScene( this, szScene, &m_hExpressionSceneEnt, 0.0, true, NULL );
 	m_flExpressionLoopTime = gpGlobals->curtime + flDuration;
-#endif
 }
 
 //-----------------------------------------------------------------------------
