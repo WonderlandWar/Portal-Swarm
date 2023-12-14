@@ -12,6 +12,10 @@
 #include "hl2_player.h"
 #endif // HL2_EPISODIC
 
+#ifdef PORTAL
+#include "portal_player.h"
+#endif
+
 LINK_ENTITY_TO_CLASS( logic_playerproxy, CLogicPlayerProxy);
 
 BEGIN_DATADESC( CLogicPlayerProxy )
@@ -41,6 +45,9 @@ DEFINE_INPUTFUNC( FIELD_VOID,				"RequestAmmoState", InputRequestAmmoState ),
 DEFINE_INPUTFUNC( FIELD_VOID,				"EnableCappedPhysicsDamage", InputEnableCappedPhysicsDamage ),
 DEFINE_INPUTFUNC( FIELD_VOID,				"DisableCappedPhysicsDamage", InputDisableCappedPhysicsDamage ),
 #endif // HL2_EPISODIC
+#ifdef PORTAL
+DEFINE_INPUTFUNC( FIELD_VOID,				"SuppressCrosshair", InputSuppressCrosshair ),
+#endif // PORTAL
 
 END_DATADESC()
 
@@ -178,3 +185,15 @@ void CLogicPlayerProxy::InputDisableCappedPhysicsDamage( inputdata_t &inputdata 
 }
 
 #endif // HL2_EPISODIC
+
+
+#ifdef PORTAL
+void CLogicPlayerProxy::InputSuppressCrosshair( inputdata_t &inputdata )
+{
+	if( m_hPlayer == NULL )
+		return;
+
+	CPortal_Player *pPlayer = static_cast<CPortal_Player*>( m_hPlayer.Get() );
+	pPlayer->SuppressCrosshair( true );
+}
+#endif // PORTAL

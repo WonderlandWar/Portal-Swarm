@@ -3571,16 +3571,3 @@ void CHL2_Player::Splash( void )
 		DispatchEffect( "watersplash", data );
 	}
 }
-
-#if 0
-#ifdef PORTAL
-void CLogicPlayerProxy::InputSuppressCrosshair( inputdata_t &inputdata )
-{
-	if( m_hPlayer == NULL )
-		return;
-
-	CPortal_Player *pPlayer = ToPortalPlayer(m_hPlayer.Get());
-	pPlayer->SuppressCrosshair( true );
-}
-#endif // PORTAL
-#endif // #if 0

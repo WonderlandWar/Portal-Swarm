@@ -111,7 +111,11 @@ void C_BaseCombatWeapon::OnDataChanged( DataUpdateType_t updateType )
 
 	// check if weapon is carried by local player
 	bool bIsLocalPlayer = C_BasePlayer::IsLocalPlayer( pPlayer );
-	if ( bIsLocalPlayer )
+	if ( bIsLocalPlayer
+#ifdef PORTAL
+		&& !ShouldDrawLocalPlayer( pPlayer )
+#endif		
+		)
 	{
 		ACTIVE_SPLITSCREEN_PLAYER_GUARD( C_BasePlayer::GetSplitScreenSlotForPlayer( pPlayer ) );
 

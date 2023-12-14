@@ -52,7 +52,7 @@ public:
 	void DoAnimationEvent( PlayerAnimEvent_t event, int nData );
 
 	virtual int DrawModel( int flags, const RenderableInstance_t &instance );
-	virtual bool Simulate( void );
+	virtual bool PreRender( int nSplitScreenPlayerSlot );
 
 	QAngle GetAnimEyeAngles( void ) { return m_angEyeAngles; }
 	Vector GetAttackSpread( CBaseCombatWeapon *pWeapon, CBaseEntity *pTarget = NULL );

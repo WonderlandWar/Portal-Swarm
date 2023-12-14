@@ -167,6 +167,7 @@ SendPropEHandle( SENDINFO( m_pHeldObjectPortal ) ),
 SendPropBool( SENDINFO( m_bPitchReorientation ) ),
 SendPropEHandle( SENDINFO( m_hPortalEnvironment ) ),
 SendPropEHandle( SENDINFO( m_hSurroundingLiquidPortal ) ),
+SendPropBool( SENDINFO( m_bSuppressingCrosshair ) ),
 
 SendPropExclude( "DT_BaseAnimating", "m_flPoseParameter" ),
 

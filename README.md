@@ -1,6 +1,6 @@
 This repo is based off of: https://github.com/NicolasDe/AlienSwarm
 
-Portal-Swarm is Portal 2007's code and HL2 2013's code ported to Alien Swarm.
+Portal-Swarm is a mixture of Portal's code and HL2's code ported to Alien Swarm.
 
 There are no extra fixes made, the fixes that are made are to make something functional during the porting process.
 

@@ -38,6 +38,9 @@ public:
 	void InputLowerWeapon( inputdata_t &inputdata );
 	void InputSetLocatorTargetEntity( inputdata_t &inputdata );
 #endif // HL2_EPISODIC
+#ifdef PORTAL
+	void InputSuppressCrosshair( inputdata_t &inputdata );
+#endif // PORTAL2
 
 	void InputRequestPlayerHealth( inputdata_t &inputdata );
 	void InputSetPlayerHealth( inputdata_t &inputdata );

@@ -180,7 +180,20 @@ int CWeaponPortalBase::DrawModel( int flags, const RenderableInstance_t &instanc
 
 bool CWeaponPortalBase::ShouldDraw( void )
 {
+#if 0
+	if ( !GetOwner() || GetOwner() != C_BasePlayer::GetLocalPlayer() )
+		return true;
+
+	if ( !IsActiveByLocalPlayer() )
+		return false;
+
+	//if ( GetOwner() && GetOwner() == C_BasePlayer::GetLocalPlayer() && materials->GetRenderTarget() == 0 )
+	//	return false;
+
+	return true;
+#else
 	return BaseClass::ShouldDraw();
+#endif
 }
 
 bool CWeaponPortalBase::ShouldPredict()

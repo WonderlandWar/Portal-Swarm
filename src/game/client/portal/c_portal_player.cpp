@@ -901,9 +901,9 @@ void C_Portal_Player::PreThink( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-bool C_Portal_Player::Simulate( void )
+bool C_Portal_Player::PreRender( int nSplitScreenPlayerSlot )
 {
-	bool ret = BaseClass::Simulate();
+	bool ret = BaseClass::PreRender( nSplitScreenPlayerSlot );
 
 	QAngle vTempAngles = GetLocalAngles();
 	vTempAngles[PITCH] = m_angEyeAngles[PITCH];
