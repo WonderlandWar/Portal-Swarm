@@ -6,7 +6,7 @@ There are no extra fixes made, the fixes that are made are to make something fun
 
 Some fixes did require me to look at the leaked CSGO code for reference in order to see how Portal 2 got around certain issues.
 
-Unfortunately, it doesn't seem possible to mount the Portal VPKs or HL2 VPKs directly. SFM is needed for the hl2 content, but for Portal you'll need to dump everything from portal_pak_dir.vpk to the pak01_dir folder, you won't need to turn this into a VPK, but do not replace the Chell models as those are recompiled for Swarm compatibility.
+Unfortunately, it doesn't seem possible to mount the Portal VPKs or HL2 VPKs directly. SFM is needed for the hl2 content, but for Portal you'll need to dump everything from portal_pak_dir.vpk to the pak01_dir folder, you won't need to turn this into a VPK, but do not replace any of the files because they are needed for Swarm compatibility.
 
 
 Credits:
