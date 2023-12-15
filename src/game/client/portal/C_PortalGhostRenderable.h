@@ -24,6 +24,7 @@ public:
 	float *m_pSharedRenderClipPlane; //shared by all portal ghost renderables within the same portal
 	bool m_bLocalPlayer; //special draw rules for the local player
 	bool m_bSourceIsBaseAnimating;
+	bool m_bCombatWeapon;
 	C_Prop_Portal *m_pOwningPortal;
 
 	struct

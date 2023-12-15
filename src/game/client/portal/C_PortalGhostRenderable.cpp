@@ -19,6 +19,12 @@ C_PortalGhostRenderable::C_PortalGhostRenderable( C_Prop_Portal *pOwningPortal, 
 	m_pOwningPortal( pOwningPortal )
 {
 	m_bSourceIsBaseAnimating = (dynamic_cast<C_BaseAnimating *>(pGhostSource) != NULL);
+	
+	RenderWithViewModels( pGhostSource->IsRenderingWithViewModels() );
+	SetModelName( m_pGhostedRenderable->GetModelName() );
+	
+	m_bCombatWeapon = (dynamic_cast<C_BaseCombatWeapon *>(pGhostSource) != NULL);
+	SetModelIndex( m_bCombatWeapon ? ((C_BaseCombatWeapon *)pGhostSource)->GetWorldModelIndex() : pGhostSource->GetModelIndex() );
 
 	//cl_entitylist->AddNonNetworkableEntity( GetIClientUnknown() );
 
@@ -35,7 +41,7 @@ void C_PortalGhostRenderable::PerFrameUpdate( void )
 	if( m_pGhostedRenderable )
 	{
 		SetModelName( m_pGhostedRenderable->GetModelName() );
-		SetModelIndex( m_pGhostedRenderable->GetModelIndex() );
+		SetModelIndex( m_bCombatWeapon ? ((C_BaseCombatWeapon *)m_pGhostedRenderable)->GetWorldModelIndex() : m_pGhostedRenderable->GetModelIndex() );
 		SetEffects( m_pGhostedRenderable->GetEffects() | EF_NOINTERP );		
 		m_flAnimTime = m_pGhostedRenderable->m_flAnimTime;		
 
@@ -84,19 +90,44 @@ QAngle const& C_PortalGhostRenderable::GetRenderAngles( void )
 
 bool C_PortalGhostRenderable::SetupBones( matrix3x4a_t *pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime )
 {
-	if( m_pGhostedRenderable == NULL )
+	C_BaseEntity *pGhostedRenderable = m_pGhostedRenderable;
+	if( pGhostedRenderable == NULL )
 		return false;
 
-	if( m_pGhostedRenderable->SetupBones( pBoneToWorldOut, nMaxBones, boneMask, currentTime ) )
+	int iOldModelIndex = 0, iWorldModelIndex = 0;
+	bool bChangeModelIndex = m_bCombatWeapon && 
+								((iOldModelIndex = ((C_BaseCombatWeapon *)pGhostedRenderable)->GetModelIndex()) != (iWorldModelIndex = ((C_BaseCombatWeapon *)pGhostedRenderable)->GetWorldModelIndex()));
+	
+	if( bChangeModelIndex )
+	{
+		((C_BaseCombatWeapon *)pGhostedRenderable)->SetModelIndex( iWorldModelIndex );
+	}
+
+	if( pGhostedRenderable->SetupBones( pBoneToWorldOut, nMaxBones, boneMask, currentTime ) )
 	{
 		if( pBoneToWorldOut )
 		{
-			for( int i = 0; i != nMaxBones; ++i ) //FIXME: nMaxBones is most definitely greater than the actual number of bone transforms actually used, find the subset somehow
+			matrix3x4a_t matGhostTransform;
+			matGhostTransform = m_matGhostTransform.As3x4();
+			CStudioHdr *hdr = GetModelPtr();
+			int nBoneCount = hdr->numbones();
+			nBoneCount = MIN( nMaxBones, nBoneCount );
+			for( int i = 0; i != nBoneCount; ++i )
 			{
-				pBoneToWorldOut[i] = (m_matGhostTransform * pBoneToWorldOut[i]).As3x4();
+				ConcatTransforms_Aligned( matGhostTransform, pBoneToWorldOut[i], pBoneToWorldOut[i] );
 			}
 		}
+
+		if( bChangeModelIndex )
+		{
+			((C_BaseCombatWeapon *)pGhostedRenderable)->SetModelIndex( iOldModelIndex );
+		}
 		return true;
+	}
+
+	if( bChangeModelIndex )
+	{
+		((C_BaseCombatWeapon *)pGhostedRenderable)->SetModelIndex( iOldModelIndex );
 	}
 
 	return false;
@@ -261,7 +292,14 @@ int C_PortalGhostRenderable::DrawModel( int flags, const RenderableInstance_t &i
 
 ModelInstanceHandle_t C_PortalGhostRenderable::GetModelInstance()
 {
-	if ( m_pGhostedRenderable )
+	// HACK: This causes problems if the ghosted renderable is
+	// has it's model instance destructed mid-render... this is currently
+	// the case for the portalgun view model due to model switching
+	// so we're not going to use the ghost's model instance for combat weapon ents.
+	// This will only mean the decal state is wrong, the worldmodel doesn't get decals anyway.
+	// Real fix would be to 'sync' the decal state between this and the ghosted ent, but 
+	// this will fix it for now.
+	if ( m_pGhostedRenderable && (m_bCombatWeapon == false) )
 		return m_pGhostedRenderable->GetModelInstance();
 
 	return BaseClass::GetModelInstance();
@@ -340,7 +378,6 @@ bool C_PortalGhostRenderable::IsTwoPass( void )
 
 	return m_pGhostedRenderable->IsTwoPass();
 }*/
-
 
 
 

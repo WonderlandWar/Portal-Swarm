@@ -1829,8 +1829,11 @@ void C_BasePlayer::ThirdPersonSwitch( bool bThirdperson )
 bool C_BasePlayer::ShouldDrawLocalPlayer()
 {
 	int nSlot = GetSplitScreenPlayerSlot();
-
-
+	
+#ifdef PORTAL2
+	if( !IsLocalSplitScreenPlayer( (nSlot == -1) ? GET_ACTIVE_SPLITSCREEN_SLOT() : nSlot ) ) //HACKHACK: shortcut, avoid going into input and getting a bunch of asserts if the splitscreen view is not a local player
+		return false;
+#endif
 
 	ACTIVE_SPLITSCREEN_PLAYER_GUARD( nSlot );
 	return input->CAM_IsThirdPerson() || ( ToolsEnabled() && ToolFramework_IsThirdPersonCamera() );
