@@ -25,6 +25,7 @@ public:
 	bool m_bLocalPlayer; //special draw rules for the local player
 	bool m_bSourceIsBaseAnimating;
 	bool m_bCombatWeapon;
+	bool m_bCombatWeaponWorldClone; //not actually derived from C_BaseCombatWeapon, but shares some of the same hacks
 	C_Prop_Portal *m_pOwningPortal;
 
 	struct

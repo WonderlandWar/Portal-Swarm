@@ -1820,6 +1820,9 @@
     <ClInclude Include="c_colorcorrection.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="c_combatweaponworldclone.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="c_env_ambient_light.h">
       <Filter>Source Files</Filter>
     </ClInclude>

@@ -10,6 +10,7 @@
 #include "PortalRender.h"
 #include "c_portal_player.h"
 #include "model_types.h"
+#include "c_combatweaponworldclone.h"
 
 C_PortalGhostRenderable::C_PortalGhostRenderable( C_Prop_Portal *pOwningPortal, C_BaseEntity *pGhostSource, const VMatrix &matGhostTransform, float *pSharedRenderClipPlane, bool bLocalPlayer )
 : m_pGhostedRenderable( pGhostSource ), 
@@ -25,6 +26,8 @@ C_PortalGhostRenderable::C_PortalGhostRenderable( C_Prop_Portal *pOwningPortal, 
 	
 	m_bCombatWeapon = (dynamic_cast<C_BaseCombatWeapon *>(pGhostSource) != NULL);
 	SetModelIndex( m_bCombatWeapon ? ((C_BaseCombatWeapon *)pGhostSource)->GetWorldModelIndex() : pGhostSource->GetModelIndex() );
+	
+	m_bCombatWeaponWorldClone = ( dynamic_cast< C_CombatWeaponClone* >( pGhostSource ) != NULL );
 
 	//cl_entitylist->AddNonNetworkableEntity( GetIClientUnknown() );
 
@@ -299,7 +302,7 @@ ModelInstanceHandle_t C_PortalGhostRenderable::GetModelInstance()
 	// This will only mean the decal state is wrong, the worldmodel doesn't get decals anyway.
 	// Real fix would be to 'sync' the decal state between this and the ghosted ent, but 
 	// this will fix it for now.
-	if ( m_pGhostedRenderable && (m_bCombatWeapon == false) )
+	if ( m_pGhostedRenderable && (m_bCombatWeapon == false) && (m_bCombatWeaponWorldClone == false) )
 		return m_pGhostedRenderable->GetModelInstance();
 
 	return BaseClass::GetModelInstance();

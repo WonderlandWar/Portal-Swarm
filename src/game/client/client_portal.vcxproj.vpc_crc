@@ -2,7 +2,7 @@
 8209bbc3 E:\Program Files (x86)\Steam\steamapps\git\PortalSwarm-master\src\devtools\bin\vpc.exe
 _Nc_VS2013/vpcgame:portal_
 c5cddcfa client_portal.vpc
-682d7792 ..\..\game\client\client_base.vpc
+dbe5ddb8 ..\..\game\client\client_base.vpc
 9a02405f ..\..\vpc_scripts\source_dll_base.vpc
 d752cf80 ..\..\vpc_scripts\platform_dirs.vpc
 6c4a5ff1 ..\..\vpc_scripts\source_base.vpc
