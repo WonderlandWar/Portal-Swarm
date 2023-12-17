@@ -471,9 +471,10 @@ void CNPC_Strider::Precache()
 	PrecacheMaterial( "effects/strider_muzzle" );
 
 	PrecacheModel( "models/chefhat.mdl" );
-
-	UTIL_PrecacheOther( "StriderMuzzleFlash" );
-	UTIL_PrecacheOther( "watersplash" );
+	
+	UTIL_PrecacheOther( "sparktrail" );
+	PrecacheEffect( "StriderMuzzleFlash" );
+	PrecacheEffect( "watersplash" );
 
 	BaseClass::Precache();
 }
