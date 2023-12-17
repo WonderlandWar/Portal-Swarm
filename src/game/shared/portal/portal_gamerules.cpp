@@ -184,6 +184,12 @@ static ConCommand ent_create_portal_metal_sphere("ent_create_portal_metal_sphere
 	//-----------------------------------------------------------------------------
 	CPortalGameRules::CPortalGameRules()
 	{
+#ifndef CLIENT_DLL
+		if ( !GlobalEntity_IsInTable( "player_regenerates_health" ) )
+			GlobalEntity_Add( MAKE_STRING("player_regenerates_health"), gpGlobals->mapname, GLOBAL_ON );
+		else
+			GlobalEntity_SetState( MAKE_STRING("player_regenerates_health"), GLOBAL_ON );
+#endif
 		m_bMegaPhysgun = false;
 		g_pCVar->FindVar( "sv_maxreplay" )->SetValue( "1.5" );
 	}

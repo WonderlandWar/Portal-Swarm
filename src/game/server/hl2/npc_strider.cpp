@@ -472,7 +472,8 @@ void CNPC_Strider::Precache()
 
 	PrecacheModel( "models/chefhat.mdl" );
 
-	UTIL_PrecacheOther( "sparktrail" );
+	UTIL_PrecacheOther( "StriderMuzzleFlash" );
+	UTIL_PrecacheOther( "watersplash" );
 
 	BaseClass::Precache();
 }

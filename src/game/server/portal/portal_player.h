@@ -197,8 +197,10 @@ private:
 	bool m_bIntersectingPortalPlane;
 	bool m_bStuckOnPortalCollisionObject;
 
+#if 0 // Swarm already has its own regeneration in CBasePlayer
 	float m_fTimeLastHurt;
 	bool  m_bIsRegenerating;		// Is the player currently regaining health
+#endif
 
 	float m_fNeuroToxinDamageTime;
 

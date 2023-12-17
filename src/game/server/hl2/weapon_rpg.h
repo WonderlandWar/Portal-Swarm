@@ -119,7 +119,8 @@ public:
 
 	CAPCMissile();
 	~CAPCMissile();
-	//void	Precache( void );
+
+	void	Precache( void );
 	void	IgniteDelay( void );
 	void	AugerDelay( float flDelayTime );
 	void	ExplodeDelay( float flDelayTime );

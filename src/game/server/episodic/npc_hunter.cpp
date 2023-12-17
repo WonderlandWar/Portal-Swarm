@@ -580,6 +580,10 @@ void CHunterFlechette::Precache()
 	PrecacheParticleSystem( "hunter_flechette_trail_striderbuster" );
 	PrecacheParticleSystem( "hunter_flechette_trail" );
 	PrecacheParticleSystem( "hunter_projectile_explosion_1" );
+
+	PrecacheEffect( "StriderBlood" );
+	PrecacheEffect( "HunterDamage" );
+	PrecacheEffect( "HunterMuzzleFlash" );
 }
 
 

@@ -918,6 +918,8 @@ void CProtoSniper::Precache( void )
 	PrecacheScriptSound( "NPC_Sniper.Reload" );
 	PrecacheScriptSound( "NPC_Sniper.SonicBoom" );
 
+	PrecacheEffect( "CommandPointer" );
+
 	BaseClass::Precache();
 }
 

@@ -132,6 +132,8 @@ void CPropAPC::Precache( void )
 	PrecacheScriptSound( "Weapon_AR2.Single" );
 	PrecacheScriptSound( "PropAPC.FireRocket" );
 	PrecacheScriptSound( "combine.door_lock" );
+
+	PrecacheEffect( "ChopperMuzzleFlash" );
 }
 
 

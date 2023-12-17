@@ -364,6 +364,10 @@ void CPropAirboat::Precache( void )
 
 	PrecacheMaterial( "effects/splashwake1" );
 	PrecacheMaterial( "effects/splashwake4" );
+
+	PrecacheEffect( "AirboatMuzzleFlash" );
+	PrecacheEffect( "watersplash" );
+	PrecacheEffect( "waterripple" );
 }
 
 
@@ -2020,7 +2024,7 @@ void CPropAirboat::CreateSplash( int nSplashType )
 		case AIRBOAT_SPLASH_RIPPLE:
 		{
 			/*
-			Vector vecSplashDir;
+			Vector vecSplashDir;t
 			vecSplashDir = vecUp;
 			data.m_vNormal = vecSplashDir;
 			data.m_flScale = AIRBOAT_SPLASH_RIPPLE_SIZE + random->RandomFloat( 0, AIRBOAT_SPLASH_RIPPLE_SIZE * 0.25 );

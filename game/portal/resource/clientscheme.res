@@ -15,6 +15,9 @@ Scheme
 	// this is a list of all the colors used by the scheme
 	Colors
 	{
+		// asw
+		"Orange"			"255 176 0 255"
+		"Blank"				"0 0 0 0"
 	}
 	
 	///////////////////// BASE SETTINGS ////////////////////////
@@ -24,7 +27,6 @@ Scheme
 	BaseSettings
 	{
 		"FgColor"			"255 220 0 100"
-		"FgColor_vrmode"	"255 220 0 200"
 		"BgColor"			"0 0 0 76"
 
 		"Panel.FgColor"			"255 220 0 100"
@@ -51,40 +53,35 @@ Scheme
 		"Caution"			"255 48 0 255"
 
 		// Top-left corner of the "Half-Life 2" on the main screen
-		"Main.Title1.X"			"53"
-		"Main.Title1.Y"			"190"
-		"Main.Title1.Y_hidef"	"184"
+		"Main.Title1.X"		"76"
+		"Main.Title1.Y"		"184"
 		"Main.Title1.Color"	"255 255 255 255"
 
 		// Top-left corner of secondary title e.g. "DEMO" on the main screen
-		"Main.Title2.X"				"291"
-		"Main.Title2.Y"				"207"
-		"Main.Title2.Y_hidef"		"242"
+		"Main.Title2.X"		"314"
+		"Main.Title2.Y"		"242"
 		"Main.Title2.Color"	"255 255 255 200"
 
 		// Top-left corner of the menu on the main screen
-		"Main.Menu.X"			"53"
-		"Main.Menu.X_hidef"		"76"
-		"Main.Menu.Y"			"240"
+		"Main.Menu.X"		"76"
+		"Main.Menu.Y"		"240"
 
 		// Blank space to leave beneath the menu on the main screen
 		"Main.BottomBorder"	"32"
-
-		// Deck colors
-		"SteamDeckLoadingBar"			"61 189 237 255"
-		"SteamDeckSpinner"				"61 189 237 255"
-		"SteamDeckLoadingText"			"181 179 175 255"
+		
+		// asw
+		Chat.TypingText					"Orange"
+		
+		Rosetta.DefaultFgColor			"White"
+		Rosetta.DefaultBgColor			"Blank"
+		Rosetta.ArmedBgColor			"Blank"
+		Rosetta.DisabledBgColor			"Blank"
+		Rosetta.DisabledBorderColor		"Blank"
+		Rosetta.LineColor				"192 192 192 128"
+		Rosetta.DrawBorder				"0"
+		Rosetta.DefaultFont				RosettaSmall
+		Rosetta.ArmedFont				RosettaLarge
 	}
-
-	//////////////////////// BITMAP FONT FILES /////////////////////////////
-	//
-	// Bitmap Fonts are ****VERY*** expensive static memory resources so they are purposely sparse
-	BitmapFontFiles
-	{
-		// UI buttons, custom font, (256x64)
-		"Buttons"		"materials/vgui/fonts/buttons_32.vbf"
-	}
-
 	
 	//////////////////////// FONTS /////////////////////////////
 	//
@@ -118,17 +115,9 @@ Scheme
 		// if a font fails to load then the subsequent fonts will replace
 		Default
 		{
-			"1"	[$X360]
+			"1"
 			{
 				"name"		"Verdana"
-				"tall"		"12"
-				"weight"	"700"
-				"antialias" "1"
-			}
-			"1"	[$WIN32]
-			{
-				"name"		"Verdana"
-				"tall"		"16" [$DECK]
 				"tall"		"9"
 				"weight"	"700"
 				"antialias" "1"
@@ -137,9 +126,7 @@ Scheme
 			"2"
 			{
 				"name"		"Verdana"
-				"tall"		"22" [$DECK]
-				"tall"		"12" [!$LINUX]
-				"tall"		"16" [$LINUX]
+				"tall"		"12"
 				"weight"	"700"
 				"antialias" "1"
 				"yres"	"600 767"
@@ -147,9 +134,7 @@ Scheme
 			"3"
 			{
 				"name"		"Verdana"
-				"tall"		"26" [$DECK]
-				"tall"		"14" [!$LINUX]
-				"tall"		"19" [$LINUX]
+				"tall"		"14"
 				"weight"	"900"
 				"antialias" "1"
 				"yres"	"768 1023"
@@ -157,21 +142,18 @@ Scheme
 			"4"
 			{
 				"name"		"Verdana"
-				"tall"		"30" [$DECK]
-				"tall"		"20" [!$LINUX]
-				"tall"		"24" [$LINUX]
+				"tall"		"20"
 				"weight"	"900"
 				"antialias" "1"
 				"yres"	"1024 1199"
 			}
-			"5" // Proportional - Josh
+			"5"
 			{
 				"name"		"Verdana"
-				"tall"		"14" [$DECK]
-				"tall"		"9" [!$LINUX]
-				"tall"		"11" [$LINUX]
+				"tall"		"24"
 				"weight"	"900"
 				"antialias" "1"
+				"yres"	"1200 10000"
 				"additive"	"1"
 			}
 		}
@@ -211,12 +193,13 @@ Scheme
 				"yres"	"1024 1199"
 				"antialias"	"1"
 			}
-			"5" // Proportional - Josh
+			"5"
 			{
 				"name"		"Verdana"
-				"tall"		"12"
+				"tall"		"24"
 				"weight"	"0"
 				"range"		"0x0000 0x017F"
+				"yres"	"1200 6000"
 				"antialias"	"1"
 			}
 			"6"
@@ -263,12 +246,13 @@ Scheme
 				"yres"	"1024 1199"
 				"antialias"	"1"
 			}
-			"5"  // Proportional - Josh
+			"5"
 			{
 				"name"		"Verdana"
-				"tall"		"12"
+				"tall"		"24"
 				"weight"	"0"
 				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"yres"	"1200 6000"
 				"antialias"	"1"
 			}
 			"6"
@@ -286,14 +270,73 @@ Scheme
 				"weight"		"0"
 			}
 		}
+		// asw - infested small font for mission chooser
+		"MissionChooserFont"
+		{
+			"1"
+			{
+				"name"		"Verdana"
+				"tall"		"9"
+				"weight"	"0"
+				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"yres"	"480 599"
+			}
+			"2"
+			{
+				"name"		"Verdana"
+				"tall"		"10"
+				"weight"	"0"
+				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"yres"	"600 767"
+			}
+			"3"
+			{
+				"name"		"Verdana"
+				"tall"		"11"
+				"weight"	"0"
+				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"yres"	"768 1023"
+				"antialias"	"1"
+			}
+			"4"
+			{
+				"name"		"Verdana"
+				"tall"		"17"
+				"weight"	"0"
+				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"yres"	"1024 1199"
+				"antialias"	"1"
+			}
+			"5"
+			{
+				"name"		"Verdana"
+				"tall"		"21"
+				"weight"	"0"
+				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"yres"	"1200 6000"
+				"antialias"	"1"
+			}
+			"6"
+			{
+				"name"		"Verdana"
+				"tall"		"9"
+				"range" 		"0x0000 0x00FF"
+				"weight"		"0"
+			}
+			"7"
+			{
+				"name"		"Arial"
+				"tall"		"8"
+				"range" 		"0x0000 0x00FF"
+				"weight"		"0"
+			}
+		}
 		WeaponIcons
 		{
 			"1"
 			{
 				"name"		"HalfLife2"
-				"tall"		"70" [$DECK]
 				"tall"		"64"
-				"tall_hidef"	"58"
 				"weight"	"0"
 				"antialias" "1"
 				"additive"	"1"
@@ -305,38 +348,11 @@ Scheme
 			"1"
 			{
 				"name"		"HalfLife2"
-				"tall"		"70" [$DECK]
 				"tall"		"64"
-				"tall_hidef"	"58"
 				"weight"	"0"
 				"antialias" "1"
 				"blur"		"5"
 				"scanlines"	"2"
-				"additive"	"1"
-				"custom"	"1"
-			}
-		}
-		WeaponIconsSmall
-		{
-			"1"
-			{
-				"name"		"HalfLife2"
-				"tall"		"36" [$DECK]
-				"tall"		"32"
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-				"custom"	"1"
-			}
-		}
-		FlashlightDeck
-		{
-			"1"
-			{
-				"name"		"HalfLife2"
-				"tall"		"46"
-				"weight"	"0"
-				"antialias" "1"
 				"additive"	"1"
 				"custom"	"1"
 			}
@@ -346,88 +362,32 @@ Scheme
 			"1"
 			{
 				"name"		"HalfLife2"
-				"tall"		"40" [!$OSX]
-				"tall"		"41" [$OSX]
+				"tall"		"40"
 				"weight"	"0"
 				"antialias" "0"
 				"additive"	"1"
 				"custom"	"1"
-				"yres"		"1 1599" [!$DECK]
-				"yres"		"1 1439" [$DECK]
-			}
-			"2"
-			{
-				"name"		"HalfLife2"
-				"tall"		"80"
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-				"custom"	"1"
-				"yres"		"1600 3199" [!$DECK]
-				"yres"		"1440 3199" [$DECK]
-			}
-			"3"
-			{
-				"name"		"HalfLife2"
-				"tall"		"120"
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-				"custom"	"1"
-				"yres"		"3200 4799"
-			}
-			"4"
-			{
-				"name"		"HalfLife2"
-				"tall"		"17"
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-				"custom"	"1"
+				"yres"		"1 10000"
 			}
 		}
 		QuickInfo
 		{
-			"1"	[$X360]
+			"1"
 			{
 				"name"		"HL2cross"
-				"tall"		"57"
-				"weight"	"0"
-				"antialias" 	"1"
-				"additive"	"1"
-				"custom"	"1"
-			}
-			"1"	[$WIN32]
-			{
-				"name"		"HL2cross"
-				"tall"		"36" [$DECK]
-				"tall"		"28" [!$OSX]
-				"tall"		"50" [$OSX]
+				"tall"		"28"
 				"weight"	"0"
 				"antialias" "1"
 				"additive"	"1"
-				"custom"	"1" [!$OSX]
+				"custom"	"1"
 			}
 		}
 		HudNumbers
 		{
 			"1"
 			{
-				"name"		"Verdana"
-				"tall"		"32"	[!$DECK]
-				"tall"		"40"	[$DECK]
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-				"custom"	"1"
-			}
-		}
-		SquadIcon	[$X360]
-		{
-			"1"
-			{
 				"name"		"HalfLife2"
-				"tall"		"50"
+				"tall"		"32"
 				"weight"	"0"
 				"antialias" "1"
 				"additive"	"1"
@@ -438,9 +398,8 @@ Scheme
 		{
 			"1"
 			{
-				"name"		"Verdana"
-				"tall"		"32"	[!$DECK]
-				"tall"		"40"	[$DECK]
+				"name"		"HalfLife2"
+				"tall"		"32"
 				"weight"	"0"
 				"blur"		"4"
 				"scanlines" "2"
@@ -453,9 +412,8 @@ Scheme
 		{
 			"1"
 			{
-				"name"		"Verdana"
-				"tall"		"16"	[!$DECK]
-				"tall"		"26"	[$DECK]
+				"name"		"HalfLife2"
+				"tall"		"16"
 				"weight"	"1000"
 				"additive"	"1"
 				"antialias" "1"
@@ -467,7 +425,6 @@ Scheme
 			"1"
 			{
 				"name"		"Verdana"
-				"tall"		"16" [$DECK] 
 				"tall"		"11"
 				"weight"	"700"
 				"antialias" "1"
@@ -476,18 +433,9 @@ Scheme
 		}
 		HudHintTextLarge
 		{
-			"1"	[$X360]
+			"1"
 			{
-				"bitmap"	"1"
-				"name"		"Buttons"
-				"scalex"	"1.0"
-				"scaley"	"1.0"
-			}
-			"1"	[$WIN32]
-			{
-				"name"		"Verdana" [!$OSX]
-				"name"		"Helvetica Bold" [$OSX]
-				"tall"		"22" [$DECK]
+				"name"		"Verdana"
 				"tall"		"14"
 				"weight"	"1000"
 				"antialias" "1"
@@ -496,21 +444,11 @@ Scheme
 		}
 		HudHintTextSmall
 		{
-			"1"	[$WIN32]
-			{
-				"name"		"Verdana" [!$OSX]
-				"name"		"Helvetica" [$OSX]
-				"tall"		"18" [$DECK]
-				"tall"		"11"
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-			}
-			"1"	[$X360]
+			"1"
 			{
 				"name"		"Verdana"
-				"tall"		"12"
-				"weight"	"700"
+				"tall"		"11"
+				"weight"	"0"
 				"antialias" "1"
 				"additive"	"1"
 			}
@@ -520,66 +458,42 @@ Scheme
 			"1"
 			{
 				"name"		"Verdana"
-				"tall"		"10" [$DECK]
 				"tall"		"8"
 				"weight"	"700"
 				"antialias" "1"
 				"yres"	"1 599"
-				"additive"	"1"
 			}
 			"2"
 			{
 				"name"		"Verdana"
-				"tall"		"14" [$DECK]
 				"tall"		"10"
 				"weight"	"700"
 				"antialias" "1"
 				"yres"	"600 767"
-				"additive"	"1"
 			}
 			"3"
 			{
 				"name"		"Verdana"
-				"tall"		"18" [$DECK]
-				"tall"		"16" [$LINUX]
 				"tall"		"12"
 				"weight"	"900"
 				"antialias" "1"
 				"yres"	"768 1023"
-				"additive"	"1"
 			}
 			"4"
 			{
 				"name"		"Verdana"
-				"tall"		"22" [$DECK]
-				"tall"		"20" [$LINUX]
 				"tall"		"16"
 				"weight"	"900"
 				"antialias" "1"
 				"yres"	"1024 1199"
-				"additive"	"1"
 			}
 			"5"
 			{
 				"name"		"Verdana"
-				"tall"		"9" [$DECK]
-				"tall"		"8" [$LINUX]
-				"tall"		"7"
-				"weight"	"900"
+				"tall"		"17"
+				"weight"	"1000"
 				"antialias" "1"
-				"additive"	"1"
-			}
-		}
-		GameUIButtons
-		{
-			"1"	[$X360]
-			{
-				"bitmap"	"1"
-				"name"		"Buttons"
-				"scalex"	"0.63"
-				"scaley"	"0.63"
-				"scalex_hidef"	"1.0"
-				"scaley_hidef"	"1.0"
+				"yres"	"1200 10000"
 			}
 		}
 		BudgetLabel
@@ -594,18 +508,11 @@ Scheme
 		}
 		DebugOverlay
 		{
-			"1"	[$WIN32]
+			"1"
 			{
 				"name"		"Courier New"
 				"tall"		"14"
 				"weight"	"400"
-				"outline"	"1"
-			}
-			"1"	[$X360]
-			{
-				"name"		"Tahoma"
-				"tall"		"18"
-				"weight"	"200"
 				"outline"	"1"
 			}
 		}
@@ -613,63 +520,126 @@ Scheme
 		{
 			"1"
 			{
-				"name"		"Tahoma" [!$OSX]
-				"name"		"Verdana" [$OSX]
-				"tall"		"15" [$DECK]
-				"tall"		"12"
+				"name"		"Tahoma"
+				"tall"		"26"
 				"weight"	"500"
-				"antialias"	"1"
 			}
 		}
 		"CloseCaption_Italic"
 		{
 			"1"
 			{
-				"name"		"Tahoma" [!$OSX]
-				"name"		"Verdana Italic" [$OSX]
-				"tall"		"15" [$DECK]
-				"tall"		"12"
+				"name"		"Tahoma"
+				"tall"		"26"
 				"weight"	"500"
 				"italic"	"1"
-				"antialias"	"1"
 			}
 		}
 		"CloseCaption_Bold"
 		{
 			"1"
 			{
-				"name"		"Tahoma" [!$OSX]
-				"name"		"Verdana Bold" [$OSX]
-				"tall"		"15" [$DECK]
-				"tall"		"12"
+				"name"		"Tahoma"
+				"tall"		"26"
 				"weight"	"900"
-				"antialias"	"1"
 			}
 		}
 		"CloseCaption_BoldItalic"
 		{
 			"1"
 			{
-				"name"		"Tahoma" [!$OSX]
-				"name"		"Verdana Bold Italic" [$OSX]
-				"tall"		"15" [$DECK]
-				"tall"		"12"
+				"name"		"Tahoma"
+				"tall"		"26"
 				"weight"	"900"
 				"italic"	"1"
-				"antialias"	"1"
 			}
 		}
-		"CloseCaption_Small"
+		"RosettaSmall"
 		{
 			"1"
 			{
-				"name"		"Tahoma" [!$OSX]
-				"name"		"Verdana" [$OSX]
-				"tall"		"15" [$DECK]
-				"tall"		"12"
-				"weight"	"900"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
-				"antialias"	"1"
+				"Name"			"Neo Sans"
+				"tall"			"14"
+				"weight"	"100"
+				"antialias" "1"
+				//"dropshadow"	"1"
+			}
+		}
+		"RosettaLarge"
+		{
+			"1"
+			{
+				"Name"			"Neo Sans"
+				"tall"			"18"
+				"weight"	"100"
+				"antialias" "1"
+				//"dropshadow"	"1"
+			}
+		}
+		"InstructorTitle"
+		{
+			"1"
+			{
+				"Name"			"Neo Sans"
+				"tall"			"16"
+				"weight"	"100"
+				"antialias" "1"
+				//"dropshadow"	"1"
+			}
+		}
+		"InstructorTitle_ss"
+		{
+			"1"
+			{
+				"Name"			"Neo Sans"
+				"tall"			"16"
+				"weight"	"100"
+				"antialias" "1"
+				//"dropshadow"	"1"
+			}
+		}
+		"InstructorTitleGlow"
+		{
+			"1"
+			{
+				"Name"			"Neo Sans"
+				"tall"			"16"
+				"weight"	"100"
+				"antialias" "1"
+				//"dropshadow"	"1"
+				"blur"	"2"
+			}
+		}
+		"InstructorTitleGlow_ss"
+		{
+			"1"
+			{
+				"Name"			"Neo Sans"
+				"tall"			"16"
+				"weight"	"100"
+				"antialias" "1"
+				//"dropshadow"	"1"
+				"blur"	"2"
+			}
+		}
+		InstructorButtons
+		{
+			"1"
+			{
+				"bitmap"	"1"
+				"name"		"Buttons"
+				"scalex"	"0.65"
+				"scaley"	"0.65"
+			}
+		}
+		"InstructorKeyBindings"
+		{
+			"1"
+			{
+				"name"		"Trade Gothic"
+				"tall"		"11"
+				"weight"	"500"
+				"antialias" "1"
 			}
 		}
 		// this is the symbol font
@@ -708,33 +678,19 @@ Scheme
 		{
 			"1"
 			{
-				"name"  "Trebuchet MS"
-				"tall"			"51"
-				"tall_hidef"	"72"
+				"name"  "HalfLife2"
+				"tall"  "46"
 				"weight" "0"
 				"additive" "0"
 				"antialias" "1"
-				"blur" "2"
 			}
 		}
 		CreditsLogo
 		{
 			"1"
 			{
-				"name"		"Trebuchet MS"
-				"tall"		"128"
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-				"custom"	"1"
-			}
-		}
-		CreditsIcons
-		{
-			"1"
-			{
 				"name"		"HalfLife2"
-				"tall"		"34"
+				"tall"		"128"
 				"weight"	"0"
 				"antialias" "1"
 				"additive"	"1"
@@ -756,18 +712,6 @@ Scheme
 		{
 			"1"
 			{
-				"name"		"Trebuchet MS"
-				"tall"		"48"
-				"weight"	"0"
-				"antialias" "1"
-				"additive"	"1"
-				"custom"	"1"
-			}
-		}
-		CreditsOutroValve
-		{
-			"1"
-			{
 				"name"		"HalfLife2"
 				"tall"		"48"
 				"weight"	"0"
@@ -780,9 +724,8 @@ Scheme
 		{
 			"1"
 			{
-				"name"		"Courier New" [!$OSX]
-				"name"		"Courier Bold" [$OSX]
-				"tall"		"16"
+				"name"		"Verdana"
+				"tall"		"9"
 				"weight"	"900"
 				"antialias" "1"
 			}
@@ -811,85 +754,48 @@ Scheme
 				"additive"	"1"
 			}
 		}
-		"AchievementNotification"
-		{
-			"1"
-			{
-				"name"		"Trebuchet MS"
-				"tall"		"14"
-				"weight"	"900"
-				"antialias" "1"
-			}
-		}
-		"CommentaryDefault"
+		// asw
+		"ChatFont"
 		{
 			"1"
 			{
 				"name"		"Verdana"
 				"tall"		"12"
-				"weight"	"900"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"weight"	"700"
 				"yres"	"480 599"
+				"dropshadow"	"1"
 			}
 			"2"
 			{
 				"name"		"Verdana"
-				"tall"		"13"	[$WIN32]
-				"tall"		"20"	[$X360]
-				"weight"	"900"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"tall"		"13"
+				"weight"	"700"
 				"yres"	"600 767"
+				"dropshadow"	"1"
 			}
 			"3"
 			{
 				"name"		"Verdana"
 				"tall"		"14"
-				"weight"	"900"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"weight"	"700"
 				"yres"	"768 1023"
-				"antialias"	"1"
+				"dropshadow"	"1"
 			}
 			"4"
 			{
 				"name"		"Verdana"
 				"tall"		"20"
-				"weight"	"900"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"weight"	"700"
 				"yres"	"1024 1199"
-				"antialias"	"1"
+				"dropshadow"	"1"
 			}
 			"5"
 			{
 				"name"		"Verdana"
 				"tall"		"24"
-				"weight"	"900"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
-				"yres"	"1200 6000"
-				"antialias"	"1"
-			}
-			"6"
-			{
-				"name"		"Verdana"
-				"tall"		"12"
-				"range" 		"0x0000 0x00FF"
-				"weight"		"900"
-			}
-			"7"
-			{
-				"name"		"Arial"
-				"tall"		"12"
-				"range" 		"0x0000 0x00FF"
-				"weight"		"800"
-			}
-			
-		}
-		"SteamDeckLoadingText"
-		{
-			"7"
-			{
-				"name"		"Alte DIN 1451 Mittelschrift"
-				"tall"		"24"
-				"weight"	"800"
+				"weight"	"700"
+				"yres"	"1200 10000"
+				"dropshadow"	"1"
 			}
 		}
 	}
@@ -900,16 +806,8 @@ Scheme
 	// specifies all the custom (non-system) font files that need to be loaded to service the above described fonts
 	CustomFontFiles
 	{
-		"1"		"resource/HALFLIFE2.ttf"
-		"2"		"resource/HL2crosshairs.ttf"
-		"4"		"resource/linux_fonts/DejaVuSans.ttf"
-		"5"		"resource/linux_fonts/DejaVuSans-Bold.ttf"
-		"6"		"resource/linux_fonts/DejaVuSans-BoldOblique.ttf"
-		"7"		"resource/linux_fonts/DejaVuSans-Oblique.ttf"
-		"8"		"resource/linux_fonts/LiberationSans-Regular.ttf"
-		"9"		"resource/linux_fonts/LiberationSans-Bold.ttf"
-		"10"	"resource/linux_fonts/LiberationMono-Regular.ttf"
-		"11"	"gamepadui/fonts/din1451alt.ttf"
+		"1"		"resource/HALFLIFE2.vfont"
+		"2"		"resource/HL2crosshairs.vfont"
 	}
 
 }

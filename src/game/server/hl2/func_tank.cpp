@@ -907,6 +907,9 @@ void CFuncTank::Precache( void )
 	{
 		PrecacheScriptSound( "NPC_Combine_Cannon.FireBullet" );
 	}
+
+	PrecacheEffect( "ChopperMuzzleFlash" );
+	PrecacheEffect( "MuzzleFlash" );
 }
 
 void CFuncTank::UpdateOnRemove( void )
@@ -2803,6 +2806,9 @@ void CFuncTankAirboatGun::Precache( void )
 	PrecacheScriptSound( "Airboat.FireGunLoop" );
 	PrecacheScriptSound( "Airboat.FireGunRevDown");
 	CreateSounds();
+	
+	PrecacheEffect( "AirboatMuzzleFlash" );
+
 }
 
 
@@ -3423,6 +3429,8 @@ void CMortarShell::Precache()
 	{
 		PrecacheScriptSound( STRING( m_warnSound ) );
 	}
+
+	PrecacheEffect( "AR2Explosion" );
 }
 
 //------------------------------------------------------------------------------

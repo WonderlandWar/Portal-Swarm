@@ -188,7 +188,9 @@ BEGIN_DATADESC( CPortal_Player )
 	DEFINE_FIELD( m_fTimeLastNumSecondsUpdate, FIELD_TIME ),
 	DEFINE_FIELD( m_iNumCamerasDetatched, FIELD_INTEGER ),
 	DEFINE_FIELD( m_bPitchReorientation, FIELD_BOOLEAN ),
+#if 0 // Swarm already has its own regeneration in CBasePlayer
 	DEFINE_FIELD( m_bIsRegenerating, FIELD_BOOLEAN ),
+#endif
 	DEFINE_FIELD( m_fNeuroToxinDamageTime, FIELD_TIME ),
 	DEFINE_FIELD( m_hPortalEnvironment, FIELD_EHANDLE ),
 	DEFINE_FIELD( m_flExpressionLoopTime, FIELD_TIME ),

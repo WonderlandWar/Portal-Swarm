@@ -2192,6 +2192,9 @@ void CNPC_Manhack::Precache(void)
 	PrecacheScriptSound( "NPC_Manhack.EngineSound2"  );
 	PrecacheScriptSound( "NPC_Manhack.BladeSound" );
 
+	PrecacheEffect( "watersplash" );
+	PrecacheEffect( "ManhackSparks" );
+
 	BaseClass::Precache();
 }
 

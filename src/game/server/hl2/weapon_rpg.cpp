@@ -144,6 +144,8 @@ void CMissile::Precache( void )
 	PrecacheModel( "models/weapons/w_missile.mdl" );
 	PrecacheModel( "models/weapons/w_missile_launch.mdl" );
 	PrecacheModel( "models/weapons/w_missile_closed.mdl" );
+
+	PrecacheEffect( "RPGShotDown" );
 }
 
 
@@ -983,6 +985,11 @@ CAPCMissile::~CAPCMissile()
 	g_APCMissileList.Remove( this );
 }
 
+void CAPCMissile::Precache( void )
+{
+	PrecacheEffect( "WaterSurfaceExplosion" );
+	BaseClass::Precache();
+}
 
 //-----------------------------------------------------------------------------
 // Shared initialization code
@@ -1026,7 +1033,6 @@ void CAPCMissile::APCMissileTouch( CBaseEntity *pOther )
 
 	Explode();
 }
-
 
 //-----------------------------------------------------------------------------
 // Specialized version of the missile

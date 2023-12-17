@@ -394,6 +394,9 @@ void CHL2_Player::Precache( void )
 	PrecacheScriptSound( "HL2Player.TrainUse" );
 	PrecacheScriptSound( "HL2Player.Use" );
 	PrecacheScriptSound( "HL2Player.BurnPain" );
+
+	PrecacheEffect( "waterripple" );
+	PrecacheEffect( "watersplash" );
 }
 
 //-----------------------------------------------------------------------------

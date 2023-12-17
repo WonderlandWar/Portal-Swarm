@@ -34,6 +34,8 @@ public:
 
 	CWeapon357( void );
 
+	void	Precache( void );
+
 	void	PrimaryAttack( void );
 	void	Operator_HandleAnimEvent( animevent_t *pEvent, CBaseCombatCharacter *pOperator );
 
@@ -60,6 +62,12 @@ CWeapon357::CWeapon357( void )
 {
 	m_bReloadsSingly	= false;
 	m_bFiresUnderwater	= false;
+}
+
+void CWeapon357::Precache( void )
+{
+	PrecacheEffect( "ShellEject" );
+	BaseClass::Precache();
 }
 
 //-----------------------------------------------------------------------------

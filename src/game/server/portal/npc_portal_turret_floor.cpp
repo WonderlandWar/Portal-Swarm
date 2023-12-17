@@ -274,6 +274,9 @@ void CNPC_Portal_FloorTurret::Spawn( void )
 
 	m_bNoAlarmSounds = true;
 	m_bOutOfAmmo = ( m_spawnflags & SF_FLOOR_TURRET_OUT_OF_AMMO ) != 0;
+
+	// HACK!!
+	Activate();
 }
 
 //-----------------------------------------------------------------------------

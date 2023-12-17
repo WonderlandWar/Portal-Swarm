@@ -986,6 +986,7 @@ void CNPC_AttackHelicopter::Precache( void )
 	PrecacheEffect( "TeslaZap" );
 	PrecacheEffect( "TeslaHitboxes" );
 	PrecacheEffect( "HelicopterMegaBomb" );
+	PrecacheEffect( "WaterSurfaceExplosion" );
 
 	const char *pszTracerName = GetTracerType();
 	if ( pszTracerName )

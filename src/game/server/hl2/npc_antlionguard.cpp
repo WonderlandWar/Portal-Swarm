@@ -711,6 +711,8 @@ void CNPC_AntlionGuard::Precache( void )
 	PrecacheParticleSystem( "blood_antlionguard_injured_light" );
 	PrecacheParticleSystem( "blood_antlionguard_injured_heavy" );
 
+	PrecacheEffect( "HunterDamage" );
+
 	BaseClass::Precache();
 }
 

@@ -77,6 +77,8 @@ void CNPC_GroundTurret::Precache( void )
 	PrecacheScriptSound( "NPC_FloorTurret.Ping" );
 	PrecacheScriptSound( "DoSpark" );
 
+	PrecacheEffect( "MuzzleFlash" );
+
 	BaseClass::Precache();
 }
 

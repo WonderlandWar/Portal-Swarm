@@ -154,6 +154,8 @@ void CPropThumper::Precache( void )
 	PrecacheScriptSound( "coast.thumper_startup" );
 	PrecacheScriptSound( "coast.thumper_shutdown" );
 	PrecacheScriptSound( "coast.thumper_large_hit" );
+
+	PrecacheEffect( "ThumperDust" );
 }
 
 void CPropThumper::InitMotorSound( void )

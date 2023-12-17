@@ -226,6 +226,8 @@ void CPropCannon::Precache( void )
 	PrecacheScriptSound( "HeadcrabCanister.LaunchSound" );
 	PrecacheScriptSound( "HeadcrabCanister.Explosion" );
 	PrecacheScriptSound( "Weapon_Mortar.Incomming" );
+	
+	PrecacheEffect( "ThumperDust" );
 }
 
 

@@ -192,6 +192,9 @@ void CCrossbowBolt::Precache( void )
 	PrecacheModel( "models/crossbow_bolt.mdl" );
 
 	PrecacheModel( "sprites/light_glow02_noz.vmt" );
+
+	PrecacheEffect( "BoltImpact" );
+
 }
 
 //-----------------------------------------------------------------------------
@@ -522,6 +525,8 @@ void CWeaponCrossbow::Precache( void )
 
 	PrecacheModel( CROSSBOW_GLOW_SPRITE );
 	PrecacheModel( CROSSBOW_GLOW_SPRITE2 );
+
+	PrecacheEffect( "CrossbowLoad" );
 
 	BaseClass::Precache();
 }

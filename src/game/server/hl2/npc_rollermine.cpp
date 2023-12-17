@@ -523,6 +523,8 @@ void CNPC_RollerMine::Precache( void )
 #ifdef HL2_EPISODIC
 	PrecacheScriptSound( "RagdollBoogie.Zap" );
 #endif
+	
+	PrecacheEffect( "WaterSurfaceExplosion" );
 
 	BaseClass::Precache();
 }

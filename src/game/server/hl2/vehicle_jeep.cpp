@@ -193,6 +193,9 @@ void CPropJeep::Precache( void )
 	PrecacheScriptSound( "Jeep.GaussCharge" );
 
 	PrecacheModel( GAUSS_BEAM_SPRITE );
+	
+	PrecacheEffect( "watersplash" );
+	PrecacheEffect( "waterripple" );
 
 	BaseClass::Precache();
 }

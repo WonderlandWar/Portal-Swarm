@@ -227,6 +227,10 @@ void CWeaponStriderBuster::Precache( void )
 	PrecacheParticleSystem( "striderbuster_flechette_attached" );
 
 	SetModelName( AllocPooledString("models/magnusson_device.mdl") );
+
+	PrecacheEffect( "StriderBlood" );
+	PrecacheEffect( "cball_explode" );
+
 	BaseClass::Precache();
 }
 

@@ -24,6 +24,7 @@ private:
 public:
 
 	virtual void	Spawn( void );
+	virtual void	Precache( void );
 
 	virtual float	GetAttackDamageScale( CBaseEntity *pVictim );
 
@@ -106,6 +107,12 @@ void CNPC_Portal_GroundTurret::Spawn( void )
 
 	GetAttachment( "light", vecPos );
 	m_vecLightOffset = vecPos - GetAbsOrigin();
+}
+
+void CNPC_Portal_GroundTurret::Precache( void )
+{
+	PrecacheEffect( "MuzzleFlash" );
+	BaseClass::Precache();
 }
 
 float CNPC_Portal_GroundTurret::GetAttackDamageScale( CBaseEntity *pVictim )
