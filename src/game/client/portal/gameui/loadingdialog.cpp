@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -8,7 +8,7 @@
 
 #include "LoadingDialog.h"
 #include "EngineInterface.h"
-#include "igameuifuncs.h"
+#include "IGameUIFuncs.h"
 
 #include <vgui/IInput.h>
 #include <vgui/ISurface.h>
@@ -24,7 +24,7 @@
 
 #include "GameUI_Interface.h"
 #include "ModInfo.h"
-#include "basepanel.h"
+#include "BasePanel.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -97,7 +97,6 @@ CLoadingDialog::CLoadingDialog( vgui::Panel *parent ) : Frame(parent, "LoadingDi
 		m_pInfoLabel->SetBounds(20, 32, 392, 24);
 		m_pProgress->SetBounds(20, 64, 300, 24); 
 		m_pCancelButton->SetBounds(330, 64, 72, 24);
-		m_pInfoLabel->SetTextColorState(Label::CS_DULL);
 		m_pProgress2->SetVisible(false);
 	}
 
@@ -109,6 +108,10 @@ CLoadingDialog::CLoadingDialog( vgui::Panel *parent ) : Frame(parent, "LoadingDi
 //-----------------------------------------------------------------------------
 CLoadingDialog::~CLoadingDialog()
 {
+	if ( input()->GetAppModalSurface() == GetVPanel() )
+	{
+		vgui::surface()->RestrictPaintToSinglePanel( NULL );
+	}
 }
 
 void CLoadingDialog::PaintBackground()
@@ -160,14 +163,12 @@ void CLoadingDialog::SetupControlSettings( bool bForceShowProgressText )
 {
 	m_bShowingVACInfo = false;
 
-#if defined( BASEPANEL_LEGACY_SOURCE1 )
 	if ( GameUI().IsConsoleUI() )
 	{
 		KeyValues *pControlSettings = BasePanel()->GetConsoleControlSettings()->FindKey( "LoadingDialogNoBanner.res" );
 		LoadControlSettings( "null", NULL, pControlSettings );
 		return;
 	}
-#endif
 
 	if ( ModInfo().IsSinglePlayerOnly() && !bForceShowProgressText )
 	{
@@ -318,6 +319,18 @@ void CLoadingDialog::DisplayGenericError(const char *failureReason, const char *
 	{
 		m_pInfoLabel->SetText(failureReason);
 	}
+
+	int wide, tall;
+	int x,y;
+	m_pInfoLabel->GetContentSize( wide, tall );
+	m_pInfoLabel->GetPos( x, y );
+	SetTall( tall + y + 50 );
+
+	int buttonX, buttonY;
+	m_pCancelButton->GetPos( buttonX, buttonY );
+	m_pCancelButton->SetPos( buttonX, tall + y + 6 );
+
+	m_pCancelButton->RequestFocus();
 }
 
 
@@ -607,6 +620,23 @@ void CLoadingDialog::OnCommand(const char *command)
 	}
 }
 
+void CLoadingDialog::OnKeyCodeTyped(KeyCode code)
+{
+	if ( m_bConsoleStyle )
+	{
+		return;
+	}
+
+	if ( code == KEY_ESCAPE )
+	{
+		OnCommand("Cancel");
+	}
+	else
+	{
+		BaseClass::OnKeyCodeTyped(code);
+	}
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: Maps ESC to quiting loading
 //-----------------------------------------------------------------------------
@@ -617,7 +647,9 @@ void CLoadingDialog::OnKeyCodePressed(KeyCode code)
 		return;
 	}
 
-	if ( code == KEY_ESCAPE )
+	ButtonCode_t nButtonCode = GetBaseButtonCode( code );
+
+	if ( nButtonCode == KEY_XBUTTON_B || nButtonCode == KEY_XBUTTON_A )
 	{
 		OnCommand("Cancel");
 	}

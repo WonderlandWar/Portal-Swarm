@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -6,36 +6,29 @@
 
 
 #include "BaseSaveGameDialog.h"
-#include "FileSystem.h"
+#include "filesystem.h"
 #include "savegame_version.h"
 #include "vgui_controls/PanelListPanel.h"
 #include "vgui_controls/Label.h"
 #include "vgui_controls/ImagePanel.h"
 #include "vgui_controls/Button.h"
-#include "vgui_controls/tgaimagepanel.h"
 #include "tier1/utlbuffer.h"
-#include "tier2/resourceprecacher.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "FileSystem.h"
-#include "portal/basemodui.h"
+#include "filesystem.h"
+
 #include "MouseMessageForwardingPanel.h"
-#include "vgui/nb_header_footer.h"
-#include "vgui/nb_button.h"
+#include "TGAImagePanel.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
 using namespace vgui;
-using namespace BaseModUI;
+
 #define TGA_IMAGE_PANEL_WIDTH 180
 #define TGA_IMAGE_PANEL_HEIGHT 100
 
 #define MAX_LISTED_SAVE_GAMES	128
-
-PRECACHE_REGISTER_BEGIN( GLOBAL, BaseSaveGameDialog )
-PRECACHE( MATERIAL, "vgui/resource/autosave.vmt" )
-PRECACHE_REGISTER_END()
 
 //-----------------------------------------------------------------------------
 // Purpose: Describes the layout of a same game pic
@@ -80,7 +73,7 @@ public:
 		// If a TGA file exists then it is a user created savegame
 		if ( g_pFullFileSystem->FileExists( tga ) )
 		{
-			m_pSaveGameImage->SetTGAFilename( tga );
+			m_pSaveGameImage->SetTGA( tga );
 		}
 		// If there is no TGA then it is either an autosave or the user TGA file has been deleted
 		else
@@ -167,55 +160,15 @@ private:
 //-----------------------------------------------------------------------------
 // Purpose: Constructor
 //-----------------------------------------------------------------------------
-CBaseSaveGameDialog::CBaseSaveGameDialog( vgui::Panel *parent, const char *name ) : BaseClass( parent, name, false, true )
+CBaseSaveGameDialog::CBaseSaveGameDialog( vgui::Panel *parent, const char *name ) : BaseClass( parent, name )
 {
 	CreateSavedGamesList();
 	ScanSavedGames();
-	GameUI().PreventEngineHideGameUI();
 
-	LoadControlSettings( "resource/SaveGameDialog.res" );
-
-	SetDeleteSelfOnClose(true);
-	SetProportional( true );
-
-//	SetUpperGarnishEnabled(true);
-//	SetLowerGarnishEnabled( true );
-//	SetOkButtonEnabled( false );
-
-	new vgui::Button( this, "loadsave", "" );
+	m_pLoadButton = new vgui::Button( this, "loadsave", "" );
 	SetControlEnabled( "loadsave", false );
 }
-//-----------------------------------------------------------------------------
-// Purpose: 
-// Input  : *command - 
-//-----------------------------------------------------------------------------
-void CBaseSaveGameDialog::OnCommand( const char *command )
-{
-	if ( !stricmp( command, "loadsave" )  )
-	{
-		SaveGameDescription_t &save = m_SaveGames.Element(GetSelectedItemSaveIndex());
-		//CSaveGamePanel *panel = dynamic_cast<CSaveGamePanel *>(m_pGameList->GetSelectedPanel());
-		//if ( save )
-		//{
-			const char *shortName = save.szShortName/*( "ShortName", "" )*/;
-			if ( shortName && shortName[ 0 ] )
-			{
-				// Load the game, return to top and switch to engine
-				char sz[ 256 ];
-				sprintf(sz, "save %s\n", shortName );
-				
-				engine->ClientCmd( sz );
-				
-				// Close this dialog
-				OnClose();
-			}
-		//}
-	}
-	else
-	{
-		BaseClass::OnCommand( command );
-	}
-}
+
 //-----------------------------------------------------------------------------
 // Purpose: Creates the load game display list
 //-----------------------------------------------------------------------------
@@ -345,7 +298,7 @@ bool CBaseSaveGameDialog::ParseSaveData( char const *pszFileName, char const *ps
 	if (fh == FILESYSTEM_INVALID_HANDLE)
 		return false;
 
-	int readok = SaveReadNameAndComment( fh, szMapName, szComment );
+	int readok = SaveReadNameAndComment( fh, szMapName, ARRAYSIZE(szMapName), szComment, ARRAYSIZE(szComment) );
 	g_pFullFileSystem->Close(fh);
 
 	if ( !readok )
@@ -424,10 +377,131 @@ bool CBaseSaveGameDialog::ParseSaveData( char const *pszFileName, char const *ps
 	return true;
 }
 
+void CBaseSaveGameDialog::OnKeyCodeTyped( vgui::KeyCode code )
+{
+	if ( code == KEY_ESCAPE )
+	{
+		OnCommand( "Close" );
+		return;
+	}
+
+	BaseClass::OnKeyCodeTyped( code );
+}
+
+void CBaseSaveGameDialog::OnKeyCodePressed( vgui::KeyCode code )
+{
+	if ( code == KEY_XBUTTON_B )
+	{
+		OnCommand( "Close" );
+		return;
+	}
+	else if ( code == KEY_XSTICK1_DOWN || 
+			  code == KEY_XSTICK2_DOWN || 
+			  code == KEY_XBUTTON_DOWN || 
+			  code == KEY_DOWN )
+	{
+		if ( m_pGameList->GetItemCount() )
+		{
+			Panel *pSelectedPanel = m_pGameList->GetSelectedPanel();
+			if ( !pSelectedPanel )
+			{
+				m_pGameList->SetSelectedPanel( m_pGameList->GetItemPanel( m_pGameList->FirstItem() ) );
+				m_pGameList->ScrollToItem( m_pGameList->FirstItem() );
+				return;
+			}
+			else
+			{
+				int nNextPanelID = m_pGameList->FirstItem();
+				while ( nNextPanelID != m_pGameList->InvalidItemID() )
+				{
+					if ( m_pGameList->GetItemPanel( nNextPanelID ) == pSelectedPanel )
+					{
+						nNextPanelID = m_pGameList->NextItem( nNextPanelID );
+						if ( nNextPanelID != m_pGameList->InvalidItemID() )
+						{
+							m_pGameList->SetSelectedPanel( m_pGameList->GetItemPanel( nNextPanelID ) );
+							m_pGameList->ScrollToItem( nNextPanelID );
+							return;
+						}
+
+						break;
+					}
+
+					nNextPanelID = m_pGameList->NextItem( nNextPanelID );
+				}
+			}
+		}
+	}
+	else if ( code == KEY_XSTICK1_UP || 
+			  code == KEY_XSTICK2_UP || 
+			  code == KEY_XBUTTON_UP || 
+			  code == KEY_UP )
+	{
+		if ( m_pGameList->GetItemCount() )
+		{
+			Panel *pSelectedPanel = m_pGameList->GetSelectedPanel();
+			if ( !pSelectedPanel )
+			{
+				m_pGameList->SetSelectedPanel( m_pGameList->GetItemPanel( m_pGameList->FirstItem() ) );
+				m_pGameList->ScrollToItem( m_pGameList->FirstItem() );
+				return;
+			}
+			else
+			{
+				int nNextPanelID = m_pGameList->FirstItem();
+				if ( m_pGameList->GetItemPanel( nNextPanelID ) != pSelectedPanel )
+				{
+					while ( nNextPanelID != m_pGameList->InvalidItemID() )
+					{
+						int nOldPanelID = nNextPanelID;
+						nNextPanelID = m_pGameList->NextItem( nNextPanelID );
+
+						if ( nNextPanelID != m_pGameList->InvalidItemID() )
+						{
+							if ( m_pGameList->GetItemPanel( nNextPanelID ) == pSelectedPanel )
+							{
+								m_pGameList->SetSelectedPanel( m_pGameList->GetItemPanel( nOldPanelID ) );
+								m_pGameList->ScrollToItem( nOldPanelID  );
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else if ( code == KEY_ENTER || code == KEY_XBUTTON_A )
+	{
+		Panel *pSelectedPanel = m_pGameList->GetSelectedPanel();
+		if ( pSelectedPanel )
+		{
+			if ( code == KEY_XBUTTON_A )
+			{
+				ConVarRef var( "joystick" );
+				if ( var.IsValid() && !var.GetBool() )
+				{
+					var.SetValue( true );
+				}
+
+				ConVarRef var2( "hud_fastswitch" );
+				if ( var2.IsValid() && var2.GetInt() != 2 )
+				{
+					var2.SetValue( 2 );
+				}
+			}
+
+			m_pLoadButton->DoClick();
+			return;
+		}
+	}
+
+	BaseClass::OnKeyCodePressed( code );
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: timestamp sort function for savegames
 //-----------------------------------------------------------------------------
-/*int /*CBaseSaveGameDialog::/SaveGameSortFunc( const void *lhs, const void *rhs )
+int CBaseSaveGameDialog::SaveGameSortFunc( const void *lhs, const void *rhs )
 {
 	const SaveGameDescription_t *s1 = (const SaveGameDescription_t *)lhs;
 	const SaveGameDescription_t *s2 = (const SaveGameDescription_t *)rhs;
@@ -439,14 +513,17 @@ bool CBaseSaveGameDialog::ParseSaveData( char const *pszFileName, char const *ps
 
 	// timestamps are equal, so just sort by filename
 	return strcmp(s1->szFileName, s2->szFileName);
-}*/
+}
 
 #define MAKEID(d,c,b,a)	( ((int)(a) << 24) | ((int)(b) << 16) | ((int)(c) << 8) | ((int)(d)) )
 
-int SaveReadNameAndComment( FileHandle_t f, char *name, char *comment )
+int SaveReadNameAndComment( FileHandle_t f, char *name, int nameSize, char *comment, int commentSize )
 {
 	int i, tag, size, tokenSize, tokenCount;
 	char *pSaveData, *pFieldName, **pTokenList;
+
+	name[0] = '\0';
+	comment[0] = '\0';
 
 	g_pFullFileSystem->Read( &tag, sizeof(int), f );
 	if ( tag != MAKEID('J','S','A','V') )
@@ -460,8 +537,6 @@ int SaveReadNameAndComment( FileHandle_t f, char *name, char *comment )
 		return 0;
 	}
 
-	name[0] = '\0';
-	comment[0] = '\0';
 	g_pFullFileSystem->Read( &size, sizeof(int), f );
 	
 	g_pFullFileSystem->Read( &tokenCount, sizeof(int), f );	// These two ints are the token list
@@ -536,11 +611,13 @@ int SaveReadNameAndComment( FileHandle_t f, char *name, char *comment )
 
 		if (!stricmp(pFieldName, "comment"))
 		{
-			Q_strncpy(comment, pData, nFieldSize);
+			int copySize = MAX(commentSize, nFieldSize);
+			Q_strncpy(comment, pData, copySize);
 		}
 		else if (!stricmp(pFieldName, "mapName"))
 		{
-			Q_strncpy(name, pData, nFieldSize);
+			int copySize = MAX(nameSize, nFieldSize);
+			Q_strncpy(name, pData, copySize);
 		};
 
 		// Move to Start of next field.
@@ -556,36 +633,7 @@ int SaveReadNameAndComment( FileHandle_t f, char *name, char *comment )
 	
 	return 0;
 }
-/*
-void CBaseSaveGameDialog::OnNotifyChildFocus( vgui::Panel* child )
-{
-}
 
-void CBaseSaveGameDialog::OnFlyoutMenuClose( vgui::Panel* flyTo )
-{
-	UpdateFooter();
-}
-
-void CBaseSaveGameDialog::OnFlyoutMenuCancelled()
-{
-}
-
-//=============================================================================
-Panel* CBaseSaveGameDialog::NavigateBack()
-{
-	return BaseClass::NavigateBack();
-}
-void CBaseSaveGameDialog::UpdateFooter()
-{
-	CBaseModFooterPanel *footer = BaseModUI::CBaseModPanel::GetSingleton().GetFooterPanel();
-	if ( footer )
-	{
-		footer->SetButtons( FB_ABUTTON | FB_BBUTTON, FF_AB_ONLY, false );
-		footer->SetButtonText( FB_ABUTTON, "#L4D360UI_Select" );
-		footer->SetButtonText( FB_BBUTTON, "#L4D360UI_Done" );
-	}
-}
-*/
 //-----------------------------------------------------------------------------
 // Purpose: deletes an existing save game
 //-----------------------------------------------------------------------------

@@ -118,98 +118,148 @@ $Project "Client (Portal)"
 				{
 					$Folder "Headers"
 					{
-					$File	"portal\gameui\backgroundmenubutton.h" \
-							"portal\gameui\basepanel.h" \
-							"portal\gameui\basesavegamedialog.h" \
-							"portal\gameui\bitmapimagepanel.h" \
-							"portal\gameui\commandcheckbutton.h" \
-							"portal\gameui\contentcontroldialog.h" \
-							"portal\gameui\createmultiplayergamebotpage.h" \
-							"portal\gameui\createmultiplayergamedialog.h" \
-							"portal\gameui\createmultiplayergamegameplaypage.h" \
-							"portal\gameui\createmultiplayergameserverpage.h" \
-							"portal\gameui\customtabexplanationdialog.h" \
-							"portal\gameui\cvarnegatecheckbutton.h" \
-							"portal\gameui\cvarslider.h" \
-							"portal\gameui\cvartextentry.h" \
-							"portal\gameui\cvartogglecheckbutton.h" \
-							"portal\gameui\engineinterface.h" \
-							"portal\gameui\gameconsole.h" \
-							"portal\gameui\gameconsoledialog.h" \
-							"portal\gameui\gameui_interface.h" \
-							"portal\gameui\gameui_util.h" \
-							"portal\gameui\keytogglecheckbutton.h" \
-							"portal\gameui\labeledcommandcombobox.h" \
-							"portal\gameui\loadingdialog.h" \
-							"portal\gameui\loadingtippanel.h" \
-							"portal\gameui\modinfo.h" \
-							"portal\gameui\mousemessageforwardingpanel.h" \
-							"portal\gameui\multiplayeradvanceddialog.h" \
-							"portal\gameui\optionsdialog.h" \
-							"portal\gameui\optionssubaudio.h" \
-							"portal\gameui\optionssubdifficulty.h" \
-							"portal\gameui\optionssubgame.h" \
-							"portal\gameui\optionssubkeyboard.h" \
-							"portal\gameui\optionssubmouse.h" \
-							"portal\gameui\optionssubmultiplayer.h" \
-							"portal\gameui\optionssubportal.h" \
-							"portal\gameui\optionssubvideo.h" \
-							"portal\gameui\optionssubvoice.h" \
-							"portal\gameui\panellistpanel.h" \
-							"portal\gameui\playerlistdialog.h" \
-							"portal\gameui\rungameengine.h" \
-							"portal\gameui\scriptobject.h" \
-							"portal\gameui\sys_utils.h" \
-							"portal\gameui\textentrybox.h" \
-							"portal\gameui\urlbutton.h" \
-							"portal\gameui\vcontrolslistpanel.h" \
-							"portal\gameui\vguisystemmoduleloader.h"
+						$File	"portal\gameui\engineinterface.h" \
+								"portal\gameui\gameconsole.h" \
+								"portal\gameui\gameconsoledialog.h" \
+								"portal\gameui\gameui_interface.h" \
+								"portal\gameui\gameui_util.h" \
+								"portal\gameui\modinfo.h" \
+								"portal\gameui\sys_utils.h" \
+								"portal\gameui\vguisystemmoduleloader.h" \
+								"portal\gameui\BonusMapsDatabase.h" \
+								"portal\gameui\BackgroundMenuButton.h" \
+								"portal\gameui\BasePanel.h" \
+								"portal\gameui\BaseSaveGameDialog.h" \
+								"portal\gameui\CDKeyEntryDialog.h" \
+								"portal\gameui\ChangeGameDialog.h" \
+								"portal\gameui\CreateMultiplayerGameBotPage.h" \
+								"portal\gameui\CreateMultiplayerGameDialog.h" \
+								"portal\gameui\CreateMultiplayerGameGameplayPage.h" \
+								"portal\gameui\CreateMultiplayerGameServerPage.h" \
+								"portal\gameui\EngineInterface.h" \
+								"portal\gameui\GameConsole.h" \
+								"portal\gameui\GameUI_Interface.h" \
+								"portal\gameui\LoadingDialog.h" \
+								"portal\gameui\ModInfo.h" \
+								"portal\gameui\MouseMessageForwardingPanel.h" \
+								"portal\gameui\PanelListPanel.h" \
+								"portal\gameui\TextEntryBox.h" \
+								"portal\gameui\TGAImagePanel.h" \
+								"portal\gameui\SaveGameBrowserDialog.h"\
+								"portal\gameui\BenchmarkDialog.h" \
+								"portal\gameui\BonusMapsDialog.h" \
+								"portal\gameui\CommentaryDialog.h" \
+								"portal\gameui\CommentaryExplanationDialog.h" \
+								"portal\gameui\ContentControlDialog.h" \
+								"portal\gameui\CustomTabExplanationDialog.h" \
+								"portal\gameui\GameConsoleDialog.h" \
+								"portal\gameui\LoadGameDialog.h" \
+								"portal\gameui\MultiplayerAdvancedDialog.h" \
+								"portal\gameui\NewGameDialog.h" \
+								"portal\gameui\PlayerListDialog.h" \
+								"portal\gameui\SaveGameDialog.h" \
+								"portal\gameui\ControllerDialog.h" \
+								"portal\gameui\BitmapImagePanel.h" \
+								"portal\gameui\CommandCheckButton.h" \
+								"portal\gameui\CvarNegateCheckButton.h" \
+								"portal\gameui\cvarslider.h" \
+								"portal\gameui\CvarTextEntry.h" \
+								"portal\gameui\CvarToggleCheckButton.h" \
+								"portal\gameui\HapticControlBox.h" \
+								"portal\gameui\KeyToggleCheckButton.h" \
+								"portal\gameui\LabeledCommandComboBox.h" \
+								"portal\gameui\URLButton.h" \
+								"portal\gameui\vcontrolslistpanel.h" \
+								"portal\gameui\OptionsDialog.h" \
+								"portal\gameui\OptionsSubAudio.h" \
+								"portal\gameui\OptionsSubDifficulty.h" \
+								"portal\gameui\OptionsSubGame.h" \
+								"portal\gameui\OptionsSubHaptics.h" \
+								"portal\gameui\OptionsSubKeyboard.h" \
+								"portal\gameui\OptionsSubMouse.h" \
+								"portal\gameui\OptionsSubMultiplayer.h" \
+								"portal\gameui\OptionsSubPortal.h" \
+								"portal\gameui\OptionsSubVideo.h" \
+								"portal\gameui\OptionsSubVoice.h" \
+								"portal\gameui\matchmaking\achievementsdialog.h" \
+								"portal\gameui\matchmaking\basedialog.h" \
+								"portal\gameui\matchmaking\dialogmenu.h"
 					}
-					$File	"portal\gameui\backgroundmenubutton.cpp" \
-							"portal\gameui\basesavegamedialog.cpp" \
-							"portal\gameui\bitmapimagepanel.cpp" \
-							"portal\gameui\commandcheckbutton.cpp" \
-							"portal\gameui\contentcontroldialog.cpp" \
-							"portal\gameui\createmultiplayergamebotpage.cpp" \
-							"portal\gameui\createmultiplayergamedialog.cpp" \
-							"portal\gameui\createmultiplayergamegameplaypage.cpp" \
-							"portal\gameui\createmultiplayergameserverpage.cpp" \
-							"portal\gameui\customtabexplanationdialog.cpp" \
-							"portal\gameui\cvarnegatecheckbutton.cpp" \
-							"portal\gameui\cvarslider.cpp" \
-							"portal\gameui\cvartextentry.cpp" \
-							"portal\gameui\cvartogglecheckbutton.cpp" \
-							"portal\gameui\gameconsole.cpp" \
+					
+					$File	"portal\gameui\gameconsole.cpp" \
 							"portal\gameui\gameconsoledialog.cpp" \
 							"portal\gameui\gameui_interface.cpp" \
 							"portal\gameui\gameui_util.cpp" \
-							"portal\gameui\keytogglecheckbutton.cpp" \
-							"portal\gameui\labeledcommandcombobox.cpp" \
-							"portal\gameui\loadingdialog.cpp" \
-							"portal\gameui\loadingtippanel.cpp" \
-							"portal\gameui\logofile.cpp" \
 							"portal\gameui\modinfo.cpp" \
-							"portal\gameui\mousemessageforwardingpanel.cpp" \
-							"portal\gameui\multiplayeradvanceddialog.cpp" \
-							"portal\gameui\optionsdialog.cpp" \
-							"portal\gameui\optionssubaudio.cpp" \
-							"portal\gameui\optionssubdifficulty.cpp" \
-							"portal\gameui\optionssubgame.cpp" \
-							"portal\gameui\optionssubkeyboard.cpp" \
-							"portal\gameui\optionssubmouse.cpp" \
-							"portal\gameui\optionssubmultiplayer.cpp" \
-							"portal\gameui\optionssubportal.cpp" \
-							"portal\gameui\optionssubvideo.cpp" \
-							"portal\gameui\optionssubvoice.cpp" \
-							"portal\gameui\panellistpanel.cpp" \
-							"portal\gameui\playerlistdialog.cpp" \
-							"portal\gameui\rungameengine.cpp" \
-							"portal\gameui\scriptobject.cpp" \
 							"portal\gameui\sys_utils.cpp" \
-							"portal\gameui\textentrybox.cpp" \
-							"portal\gameui\urlbutton.cpp" \
+							"portal\gameui\vguisystemmoduleloader.cpp" \
+							"portal\gameui\BackgroundMenuButton.cpp" \
+							"portal\gameui\BasePanel.cpp" \
+							"portal\gameui\GameConsole.cpp" \
+							"portal\gameui\GameUI_Interface.cpp" \
+							"portal\gameui\LogoFile.cpp" \ [!$POSIX]
+							"portal\gameui\ModInfo.cpp" \
+							"portal\gameui\MouseMessageForwardingPanel.cpp" \
+							"portal\gameui\PanelListPanel.cpp" \
+							"portal\gameui\RunGameEngine.cpp" \
+							"portal\gameui\scriptobject.cpp" \
+							"portal\gameui\Sys_Utils.cpp" \
+							"portal\gameui\TextEntryBox.cpp" \
+							"portal\gameui\TGAImagePanel.cpp" \
+							"$SRCDIR\public\vgui_controls\vgui_controls.cpp" \
+							"portal\gameui\VGuiSystemModuleLoader.cpp" \
+							"portal\gameui\BonusMapsDatabase.cpp" \
+							"$SRCDIR\common\language.cpp" \
+							"portal\gameui\SaveGameBrowserDialog.cpp" \
+							"portal\gameui\BenchmarkDialog.cpp" \
+							"portal\gameui\BonusMapsDialog.cpp" \
+							"portal\gameui\CommentaryDialog.cpp" \
+							"portal\gameui\CommentaryExplanationDialog.cpp" \
+							"portal\gameui\ContentControlDialog.cpp" \
+							"portal\gameui\CustomTabExplanationDialog.cpp" \
+							"portal\gameui\GameConsoleDialog.cpp" \
+							"portal\gameui\LoadGameDialog_Xbox.cpp" \
+							"portal\gameui\LoadGameDialog.cpp" \
+							"portal\gameui\MultiplayerAdvancedDialog.cpp" \
+							"portal\gameui\NewGameDialog.cpp" \
+							"portal\gameui\PlayerListDialog.cpp" \
+							"portal\gameui\SaveGameDialog_Xbox.cpp" \
+							"portal\gameui\SaveGameDialog.cpp" \
+							"portal\gameui\LoadCommentaryDialog.cpp" \
+							"portal\gameui\LoadingDialog.cpp" \
+							"portal\gameui\BaseSaveGameDialog.cpp" \
+							"portal\gameui\ChangeGameDialog.cpp" \ [!$POSIX]
+							"portal\gameui\CreateMultiplayerGameBotPage.cpp" \
+							"portal\gameui\CreateMultiplayerGameDialog.cpp" \
+							"portal\gameui\CreateMultiplayerGameGameplayPage.cpp" \
+							"portal\gameui\CreateMultiplayerGameServerPage.cpp" \
+							"portal\gameui\OptionsDialog_Xbox.cpp" \
+							"portal\gameui\ControllerDialog.cpp" \
+							"portal\gameui\BitmapImagePanel.cpp" \
+							"portal\gameui\CommandCheckButton.cpp" \
+							"portal\gameui\CvarNegateCheckButton.cpp" \
+							"portal\gameui\cvarslider.cpp" \
+							"portal\gameui\CvarTextEntry.cpp" \
+							"portal\gameui\CvarToggleCheckButton.cpp" \
+							"portal\gameui\HapticControlBox.cpp" \
+							"portal\gameui\KeyToggleCheckButton.cpp" \
+							"portal\gameui\LabeledCommandComboBox.cpp" \
+							"portal\gameui\URLButton.cpp" \
 							"portal\gameui\vcontrolslistpanel.cpp" \
-							"portal\gameui\vguisystemmoduleloader.cpp"
+							"portal\gameui\OptionsDialog.cpp" \
+							"portal\gameui\OptionsSubAudio.cpp" \
+							"portal\gameui\OptionsSubDifficulty.cpp" \
+							"portal\gameui\OptionsSubGame.cpp" \
+							"portal\gameui\OptionsSubHaptics.cpp" \
+							"portal\gameui\OptionsSubKeyboard.cpp" \
+							"portal\gameui\OptionsSubMouse.cpp" \
+							"portal\gameui\OptionsSubMultiplayer.cpp" \
+							"portal\gameui\OptionsSubPortal.cpp" \
+							"portal\gameui\OptionsSubVideo.cpp" \
+							"portal\gameui\OptionsSubVoice.cpp" \
+							"portal\gameui\matchmaking\achievementsdialog.cpp" \
+							"portal\gameui\matchmaking\basedialog.cpp" \
+							"portal\gameui\matchmaking\dialogmenu.cpp"
 					{
 						$Configuration
 						{
@@ -232,117 +282,6 @@ $Project "Client (Portal)"
 								$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
 							}
 						}
-					}
-				}
-
-				$Folder "Portal GameUI"
-				{
-					$Folder "Headers"
-					{
-					$File	"portal\gameui\portal\basemodframe.h" \
-							"portal\gameui\portal\basemodpanel.h" \
-							"portal\gameui\portal\basemodui.h" \
-							"portal\gameui\portal\gamemodes.h" \
-							"portal\gameui\portal\uiavatarimage.h" \
-							"portal\gameui\portal\uigamedata.h" \
-							"portal\gameui\portal\vachievements.h" \
-							"portal\gameui\portal\vattractscreen.h" \
-							"portal\gameui\portal\vaudio.h" \
-							"portal\gameui\portal\vcontrolleroptions.h" \
-							"portal\gameui\portal\vcontrolleroptionsbuttons.h" \
-							"portal\gameui\portal\vcontrolleroptionssticks.h" \
-							"portal\gameui\portal\vdropdownmenu.h" \
-							"portal\gameui\portal\vflyoutmenu.h" \
-							"portal\gameui\portal\vfooterpanel.h" \
-							"portal\gameui\portal\vgameoptions.h" \
-							"portal\gameui\portal\vgenericconfirmation.h" \
-							"portal\gameui\portal\vgenericpanellist.h" \
-							"portal\gameui\portal\vgenericwaitscreen.h" \
-							"portal\gameui\portal\vhybridbutton.h" \
-							"portal\gameui\portal\vingamemainmenu.h" \
-							"portal\gameui\portal\vkeyboard.h" \
-							"portal\gameui\portal\vkeyboardmouse.h" \
-							"portal\gameui\portal\vloadgamedialog.h" \
-							"portal\gameui\portal\vsavegamedialog.h" \
-							"portal\gameui\portal\vloadingprogress.h" \
-							"portal\gameui\portal\vmainmenu.h" \
-							"portal\gameui\portal\voptions.h" \
-							"portal\gameui\portal\vslidercontrol.h" \
-							"portal\gameui\portal\vspinnercontrol.h" \
-							"portal\gameui\portal\vtransitionscreen.h" \
-							"portal\gameui\portal\vsingleplayer.h" \
-							"portal\gameui\portal\vgameplaysettings.h" \
-							"portal\gameui\portal\vvideo.h" 
-					}
-					
-					$Folder "Win32"
-					{
-						$File	"portal\gameui\portal\uiavatarimage.cpp" \
-								"portal\gameui\portal\vkeyboard.cpp" \
-								"portal\gameui\portal\vloadgamedialog.cpp" \
-								"portal\gameui\portal\vsavegamedialog.cpp" \
-								"portal\gameui\portal\vkeyboardmouse.cpp" 
-						{
-							$Configuration
-							{
-								$Compiler
-								{
-									$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
-								}
-							}
-						}
-					}
-					$File	"portal\gameui\portal\basemodframe.cpp" \
-							"portal\gameui\portal\basemodpanel.cpp" \
-							"portal\gameui\portal\gamemodes.cpp" \
-							"portal\gameui\portal\uigamedata.cpp" \
-							"portal\gameui\portal\uigamedata_storage.cpp" \
-							"portal\gameui\portal\vachievements.cpp" \
-							"portal\gameui\portal\vattractscreen.cpp" \
-							"portal\gameui\portal\vaudio.cpp" \
-							"portal\gameui\portal\vcontrolleroptions.cpp" \
-							"portal\gameui\portal\vcontrolleroptionsbuttons.cpp" \
-							"portal\gameui\portal\vcontrolleroptionssticks.cpp" \
-							"portal\gameui\portal\vdropdownmenu.cpp" \
-							"portal\gameui\portal\vflyoutmenu.cpp" \
-							"portal\gameui\portal\vfooterpanel.cpp" \
-							"portal\gameui\portal\vgameoptions.cpp" \
-							"portal\gameui\portal\vgenericconfirmation.cpp" \
-							"portal\gameui\portal\vgenericpanellist.cpp" \
-							"portal\gameui\portal\vgenericwaitscreen.cpp" \
-							"portal\gameui\portal\vhybridbutton.cpp" \
-							"portal\gameui\portal\vingamemainmenu.cpp" \
-							"portal\gameui\portal\vloadingprogress.cpp" \
-							"portal\gameui\portal\vmainmenu.cpp" \
-							"portal\gameui\portal\vmenubackground.cpp" \
-							"portal\gameui\portal\voptions.cpp" \
-							"portal\gameui\portal\vslidercontrol.cpp" \
-							"portal\gameui\portal\vspinnercontrol.cpp" \
-							"portal\gameui\portal\vtransitionscreen.cpp" \
-							"portal\gameui\portal\vsingleplayer.cpp" \
-							"portal\gameui\portal\vgameplaysettings.cpp" \
-							
-							"portal\gameui\portal\vvideo.cpp" 
-					{
-						$Configuration
-						{
-							$Compiler
-							{
-								$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
-							}
-						}
-					}
-				}
-				$Folder "vgui"
-				{					
-					$Folder	"ManagedPanels"
-					{
-						$file	"portal/vgui/nb_button.cpp"
-						$file	"portal/vgui/nb_button.h"
-						$file	"portal/vgui/nb_header_footer.cpp"
-						$file	"portal/vgui/nb_header_footer.h"
-						$file	"portal/vgui/nb_horiz_list.cpp"
-						$file	"portal/vgui/nb_horiz_list.h"
 					}
 				}
 			}

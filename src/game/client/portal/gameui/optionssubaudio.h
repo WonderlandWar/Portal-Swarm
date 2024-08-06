@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -13,11 +13,10 @@
 
 #include "vgui_controls/PropertyPage.h"
 #include <language.h>
-#include "vgui_controls/frame.h"
-#include "vgui/keycode.h"
 
 class CLabeledCommandComboBox;
 class CCvarSlider;
+class CCvarToggleCheckButton;
 
 //-----------------------------------------------------------------------------
 // Purpose: Audio Details, Part of OptionsDialog
@@ -57,24 +56,10 @@ private:
    vgui::DHANDLE<class COptionsSubAudioThirdPartyCreditsDlg> m_OptionsSubAudioThirdPartyCreditsDlg;
    ELanguage         m_nCurrentAudioLanguage;
    static char             *m_pchUpdatedAudioLanguage;
+
+   CCvarToggleCheckButton  *m_pSoundMuteLoseFocusCheckButton;
 };
 
-
-//-----------------------------------------------------------------------------
-// Purpose: third-party audio credits dialog
-//-----------------------------------------------------------------------------
-class COptionsSubAudioThirdPartyCreditsDlg : public vgui::Frame
-{
-	DECLARE_CLASS_SIMPLE( COptionsSubAudioThirdPartyCreditsDlg, vgui::Frame );
-public:
-	COptionsSubAudioThirdPartyCreditsDlg( vgui::VPANEL hParent );
-
-	virtual void Activate();
-	void OnKeyCodeTyped(vgui::KeyCode code);
-
-protected:
-	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
-};
 
 
 #endif // OPTIONS_SUB_AUDIO_H

@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: Basic button control
 //
@@ -6,7 +6,7 @@
 //=============================================================================//
 
 #include <stdio.h>
-#include <UtlSymbol.h>
+#include <utlsymbol.h>
 
 #include <vgui/IBorder.h>
 #include <vgui/IInput.h>
@@ -469,7 +469,8 @@ const char *URLButton::GetDescription( void )
 //-----------------------------------------------------------------------------
 void URLButton::OnSetState(int state)
 {
-	SetSelected(state ? true : false);
+	#pragma warning(disable : 4800)
+	SetSelected((bool)state);
 	Repaint();
 }
 

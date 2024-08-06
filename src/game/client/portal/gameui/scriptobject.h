@@ -51,6 +51,7 @@ class CScriptObject : public vgui::Panel
 {
 public:
 	void AddItem( CScriptListItem *pItem );
+	void RemoveAndDeleteAllItems( void );
 	CScriptObject( void );
 	~CScriptObject();
 
@@ -106,11 +107,12 @@ public:
 
 	const char *GetDescription( void ) { return m_pszDescriptionType; };
 	const char *getHint( void ) { return m_pszHintText; } ;
+	
+	CScriptObject * FindObject( const char *pszObjectName );
 public:
 	CScriptObject *pObjList;
 
 private:
-	CScriptObject * FindObject( const char *pszObjectName );
 
 	char *m_pszHintText;
 	char *m_pszDescriptionType;

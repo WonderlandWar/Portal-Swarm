@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -13,15 +13,17 @@
 #include "vgui_controls/Frame.h"
 #include "vgui/MouseCode.h"
 #include "KeyValues.h"
-#include "UtlVector.h"
-#include "portal/basemodui.h"
-#include "portal/VFlyoutMenu.h"
-#include "gameui_util.h"
-#include "portal/vfooterpanel.h"
+#include "utlvector.h"
+
 
 #define SAVEGAME_MAPNAME_LEN 32
 #define SAVEGAME_COMMENT_LEN 80
 #define SAVEGAME_ELAPSED_LEN 32
+
+namespace vgui
+{
+	class Button;
+};
 
 
 struct SaveGameDescription_t
@@ -38,68 +40,42 @@ struct SaveGameDescription_t
 };
 
 
-int SaveReadNameAndComment( FileHandle_t f, char *name, char *comment );
-static int __cdecl SaveGameSortFunc( const void *lhs, const void *rhs )
-{
-	const SaveGameDescription_t *s1 = (const SaveGameDescription_t *)lhs;
-	const SaveGameDescription_t *s2 = (const SaveGameDescription_t *)rhs;
+int SaveReadNameAndComment( FileHandle_t f, char *name, int nameSize, char *comment, int commentSize );
 
-	if (s1->iTimestamp < s2->iTimestamp)
-		return 1;
-	else if (s1->iTimestamp > s2->iTimestamp)
-		return -1;
 
-	// timestamps are equal, so just sort by filename
-	return strcmp(s1->szFileName, s2->szFileName);
-};
-using namespace BaseModUI;
-using namespace vgui;
-class CNB_Button;
-class CNB_Header_Footer;
 //-----------------------------------------------------------------------------
 // Purpose: Base class for save & load game dialogs
 //-----------------------------------------------------------------------------
-class CBaseSaveGameDialog : public vgui::Frame/*vgui::Frame*///CBaseModFrame//, public FlyoutMenuListener
+class CBaseSaveGameDialog : public vgui::Frame
 {
 	DECLARE_CLASS_SIMPLE( CBaseSaveGameDialog, vgui::Frame );
 
 public:
 	CBaseSaveGameDialog( vgui::Panel *parent, const char *name );
+	static int __cdecl SaveGameSortFunc( const void *lhs, const void *rhs );
 
-	void ScanSavedGames();
-
-
-	//FloutMenuListener
-	/*virtual void OnNotifyChildFocus( vgui::Panel* child );
-	virtual void OnFlyoutMenuClose( vgui::Panel* flyTo );
-	virtual void OnFlyoutMenuCancelled();
-
-	Panel* NavigateBack();
-	*/
-	virtual void Activate()
-	{
-		BaseClass::Activate();
-	}
 protected:
 	CUtlVector<SaveGameDescription_t> m_SaveGames;
 	vgui::PanelListPanel *m_pGameList;
 
-	void ApplySchemeSettings( IScheme *pScheme )
-	{
-		BaseClass::ApplySchemeSettings( pScheme );
-	}
-	virtual void	OnCommand( const char *command );
 	virtual void OnScanningSaveGames() {}
-	//void UpdateFooter( void );
+
 	void DeleteSaveGame( const char *fileName );
+	void ScanSavedGames();
 	void CreateSavedGamesList();
 	int GetSelectedItemSaveIndex();
 	void AddSaveGameItemToList( int saveIndex );
 
 	bool ParseSaveData( char const *pszFileName, char const *pszShortName, SaveGameDescription_t &save );
 
+	void OnKeyCodeTyped( vgui::KeyCode code );
+	void OnKeyCodePressed( vgui::KeyCode code );
+
 private:
 	MESSAGE_FUNC( OnPanelSelected, "PanelSelected" );
+
+	vgui::Button *m_pLoadButton;
 };
+
 
 #endif // BASESAVEGAMEDIALOG_H

@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -16,9 +16,9 @@ using namespace vgui;
 #include <vgui_controls/Label.h>
 #include <vgui_controls/TextEntry.h>
 
-#include "FileSystem.h"
+#include "filesystem.h"
 #include "PanelListPanel.h"
-#include "ScriptObject.h"
+#include "scriptobject.h"
 #include "tier1/convar.h"
 #include "EngineInterface.h"
 #include "CvarToggleCheckButton.h"
@@ -117,8 +117,8 @@ CCreateMultiplayerGameBotPage::CCreateMultiplayerGameBotPage( vgui::Panel *paren
 	// NOTE: If order of AddItem is changed, update the associated enum
 	m_joinTeamCombo = new ComboBox( this, "BotJoinTeamCombo", 3, false );
 	m_joinTeamCombo->AddItem( "#Cstrike_Random", NULL );
-	m_joinTeamCombo->AddItem( "#Cstrike_ScoreBoard_CT", NULL );
-	m_joinTeamCombo->AddItem( "#Cstrike_ScoreBoard_Ter", NULL );
+	m_joinTeamCombo->AddItem( "#Cstrike_Team_CT", NULL );
+	m_joinTeamCombo->AddItem( "#Cstrike_Team_T", NULL );
 
 	// set up chatter combo box
 	// NOTE: If order of AddItem is changed, update the associated enum
@@ -135,19 +135,19 @@ CCreateMultiplayerGameBotPage::CCreateMultiplayerGameBotPage( vgui::Panel *paren
 	LoadControlSettings( "Resource/CreateMultiplayerGameBotPage.res" );
 
 	// get initial values from bot keys
-	m_joinAfterPlayer->SetSelected( botKeys->GetBool( "bot_join_after_player", true ) );
-	m_allowRogues->SetSelected( botKeys->GetBool( "bot_allow_rogues", true ) );
-	m_allowPistols->SetSelected( botKeys->GetBool( "bot_allow_pistols", true ) );
-	m_allowShotguns->SetSelected( botKeys->GetBool( "bot_allow_shotguns", true ) );
-	m_allowSubmachineGuns->SetSelected( botKeys->GetBool( "bot_allow_sub_machine_guns", true ) );
-	m_allowMachineGuns->SetSelected( botKeys->GetBool( "bot_allow_machine_guns", true ) );
-	m_allowRifles->SetSelected( botKeys->GetBool( "bot_allow_rifles", true ) );
-	m_allowSnipers->SetSelected( botKeys->GetBool( "bot_allow_snipers", true ) );
-	m_allowGrenades->SetSelected( botKeys->GetBool( "bot_allow_grenades", true ) );
+	m_joinAfterPlayer->SetSelected( botKeys->GetBool( "bot_join_after_player", 1 ) );
+	m_allowRogues->SetSelected( botKeys->GetBool( "bot_allow_rogues", 1 ) );
+	m_allowPistols->SetSelected( botKeys->GetBool( "bot_allow_pistols", 1 ) );
+	m_allowShotguns->SetSelected( botKeys->GetBool( "bot_allow_shotguns", 1 ) );
+	m_allowSubmachineGuns->SetSelected( botKeys->GetBool( "bot_allow_sub_machine_guns", 1 ) );
+	m_allowMachineGuns->SetSelected( botKeys->GetBool( "bot_allow_machine_guns", 1 ) );
+	m_allowRifles->SetSelected( botKeys->GetBool( "bot_allow_rifles", 1 ) );
+	m_allowSnipers->SetSelected( botKeys->GetBool( "bot_allow_snipers", 1 ) );
+	m_allowGrenades->SetSelected( botKeys->GetBool( "bot_allow_grenades", 1 ) );
 #ifdef CS_SHIELD_ENABLED
-	m_allowShields->SetSelected( botKeys->GetBool( "bot_allow_shield", true ) );
+	m_allowShields->SetSelected( botKeys->GetBool( "bot_allow_shield", 1 ) );
 #endif // CS_SHIELD_ENABLED
-	m_deferToHuman->SetSelected( botKeys->GetBool( "bot_defer_to_human", true ) );
+	m_deferToHuman->SetSelected( botKeys->GetBool( "bot_defer_to_human", 1 ) );
 
 	SetJoinTeamCombo( botKeys->GetString( "bot_join_team", "any" ) );
 	SetChatterCombo( botKeys->GetString( "bot_chatter", "normal" ) );

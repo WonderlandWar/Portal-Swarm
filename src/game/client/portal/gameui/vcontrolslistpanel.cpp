@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -16,6 +16,9 @@
 #include <vgui/Cursor.h>
 #include <KeyValues.h>
 
+// NVNT including for input system access
+#include "tier2/tier2.h"
+#include "inputsystem/iinputsystem.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -38,7 +41,7 @@ public:
 		GetSize(wide, tall);
 
 		// Draw a white rectangle around that cell
-		vgui::surface()->DrawSetColor( 0, 165, 255, 255 );
+		vgui::surface()->DrawSetColor( 255, 165, 0, 255 );
 		vgui::surface()->DrawFilledRect( x, y, x + wide, y + tall );
 	}
 

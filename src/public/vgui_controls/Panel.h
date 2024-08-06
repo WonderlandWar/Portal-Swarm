@@ -1074,6 +1074,39 @@ inline bool	Panel::IsMouseInputDisabledForThisPanel() const
 		msg->deleteThis();
 	}
 
+class Button;
+
+struct SortedPanel_t
+{
+	SortedPanel_t( Panel *panel );
+
+	Panel *pPanel;
+	Button *pButton;
+};
+
+class CSortedPanelYLess
+{
+public:
+	bool Less( const SortedPanel_t &src1, const SortedPanel_t &src2, void *pCtx )
+	{
+		int nX1, nY1, nX2, nY2;
+		src1.pPanel->GetPos( nX1, nY1 );
+		src2.pPanel->GetPos( nX2, nY2 );
+
+		if ( nY1 == nY2 )
+		{
+			return ( nX1 < nX2 );
+		}
+
+		if ( nY1 < nY2 )
+		{
+			return true;
+		}
+
+		return false;
+	}
+};
+
 } // namespace vgui
 
 

@@ -43,21 +43,6 @@
     <Filter Include="Source Files\Portal\GameUI - Embedded\External Stuff">
       <UniqueIdentifier>{386AD749-77CB-A9B0-043E-898E3051D63A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Portal\GameUI - Embedded\Portal GameUI">
-      <UniqueIdentifier>{437D0B51-FBDE-E9A7-C5B6-D566B629C07A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers">
-      <UniqueIdentifier>{69333A96-8A61-DBF6-2BF0-BBE8CC728B2D}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Portal\GameUI - Embedded\Portal GameUI\Win32">
-      <UniqueIdentifier>{9DD6ADE4-4CBC-10B9-409F-33D68D1CD326}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Portal\GameUI - Embedded\vgui">
-      <UniqueIdentifier>{25E226AF-4F6A-90AA-4E8A-0A05E640DA56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Portal\GameUI - Embedded\vgui\ManagedPanels">
-      <UniqueIdentifier>{C1FDAAC3-A311-FF89-2796-59D9D75F2B79}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Portal\Weapons">
       <UniqueIdentifier>{63885006-58CF-723C-AB9C-B87B6D33FF09}</UniqueIdentifier>
     </Filter>
@@ -2021,49 +2006,82 @@
     <ClInclude Include="..\..\game\shared\portal\StaticCollisionPolyhedronCache.h">
       <Filter>Source Files\Portal</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\backgroundmenubutton.h">
+    <ClInclude Include="portal\gameui\matchmaking\achievementsdialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\basepanel.h">
+    <ClInclude Include="portal\gameui\BackgroundMenuButton.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\basesavegamedialog.h">
+    <ClInclude Include="portal\gameui\matchmaking\basedialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\bitmapimagepanel.h">
+    <ClInclude Include="portal\gameui\BasePanel.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\commandcheckbutton.h">
+    <ClInclude Include="portal\gameui\BaseSaveGameDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\contentcontroldialog.h">
+    <ClInclude Include="portal\gameui\BenchmarkDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\createmultiplayergamebotpage.h">
+    <ClInclude Include="portal\gameui\BitmapImagePanel.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\createmultiplayergamedialog.h">
+    <ClInclude Include="portal\gameui\BonusMapsDatabase.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\createmultiplayergamegameplaypage.h">
+    <ClInclude Include="portal\gameui\BonusMapsDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\createmultiplayergameserverpage.h">
+    <ClInclude Include="portal\gameui\CDKeyEntryDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\customtabexplanationdialog.h">
+    <ClInclude Include="portal\gameui\ChangeGameDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\cvarnegatecheckbutton.h">
+    <ClInclude Include="portal\gameui\CommandCheckButton.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CommentaryDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CommentaryExplanationDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\ContentControlDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\ControllerDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CreateMultiplayerGameBotPage.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CreateMultiplayerGameDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CreateMultiplayerGameGameplayPage.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CreateMultiplayerGameServerPage.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CustomTabExplanationDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\CvarNegateCheckButton.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
     <ClInclude Include="portal\gameui\cvarslider.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\cvartextentry.h">
+    <ClInclude Include="portal\gameui\CvarTextEntry.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\cvartogglecheckbutton.h">
+    <ClInclude Include="portal\gameui\CvarToggleCheckButton.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\matchmaking\dialogmenu.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
     <ClInclude Include="portal\gameui\engineinterface.h">
@@ -2081,76 +2099,88 @@
     <ClInclude Include="portal\gameui\gameui_util.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\keytogglecheckbutton.h">
+    <ClInclude Include="portal\gameui\HapticControlBox.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\labeledcommandcombobox.h">
+    <ClInclude Include="portal\gameui\KeyToggleCheckButton.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\loadingdialog.h">
+    <ClInclude Include="portal\gameui\LabeledCommandComboBox.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\loadingtippanel.h">
+    <ClInclude Include="portal\gameui\LoadGameDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\LoadingDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
     <ClInclude Include="portal\gameui\modinfo.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\mousemessageforwardingpanel.h">
+    <ClInclude Include="portal\gameui\MouseMessageForwardingPanel.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\multiplayeradvanceddialog.h">
+    <ClInclude Include="portal\gameui\MultiplayerAdvancedDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionsdialog.h">
+    <ClInclude Include="portal\gameui\NewGameDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubaudio.h">
+    <ClInclude Include="portal\gameui\OptionsDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubdifficulty.h">
+    <ClInclude Include="portal\gameui\OptionsSubAudio.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubgame.h">
+    <ClInclude Include="portal\gameui\OptionsSubDifficulty.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubkeyboard.h">
+    <ClInclude Include="portal\gameui\OptionsSubGame.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubmouse.h">
+    <ClInclude Include="portal\gameui\OptionsSubHaptics.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubmultiplayer.h">
+    <ClInclude Include="portal\gameui\OptionsSubKeyboard.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubportal.h">
+    <ClInclude Include="portal\gameui\OptionsSubMouse.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubvideo.h">
+    <ClInclude Include="portal\gameui\OptionsSubMultiplayer.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\optionssubvoice.h">
+    <ClInclude Include="portal\gameui\OptionsSubPortal.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\panellistpanel.h">
+    <ClInclude Include="portal\gameui\OptionsSubVideo.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\playerlistdialog.h">
+    <ClInclude Include="portal\gameui\OptionsSubVoice.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\rungameengine.h">
+    <ClInclude Include="portal\gameui\PanelListPanel.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\scriptobject.h">
+    <ClInclude Include="portal\gameui\PlayerListDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\SaveGameBrowserDialog.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\SaveGameDialog.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
     <ClInclude Include="portal\gameui\sys_utils.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\textentrybox.h">
+    <ClInclude Include="portal\gameui\TextEntryBox.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="portal\gameui\urlbutton.h">
+    <ClInclude Include="portal\gameui\TGAImagePanel.h">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\gameui\URLButton.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
     </ClInclude>
     <ClInclude Include="portal\gameui\vcontrolslistpanel.h">
@@ -2158,117 +2188,6 @@
     </ClInclude>
     <ClInclude Include="portal\gameui\vguisystemmoduleloader.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\basemodframe.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\basemodpanel.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\basemodui.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\gamemodes.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\uiavatarimage.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\uigamedata.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vachievements.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vattractscreen.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vaudio.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vcontrolleroptions.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vcontrolleroptionsbuttons.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vcontrolleroptionssticks.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vdropdownmenu.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vflyoutmenu.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vfooterpanel.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vgameoptions.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vgameplaysettings.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vgenericconfirmation.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vgenericpanellist.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vgenericwaitscreen.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vhybridbutton.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vingamemainmenu.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vkeyboard.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vkeyboardmouse.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vloadgamedialog.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vloadingprogress.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vmainmenu.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\voptions.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vsavegamedialog.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vsingleplayer.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vslidercontrol.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vspinnercontrol.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vtransitionscreen.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\gameui\portal\vvideo.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\vgui\nb_button.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\vgui\ManagedPanels</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\vgui\nb_header_footer.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\vgui\ManagedPanels</Filter>
-    </ClInclude>
-    <ClInclude Include="portal\vgui\nb_horiz_list.h">
-      <Filter>Source Files\Portal\GameUI - Embedded\vgui\ManagedPanels</Filter>
     </ClInclude>
     <ClInclude Include="portal\c_weapon_portalgun.h">
       <Filter>Source Files\Portal\Weapons</Filter>
@@ -3727,46 +3646,79 @@
     <ClCompile Include="portal\vgui_portal_stats_display_screen.cpp">
       <Filter>Source Files\Portal</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\backgroundmenubutton.cpp">
+    <ClCompile Include="portal\gameui\matchmaking\achievementsdialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\basesavegamedialog.cpp">
+    <ClCompile Include="portal\gameui\BackgroundMenuButton.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\bitmapimagepanel.cpp">
+    <ClCompile Include="portal\gameui\matchmaking\basedialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\commandcheckbutton.cpp">
+    <ClCompile Include="portal\gameui\BasePanel.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\contentcontroldialog.cpp">
+    <ClCompile Include="portal\gameui\BaseSaveGameDialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\createmultiplayergamebotpage.cpp">
+    <ClCompile Include="portal\gameui\BenchmarkDialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\createmultiplayergamedialog.cpp">
+    <ClCompile Include="portal\gameui\BitmapImagePanel.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\createmultiplayergamegameplaypage.cpp">
+    <ClCompile Include="portal\gameui\BonusMapsDatabase.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\createmultiplayergameserverpage.cpp">
+    <ClCompile Include="portal\gameui\BonusMapsDialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\customtabexplanationdialog.cpp">
+    <ClCompile Include="portal\gameui\ChangeGameDialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\cvarnegatecheckbutton.cpp">
+    <ClCompile Include="portal\gameui\CommandCheckButton.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CommentaryDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CommentaryExplanationDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\ContentControlDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\ControllerDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CreateMultiplayerGameBotPage.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CreateMultiplayerGameDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CreateMultiplayerGameGameplayPage.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CreateMultiplayerGameServerPage.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CustomTabExplanationDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\CvarNegateCheckButton.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
     <ClCompile Include="portal\gameui\cvarslider.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\cvartextentry.cpp">
+    <ClCompile Include="portal\gameui\CvarTextEntry.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\cvartogglecheckbutton.cpp">
+    <ClCompile Include="portal\gameui\CvarToggleCheckButton.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\matchmaking\dialogmenu.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
     <ClCompile Include="portal\gameui\gameconsole.cpp">
@@ -3781,67 +3733,97 @@
     <ClCompile Include="portal\gameui\gameui_util.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\keytogglecheckbutton.cpp">
+    <ClCompile Include="portal\gameui\HapticControlBox.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\labeledcommandcombobox.cpp">
+    <ClCompile Include="portal\gameui\KeyToggleCheckButton.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\loadingdialog.cpp">
+    <ClCompile Include="portal\gameui\LabeledCommandComboBox.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\loadingtippanel.cpp">
+    <ClCompile Include="..\..\common\language.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\logofile.cpp">
+    <ClCompile Include="portal\gameui\LoadCommentaryDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\LoadGameDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\LoadGameDialog_Xbox.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\LoadingDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\LogoFile.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
     <ClCompile Include="portal\gameui\modinfo.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\mousemessageforwardingpanel.cpp">
+    <ClCompile Include="portal\gameui\MouseMessageForwardingPanel.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\multiplayeradvanceddialog.cpp">
+    <ClCompile Include="portal\gameui\MultiplayerAdvancedDialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionsdialog.cpp">
+    <ClCompile Include="portal\gameui\NewGameDialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubaudio.cpp">
+    <ClCompile Include="portal\gameui\OptionsDialog.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubdifficulty.cpp">
+    <ClCompile Include="portal\gameui\OptionsDialog_Xbox.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubgame.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubAudio.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubkeyboard.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubDifficulty.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubmouse.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubGame.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubmultiplayer.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubHaptics.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubportal.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubKeyboard.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubvideo.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubMouse.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\optionssubvoice.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubMultiplayer.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\panellistpanel.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubPortal.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\playerlistdialog.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubVideo.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\rungameengine.cpp">
+    <ClCompile Include="portal\gameui\OptionsSubVoice.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\PanelListPanel.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\PlayerListDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\RunGameEngine.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\SaveGameBrowserDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\SaveGameDialog.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\SaveGameDialog_Xbox.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
     <ClCompile Include="portal\gameui\scriptobject.cpp">
@@ -3850,10 +3832,13 @@
     <ClCompile Include="portal\gameui\sys_utils.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\textentrybox.cpp">
+    <ClCompile Include="portal\gameui\TextEntryBox.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="portal\gameui\urlbutton.cpp">
+    <ClCompile Include="portal\gameui\TGAImagePanel.cpp">
+      <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\gameui\URLButton.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
     </ClCompile>
     <ClCompile Include="portal\gameui\vcontrolslistpanel.cpp">
@@ -3861,123 +3846,6 @@
     </ClCompile>
     <ClCompile Include="portal\gameui\vguisystemmoduleloader.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\common\language.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\External Stuff</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\basemodframe.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\basemodpanel.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\gamemodes.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\uigamedata.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\uigamedata_storage.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vachievements.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vattractscreen.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vaudio.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vcontrolleroptions.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vcontrolleroptionsbuttons.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vcontrolleroptionssticks.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vdropdownmenu.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vflyoutmenu.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vfooterpanel.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vgameoptions.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vgameplaysettings.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vgenericconfirmation.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vgenericpanellist.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vgenericwaitscreen.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vhybridbutton.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vingamemainmenu.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vloadingprogress.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vmainmenu.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vmenubackground.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\voptions.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vsingleplayer.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vslidercontrol.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vspinnercontrol.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vtransitionscreen.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vvideo.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\uiavatarimage.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vkeyboard.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vkeyboardmouse.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vloadgamedialog.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\gameui\portal\vsavegamedialog.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\Portal GameUI\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\vgui\nb_button.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\vgui\ManagedPanels</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\vgui\nb_header_footer.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\vgui\ManagedPanels</Filter>
-    </ClCompile>
-    <ClCompile Include="portal\vgui\nb_horiz_list.cpp">
-      <Filter>Source Files\Portal\GameUI - Embedded\vgui\ManagedPanels</Filter>
     </ClCompile>
     <ClCompile Include="portal\c_weapon_physcannon.cpp">
       <Filter>Source Files\Portal\Weapons</Filter>

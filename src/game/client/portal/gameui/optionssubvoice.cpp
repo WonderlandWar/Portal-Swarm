@@ -1,11 +1,12 @@
-//========= Copyright © Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
-//==========================================================================//
-
+// $NoKeywords: $
+//
+//=============================================================================//
 #include "OptionsSubVoice.h"
-#include "CvarSlider.h"
+#include "cvarslider.h"
 #include <vgui/IVGui.h>
 #include <vgui_controls/ImagePanel.h>
 #include <vgui_controls/CheckButton.h>
@@ -15,6 +16,7 @@
 #include "CvarToggleCheckButton.h"
 #include "tier1/KeyValues.h"
 #include "tier1/convar.h"
+#include <steam/steam_api.h>
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -34,7 +36,8 @@ COptionsSubVoice::COptionsSubVoice(vgui::Panel *parent) : PropertyPage(parent, N
     m_pMicMeter2 = new ImagePanel(this, "MicMeter2");
 
     m_pReceiveSliderLabel = new Label(this, "ReceiveLabel", "#GameUI_VoiceReceiveVolume");
-	m_pReceiveVolume = new CCvarSlider( this, "VoiceReceive", "#GameUI_ReceiveVolume", 0.0f, 1.0f, "voice_scale" );
+	m_pReceiveVolume = new CCvarSlider( this, "VoiceReceive", "#GameUI_ReceiveVolume",
+		0.0f, 1.0f, "voice_scale" );
 
     m_pMicrophoneSliderLabel = new Label(this, "MicrophoneLabel", "#GameUI_VoiceTransmitVolume");
 	m_pMicrophoneVolume = new Slider( this, "#GameUI_MicrophoneVolume" );
@@ -46,12 +49,7 @@ COptionsSubVoice::COptionsSubVoice(vgui::Panel *parent) : PropertyPage(parent, N
 	m_pMicBoost = new CheckButton(this, "MicBoost", "#GameUI_BoostMicrophone" );
 	m_pMicBoost->AddActionSignalTarget( this );
 
-	// Open mic controls
-	m_pThresholdSliderLabel = new Label(this, "ThresholdLabel", "#GameUI_VoiceThreshold");
-	m_pThresholdVolume = new CCvarSlider( this, "VoiceThreshold", "#GameUI_VoiceThreshold", 0, 16384, "voice_threshold" );
-	m_pOpenMicEnableCheckButton = new CCvarToggleCheckButton( this, "voice_vox", "#GameUI_EnableOpenMic", "voice_vox" );
-
-	m_pTestMicrophoneButton = new Button(this, "TestMicrophone", "#GameUI_TestMicrophone");
+    m_pTestMicrophoneButton = new Button(this, "TestMicrophone", "#GameUI_TestMicrophone");
 
 	LoadControlSettings("Resource\\OptionsSubVoice.res");
 
@@ -65,8 +63,6 @@ COptionsSubVoice::COptionsSubVoice(vgui::Panel *parent) : PropertyPage(parent, N
         m_pVoiceEnableCheckButton->SetEnabled(false);
         m_pMicBoost->SetEnabled(false);
         m_pTestMicrophoneButton->SetEnabled(false);
-		m_pOpenMicEnableCheckButton->SetEnabled(false);
-		m_pThresholdVolume->SetEnabled(false);
     }
     else
     {
@@ -106,13 +102,7 @@ void COptionsSubVoice::OnResetData()
     m_pReceiveVolume->Reset();
     m_fReceiveVolume = m_pReceiveVolume->GetSliderValue();
 
-    m_pThresholdVolume->Reset();
-	m_nVoiceThresholdValue = m_pThresholdVolume->GetSliderValue();
-	
-	m_pOpenMicEnableCheckButton->Reset();
-	m_bOpenMicSelected = m_pOpenMicEnableCheckButton->IsSelected();
-
-	m_pVoiceEnableCheckButton->Reset();
+    m_pVoiceEnableCheckButton->Reset();
 }
 
 //-----------------------------------------------------------------------------
@@ -120,19 +110,12 @@ void COptionsSubVoice::OnResetData()
 //-----------------------------------------------------------------------------
 void COptionsSubVoice::OnSliderMoved( int position )
 {
-    if ( m_pVoiceTweak )
+    if (m_pVoiceTweak)
     {
-        if ( m_pMicrophoneVolume->GetValue() != m_nMicVolumeValue )
+        if (m_pMicrophoneVolume->GetValue() != m_nMicVolumeValue)
         {
             PostActionSignal(new KeyValues("ApplyButtonEnable"));
         }
-		
-		if ( m_pThresholdVolume->GetSliderValue() != m_nVoiceThresholdValue )
-		{
-			PostActionSignal(new KeyValues("ApplyButtonEnable"));
-			m_pThresholdVolume->ApplyChanges();
-			m_nVoiceThresholdValue = m_pThresholdVolume->GetSliderValue();
-		}
     }
 }
 
@@ -141,20 +124,13 @@ void COptionsSubVoice::OnSliderMoved( int position )
 //-----------------------------------------------------------------------------
 void COptionsSubVoice::OnCheckButtonChecked( int state )
 {
-    if ( m_pVoiceTweak )
+    if (m_pVoiceTweak)
     {
         // if our state is different
         if ( m_pMicBoost->IsSelected() != m_bMicBoostSelected)
         {
             PostActionSignal(new KeyValues("ApplyButtonEnable"));
         }
-		
-		if ( m_pOpenMicEnableCheckButton->IsSelected() != m_bOpenMicSelected )
-		{
-			PostActionSignal(new KeyValues("ApplyButtonEnable"));
-			m_pOpenMicEnableCheckButton->ApplyChanges();
-			m_bOpenMicSelected = m_pOpenMicEnableCheckButton->IsSelected();
-		}
     }
 }
 
@@ -176,12 +152,7 @@ void COptionsSubVoice::OnApplyChanges()
     m_pReceiveVolume->ApplyChanges();
     m_fReceiveVolume = m_pReceiveVolume->GetSliderValue();
 
-	m_pThresholdVolume->ApplyChanges();
-	m_nVoiceThresholdValue = m_pThresholdVolume->GetSliderValue();
-
-	m_pOpenMicEnableCheckButton->ApplyChanges();
-
-	m_pVoiceEnableCheckButton->ApplyChanges();
+    m_pVoiceEnableCheckButton->ApplyChanges();
 }
 
 //-----------------------------------------------------------------------------
@@ -235,9 +206,6 @@ void COptionsSubVoice::UseCurrentVoiceParameters()
     // get where the current slider is
     m_nReceiveSliderValue = m_pReceiveVolume->GetValue();
     m_pReceiveVolume->ApplyChanges();
-
-	m_nVoiceThresholdValue = m_pThresholdVolume->GetValue();
-	m_pThresholdVolume->ApplyChanges();
 }
 
 //-----------------------------------------------------------------------------
@@ -254,9 +222,8 @@ void COptionsSubVoice::ResetVoiceParameters()
 	voice_scale.SetValue( m_fReceiveVolume );
     
 	m_pReceiveVolume->Reset();
-
     // set the slider to 'new' value, but we've reset the 'start' value where it was
-    m_pReceiveVolume->SetValue( m_nReceiveSliderValue );
+    m_pReceiveVolume->SetValue(m_nReceiveSliderValue);
 }
 
 //-----------------------------------------------------------------------------
@@ -300,6 +267,13 @@ void COptionsSubVoice::OnCommand( const char *command)
             EndTestMicrophone();
         }
     }
+	else if (!stricmp(command, "SteamVoiceSettings"))
+	{
+		if ( steamapicontext && steamapicontext->SteamFriends() )
+		{
+			steamapicontext->SteamFriends()->ActivateGameOverlay( "voicesettings" );
+		}
+	}
     else
 	{
         BaseClass::OnCommand(command);
@@ -336,9 +310,9 @@ void COptionsSubVoice::OnControlModified()
 void COptionsSubVoice::OnThink()
 {
     BaseClass::OnThink();
-    if ( m_bVoiceOn )
+    if (m_bVoiceOn)
     {
-		if ( m_pVoiceTweak->IsStillTweaking() == false )
+		if ( !m_pVoiceTweak->IsStillTweaking() )
 		{
 			DevMsg( 1, "Lost Voice Tweak channels, resetting\n" );
 			EndTestMicrophone();
@@ -347,17 +321,6 @@ void COptionsSubVoice::OnThink()
 		{
 			float val = m_pVoiceTweak->GetControlFloat( SpeakingVolume );
 			int nValue = static_cast<int>( val*32768.0f + 0.5f );
-
-			// Throttle this if they're using "open mic" style communication
-			if ( m_pOpenMicEnableCheckButton->IsSelected() )
-			{
-				// Test against it our threshold value
-				float flThreshold = ( (float) m_pThresholdVolume->GetSliderValue() / 32768.0f );
-				if ( val < flThreshold )
-				{
-					nValue = 0;	// Zero the display
-				}
-			}
 
 			int width = (BAR_WIDTH * nValue) / 32768;
 			width = ((width + (BAR_INCREMENT-1)) / BAR_INCREMENT) * BAR_INCREMENT;  // round to nearest BAR_INCREMENT

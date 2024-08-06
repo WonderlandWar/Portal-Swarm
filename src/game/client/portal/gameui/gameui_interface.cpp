@@ -60,12 +60,6 @@
 #include "steam/steam_api.h"
 #include "protocol.h"
 
-#include "portal/basemodpanel.h"
-#include "portal/basemodui.h"
-typedef BaseModUI::CBaseModPanel UI_BASEMOD_PANEL_CLASS;
-inline UI_BASEMOD_PANEL_CLASS & GetUiBaseModPanelClass() { return UI_BASEMOD_PANEL_CLASS::GetSingleton(); }
-inline UI_BASEMOD_PANEL_CLASS & ConstructUiBaseModPanelClass() { return * new UI_BASEMOD_PANEL_CLASS(); }
-
 #ifdef _X360
 #include "xbox/xbox_win32stubs.h"
 #endif // _X360
@@ -73,6 +67,10 @@ inline UI_BASEMOD_PANEL_CLASS & ConstructUiBaseModPanelClass() { return * new UI
 #include "tier0/dbg.h"
 #include "engine/IEngineSound.h"
 #include "gameui_util.h"
+
+// vgui2 interface
+// note that GameUI project uses ..\vgui2\include, not ..\utils\vgui\include
+#include "BasePanel.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -83,6 +81,8 @@ IXOnline  *xonline = NULL;			// 360 only
 #endif
 vgui::ISurface *enginesurfacefuncs = NULL;
 IAchievementMgr *achievementmgr = NULL;
+
+static CBasePanel *staticPanel = NULL;
 
 class CGameUI;
 CGameUI *g_pGameUI = NULL;
@@ -115,7 +115,7 @@ CGameUI &GameUI()
 //-----------------------------------------------------------------------------
 vgui::VPANEL GetGameUIBasePanel()
 {
-	return GetUiBaseModPanelClass().GetVPanel();
+	return BasePanel()->GetVPanel();
 }
 
 EXPOSE_SINGLE_INTERFACE_GLOBALVAR(CGameUI, IGameUI, GAMEUI_INTERFACE_VERSION, g_GameUI);
@@ -209,20 +209,17 @@ void CGameUI::Initialize( CreateInterfaceFn factory )
 	}
 
 	// setup base panel
-	UI_BASEMOD_PANEL_CLASS& factoryBasePanel = ConstructUiBaseModPanelClass(); // explicit singleton instantiation
-
-	factoryBasePanel.SetBounds( 0, 0, 640, 480 );
-	factoryBasePanel.SetPaintBorderEnabled( false );
-	factoryBasePanel.SetPaintBackgroundEnabled( true );
-	factoryBasePanel.SetPaintEnabled( true );
-	factoryBasePanel.SetVisible( true );
-
-	factoryBasePanel.SetMouseInputEnabled( IsPC() );
-	// factoryBasePanel.SetKeyBoardInputEnabled( IsPC() );
-	factoryBasePanel.SetKeyBoardInputEnabled( true );
+	staticPanel = new CBasePanel();
+	staticPanel->SetBounds(0, 0, 400, 300 );
+	staticPanel->SetPaintBorderEnabled( false );
+	staticPanel->SetPaintBackgroundEnabled( true );
+	staticPanel->SetPaintEnabled( false );
+	staticPanel->SetVisible( true );
+	staticPanel->SetMouseInputEnabled( false );
+	staticPanel->SetKeyBoardInputEnabled( false );
 
 	vgui::VPANEL rootpanel = enginevguifuncs->GetPanel( PANEL_GAMEUIDLL );
-	factoryBasePanel.SetParent( rootpanel );
+	staticPanel->SetParent( rootpanel );
 }
 
 void CGameUI::PostInit()
@@ -557,30 +554,26 @@ void CGameUI::OnGameUIActivated()
 {
 	bool bWasActive = m_bActivatedUI;
 	m_bActivatedUI = true;
+	
+	// hide/show the main panel to Activate all game ui
+	staticPanel->SetVisible( true );
 
 	// Lock the UI to a particular player
 	if ( !bWasActive )
 	{
 		SetGameUIActiveSplitScreenPlayerSlot( engine->GetActiveSplitScreenPlayerSlot() );
 	}
-
-	// pause the server in case it is pausable
-	engine->ClientCmd_Unrestricted( "setpause nomsg" );
+	
+	// pause the server in single player
+	if ( engine->GetMaxClients() <= 1 )
+	{
+		engine->ClientCmd_Unrestricted( "setpause nomsg" );
+	}
 
 	SetSavedThisMenuSession( false );
-
-	UI_BASEMOD_PANEL_CLASS &ui = GetUiBaseModPanelClass();
-	bool bNeedActivation = true;
-	if ( ui.IsVisible() )
-	{
-		// Already visible, maybe don't need activation
-		if ( !IsInLevel() && IsInBackgroundLevel() )
-			bNeedActivation = false;
-	}
-	if ( bNeedActivation )
-	{
-		GetUiBaseModPanelClass().OnGameUIActivated();
-	}
+	
+	// notify taskbar
+	BasePanel()->OnGameUIActivated();
 }
 
 //-----------------------------------------------------------------------------
@@ -594,13 +587,13 @@ void CGameUI::OnGameUIHidden()
 	// unpause the game when leaving the UI
 	engine->ClientCmd_Unrestricted( "unpause nomsg" );
 
-	GetUiBaseModPanelClass().OnGameUIHidden();
-
 	// Restore to default
 	if ( bWasActive )
 	{
 		SetGameUIActiveSplitScreenPlayerSlot( 0 );
 	}
+	
+	BasePanel()->OnGameUIHidden();
 }
 
 //-----------------------------------------------------------------------------
@@ -615,7 +608,7 @@ void CGameUI::RunFrame()
 	}
 
 	int wide, tall;
-#if defined( TOOLFRAMEWORK_VGUI_REFACTOR )
+
 	// resize the background panel to the screen size
 	vgui::VPANEL clientDllPanel = enginevguifuncs->GetPanel( PANEL_ROOT );
 
@@ -623,16 +616,10 @@ void CGameUI::RunFrame()
 	vgui::ipanel()->GetPos( clientDllPanel, x, y );
 	vgui::ipanel()->GetSize( clientDllPanel, wide, tall );
 	staticPanel->SetBounds( x, y, wide,tall );
-#else
-	vgui::surface()->GetScreenSize(wide, tall);
-
-	GetUiBaseModPanelClass().SetSize(wide, tall);
-#endif
 
 	// Run frames
 	g_VModuleLoader.RunFrame();
-
-	GetUiBaseModPanelClass().RunFrame();
+	BasePanel()->RunFrame();
 
 	// Play the start-up music the first time we run frame
 	if ( IsPC() && m_iPlayGameStartupSound > 0 )
@@ -772,8 +759,7 @@ void CGameUI::OnLevelLoadingStarted( const char *levelName, bool bShowProgressDi
 {
 	g_VModuleLoader.PostMessageToAllModules( new KeyValues( "LoadingStarted" ) );
 
-	GetUiBaseModPanelClass().OnLevelLoadingStarted( levelName, bShowProgressDialog );
-	ShowLoadingBackgroundDialog();
+	BasePanel()->OnLevelLoadingStarted();
 
 	if ( bShowProgressDialog )
 	{
@@ -793,11 +779,11 @@ void CGameUI::OnLevelLoadingFinished(bool bError, const char *failureReason, con
 
 	// notify all the modules
 	g_VModuleLoader.PostMessageToAllModules( new KeyValues( "LoadingFinished" ) );
+	
+	HideGameUI();
 
-	GetUiBaseModPanelClass().OnLevelLoadingFinished( new KeyValues( "LoadingFinished" ) );
-	HideLoadingBackgroundDialog();
-
-
+	// notify
+	BasePanel()->OnLevelLoadingFinished();
 }
 
 //-----------------------------------------------------------------------------
@@ -806,7 +792,20 @@ void CGameUI::OnLevelLoadingFinished(bool bError, const char *failureReason, con
 //-----------------------------------------------------------------------------
 bool CGameUI::UpdateProgressBar(float progress, const char *statusText)
 {
-	return GetUiBaseModPanelClass().UpdateProgressBar(progress, statusText);
+	// if either the progress bar or the status text changes, redraw the screen
+	bool bRedraw = false;
+
+	if ( ContinueProgressBar( progress ) )
+	{
+		bRedraw = true;
+	}
+		
+	if ( SetProgressBarStatusText( statusText ) )
+	{
+		bRedraw = true;
+	}
+
+	return bRedraw;
 }
 
 
@@ -835,6 +834,15 @@ void CGameUI::SetProgressLevelName( const char *levelName )
 //-----------------------------------------------------------------------------
 void CGameUI::StartProgressBar()
 {
+	if ( !g_hLoadingDialog.Get() )
+	{
+		g_hLoadingDialog = new CLoadingDialog(staticPanel);
+	}
+
+	// open a loading dialog
+	m_szPreviousStatusText[0] = 0;
+	g_hLoadingDialog->SetProgressPoint(0.0f);
+	g_hLoadingDialog->Open();
 }
 
 //-----------------------------------------------------------------------------
@@ -854,6 +862,11 @@ bool CGameUI::ContinueProgressBar( float progressFraction )
 //-----------------------------------------------------------------------------
 void CGameUI::StopProgressBar(bool bError, const char *failureReason, const char *extendedReason)
 {
+	if (!g_hLoadingDialog.Get() && bError)
+	{
+		g_hLoadingDialog = new CLoadingDialog(staticPanel);
+	}
+
 	if (!g_hLoadingDialog.Get())
 		return;
 
@@ -986,10 +999,11 @@ void CGameUI::ShowLoadingBackgroundDialog()
 {
 	if ( g_hLoadingBackgroundDialog )
 	{
-		vgui::VPANEL panel = GetUiBaseModPanelClass().GetVPanel();
-
-		vgui::ipanel()->SetParent( g_hLoadingBackgroundDialog, panel );
+		vgui::ipanel()->SetParent( g_hLoadingBackgroundDialog, staticPanel->GetVPanel() );
+		vgui::ipanel()->PerformApplySchemeSettings( g_hLoadingBackgroundDialog );
+		vgui::ipanel()->SetVisible( g_hLoadingBackgroundDialog, true );		
 		vgui::ipanel()->MoveToFront( g_hLoadingBackgroundDialog );
+		vgui::ipanel()->SendMessage( g_hLoadingBackgroundDialog, new KeyValues( "activate" ), staticPanel->GetVPanel() );
 	}
 }
 
@@ -1001,17 +1015,10 @@ void CGameUI::HideLoadingBackgroundDialog()
 {
 	if ( g_hLoadingBackgroundDialog )
 	{
-		if ( engine->IsInGame() )
-		{
-			vgui::ivgui()->PostMessage( g_hLoadingBackgroundDialog, new KeyValues( "LoadedIntoGame" ), NULL );
-		}
-		else
-		{
-			vgui::ipanel()->SetVisible( g_hLoadingBackgroundDialog, false );
-			vgui::ipanel()->MoveToBack( g_hLoadingBackgroundDialog );
-		}
-
-		vgui::ivgui()->PostMessage( g_hLoadingBackgroundDialog, new KeyValues("HideAsLoadingPanel"), NULL );
+		vgui::ipanel()->SetParent( g_hLoadingBackgroundDialog, NULL );
+		vgui::ipanel()->SetVisible( g_hLoadingBackgroundDialog, false );		
+		vgui::ipanel()->MoveToBack( g_hLoadingBackgroundDialog );
+		vgui::ipanel()->SendMessage( g_hLoadingBackgroundDialog, new KeyValues( "deactivate" ), staticPanel->GetVPanel() );
 	}
 }
 
@@ -1021,6 +1028,38 @@ void CGameUI::HideLoadingBackgroundDialog()
 bool CGameUI::HasLoadingBackgroundDialog()
 {
 	return ( NULL != g_hLoadingBackgroundDialog );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Xbox 360 calls from engine to GameUI 
+//-----------------------------------------------------------------------------
+void CGameUI::SessionNotification( const int notification, const int param )
+{
+	BasePanel()->SessionNotification( notification, param );
+}
+void CGameUI::SystemNotification( const int notification )
+{
+	BasePanel()->SystemNotification( notification );
+}
+void CGameUI::ShowMessageDialog( const uint nType, vgui::Panel *pOwner )
+{
+	BasePanel()->ShowMessageDialog( nType, pOwner );
+}
+void CGameUI::CloseMessageDialog( const uint nType )
+{
+	BasePanel()->CloseMessageDialog( nType );
+}
+void CGameUI::UpdatePlayerInfo( uint64 nPlayerId, const char *pName, int nTeam, byte cVoiceState, int nPlayersNeeded, bool bHost )
+{
+	BasePanel()->UpdatePlayerInfo( nPlayerId, pName, nTeam, cVoiceState, nPlayersNeeded, bHost );
+}
+void CGameUI::SessionSearchResult( int searchIdx, void *pHostData, XSESSION_SEARCHRESULT *pResult, int ping )
+{
+	BasePanel()->SessionSearchResult( searchIdx, pHostData, pResult, ping );
+}
+void CGameUI::OnCreditsFinished( void )
+{
+	BasePanel()->OnCreditsFinished();
 }
 
 //-----------------------------------------------------------------------------

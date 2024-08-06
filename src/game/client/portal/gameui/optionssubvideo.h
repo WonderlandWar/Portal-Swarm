@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -15,10 +15,8 @@
 #include <vgui_controls/ComboBox.h>
 #include <vgui_controls/PropertyPage.h>
 #include "EngineInterface.h"
-#include "igameuifuncs.h"
+#include "IGameUIFuncs.h"
 #include "URLButton.h"
-#include "vgui_controls/frame.h"
-
 
 class CCvarSlider;
 
@@ -39,29 +37,37 @@ public:
 
 	virtual bool RequiresRestart();
 
-	MESSAGE_FUNC( OpenGammaDialog, "OpenGammaDialog" );
-	static vgui::DHANDLE<class CGammaDialog> m_hGammaDialog;
-
 private:
     void        SetCurrentResolutionComboItem();
+	void		EnableOrDisableWindowedForVR();
 
     MESSAGE_FUNC( OnDataChanged, "ControlModified" );
 	MESSAGE_FUNC_PTR_CHARPTR( OnTextChanged, "TextChanged", panel, text );
 	MESSAGE_FUNC( OpenAdvanced, "OpenAdvanced" );
 	MESSAGE_FUNC( LaunchBenchmark, "LaunchBenchmark" );
+	MESSAGE_FUNC( OpenGammaDialog, "OpenGammaDialog" );
 
+   
 	void		PrepareResolutionList();
 
+	bool		BUseHDContent();
+	void		SetUseHDContent( bool bUse );
+
 	int m_nSelectedMode; // -1 if we are running in a nonstandard mode
+
+	bool m_bDisplayedVRModeMessage;
 
 	vgui::ComboBox		*m_pMode;
 	vgui::ComboBox		*m_pWindowed;
 	vgui::ComboBox		*m_pAspectRatio;
+	vgui::ComboBox		*m_pVRMode;
 	vgui::Button		*m_pGammaButton;
 	vgui::Button		*m_pAdvanced;
 	vgui::Button		*m_pBenchmark;
+	vgui::CheckButton	*m_pHDContent;
 
 	vgui::DHANDLE<class COptionsSubVideoAdvancedDlg> m_hOptionsSubVideoAdvancedDlg;
+	vgui::DHANDLE<class CGammaDialog> m_hGammaDialog;
 
 	bool m_bRequireRestart;
    MESSAGE_FUNC( OpenThirdPartyVideoCreditsDialog, "OpenThirdPartyVideoCreditsDialog" );
@@ -69,18 +75,6 @@ private:
    vgui::DHANDLE<class COptionsSubVideoThirdPartyCreditsDlg> m_OptionsSubVideoThirdPartyCreditsDlg;
 };
 
-class COptionsSubVideoThirdPartyCreditsDlg : public vgui::Frame
-{
-	DECLARE_CLASS_SIMPLE( COptionsSubVideoThirdPartyCreditsDlg, vgui::Frame );
-public:
-	COptionsSubVideoThirdPartyCreditsDlg( vgui::VPANEL hParent );
-
-	virtual void Activate();
-	void OnKeyCodeTyped(vgui::KeyCode code);
-
-protected:
-	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
-};
 
 
 #endif // OPTIONS_SUB_VIDEO_H

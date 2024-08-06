@@ -46,8 +46,11 @@ public:
   	bool NoHiModel();
   	bool NoCrosshair();
 	bool AdvCrosshair();
+	int AdvCrosshairLevel();
    	const char *GetFallbackDir();
 	bool UseGameLogo();
+	bool UseBots();
+	bool HasHDContent();
 
 	KeyValues *GetHiddenMaps();
 

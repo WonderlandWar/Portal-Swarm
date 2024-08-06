@@ -190,6 +190,14 @@ bool CModInfo::AdvCrosshair()
 }
 
 //-----------------------------------------------------------------------------
+// Purpose: data accessor
+//-----------------------------------------------------------------------------
+int CModInfo::AdvCrosshairLevel()
+{
+	return m_pModData->GetInt( "advcrosshair" );
+}
+
+//-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
 void CModInfo::LoadCurrentGameInfo()
@@ -214,4 +222,21 @@ void CModInfo::LoadGameInfoFromBuffer( const char *buffer )
 bool CModInfo::UseGameLogo()
 {
 	return ( Q_stricmp( m_pModData->GetString( "gamelogo", "0" ), "1" ) == 0 );
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: data accessor
+//-----------------------------------------------------------------------------
+bool CModInfo::UseBots()
+{
+	return ( Q_stricmp( m_pModData->GetString( "bots", "0" ), "1" ) == 0 );
+}
+
+
+//-----------------------------------------------------------------------------
+// Purpose: data accessor
+//-----------------------------------------------------------------------------
+bool CModInfo::HasHDContent()
+{
+	return (stricmp(m_pModData->GetString("hashdcontent", "0"), "1") == 0);
 }

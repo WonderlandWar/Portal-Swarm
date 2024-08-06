@@ -1,10 +1,11 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
 // $NoKeywords: $
 //=============================================================================//
 
+#include "BasePanel.h"
 #include "OptionsDialog.h"
 
 #include "vgui_controls/Button.h"
@@ -27,69 +28,70 @@
 #include "OptionsSubMultiplayer.h"
 #include "OptionsSubDifficulty.h"
 #include "OptionsSubPortal.h"
+#ifdef WIN32
+// NVNT haptic configuration dialog
+#include "OptionsSubHaptics.h"
+#endif
 #include "ModInfo.h"
 
 using namespace vgui;
 
 // memdbgon must be the last include file in a .cpp file!!!
-#include "tier0/memdbgon.h"
+#include <tier0/memdbgon.h>
 
 //-----------------------------------------------------------------------------
 // Purpose: Basic help dialog
 //-----------------------------------------------------------------------------
-COptionsDialog::COptionsDialog(vgui::Panel *parent, OptionsDialogTabStyle iTabStyle) : PropertyDialog(parent, "OptionsDialog")
+COptionsDialog::COptionsDialog(vgui::Panel *parent) : PropertyDialog(parent, "OptionsDialog")
 {
-	SetProportional( true );
-	SetDeleteSelfOnClose( true );
-	SetBounds( 
-		0, 
-		0, 
-		vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), 512 ),
-		vgui::scheme()->GetProportionalScaledValueEx( GetScheme(), 415 ) );
+	SetDeleteSelfOnClose(true);
+	SetBounds(0, 0, 512, 406);
 	SetSizeable( false );
+
+	SetTitle("#GameUI_Options", true);
 
 	// debug timing code, this function takes too long
 //	double s4 = system()->GetCurrentTime();
 
-	if ( iTabStyle == OPTIONS_DIALOG_ALL_TABS )
+#if defined( WIN32 ) && !defined( _X360 )
+	// NVNT START see if the user has a haptic device via convar. if so create haptics dialog.
+	ConVarRef checkHap("hap_HasDevice");
+	checkHap.Init("hap_HasDevice",true);
+	if(checkHap.GetBool())
 	{
-		SetTitle("#GameUI_Options", true);
-
-		if ( ModInfo().IsSinglePlayerOnly() && !ModInfo().NoDifficulty() )
-		{
-			AddPage(new COptionsSubDifficulty(this), "#GameUI_Difficulty");
-		}
-
-		if ( ModInfo().HasPortals() )
-		{
-			AddPage(new COptionsSubPortal(this), "#GameUI_Portal");
-		}
-
-		AddPage(new COptionsSubKeyboard(this), "#GameUI_Keyboard");
-		AddPage(new COptionsSubMouse(this), "#GameUI_Mouse");
-
-		m_pOptionsSubAudio = new COptionsSubAudio(this);
-		AddPage(m_pOptionsSubAudio, "#GameUI_Audio");
-		m_pOptionsSubVideo = new COptionsSubVideo(this);
-		AddPage(m_pOptionsSubVideo, "#GameUI_Video");
-
-		if ( !ModInfo().IsSinglePlayerOnly() ) 
-		{
-			AddPage(new COptionsSubVoice(this), "#GameUI_Voice");
-		}
-
-		// add the multiplay page last, if we're combo single/multi or just multi
-		if ( (ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) ||
-			 (!ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) )
-		{
-			AddPage(new COptionsSubMultiplayer(this), "#GameUI_Multiplayer");
-		}
+		AddPage(new COptionsSubHaptics(this), "#GameUI_Haptics_TabTitle");
 	}
-	else if ( iTabStyle == OPTIONS_DIALOG_ONLY_BINDING_TABS )
+	// NVNT END
+#endif
+	if (ModInfo().IsSinglePlayerOnly() && !ModInfo().NoDifficulty())
 	{
-		SetTitle("#L4D360UI_Controller_Edit_Keys_Buttons", true);
+		AddPage(new COptionsSubDifficulty(this), "#GameUI_Difficulty");
+	}
 
-		AddPage(new COptionsSubKeyboard(this), "#GameUI_Console_UserSettings");
+	if (ModInfo().HasPortals())
+	{
+		AddPage(new COptionsSubPortal(this), "#GameUI_Portal");
+	}
+
+	AddPage(new COptionsSubKeyboard(this), "#GameUI_Keyboard");
+	AddPage(new COptionsSubMouse(this), "#GameUI_Mouse");
+
+	m_pOptionsSubAudio = new COptionsSubAudio(this);
+	AddPage(m_pOptionsSubAudio, "#GameUI_Audio");
+	m_pOptionsSubVideo = new COptionsSubVideo(this);
+	AddPage(m_pOptionsSubVideo, "#GameUI_Video");
+
+	if ( !ModInfo().IsSinglePlayerOnly() ) 
+	{
+		AddPage(new COptionsSubVoice(this), "#GameUI_Voice");
+	}
+
+	// add the multiplay page last, if we're combo single/multi or just multi
+	if ( (ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) ||
+		 (!ModInfo().IsMultiplayerOnly() && !ModInfo().IsSinglePlayerOnly()) )
+	{
+		m_pOptionsSubMultiplayer = new COptionsSubMultiplayer(this);
+		AddPage(m_pOptionsSubMultiplayer, "#GameUI_Multiplayer");
 	}
 
 //	double s5 = system()->GetCurrentTime();
@@ -115,6 +117,18 @@ void COptionsDialog::Activate()
 	EnableApplyButton(false);
 }
 
+void COptionsDialog::OnKeyCodePressed( KeyCode code )
+{
+	switch ( GetBaseButtonCode( code ) )
+	{
+	case KEY_XBUTTON_B:
+		OnCommand( "Cancel" );
+		return;
+	}
+
+	BaseClass::OnKeyCodePressed( code );
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: Opens the dialog
 //-----------------------------------------------------------------------------
@@ -122,14 +136,6 @@ void COptionsDialog::Run()
 {
 	SetTitle("#GameUI_Options", true);
 	Activate();
-}
-
-//-----------------------------------------------------------------------------
-// Purpose: Opens the gamma dialog directly
-//-----------------------------------------------------------------------------
-void COptionsDialog::OpenGammaDialog()
-{
-	m_pOptionsSubVideo->OpenGammaDialog();
 }
 
 //-----------------------------------------------------------------------------

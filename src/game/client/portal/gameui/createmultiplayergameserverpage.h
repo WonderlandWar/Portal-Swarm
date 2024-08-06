@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2005, Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
@@ -12,7 +12,7 @@
 #endif
 
 #include <vgui_controls/PropertyPage.h>
-#include "cvartogglecheckbutton.h"
+#include "CvarToggleCheckButton.h"
 
 //-----------------------------------------------------------------------------
 // Purpose: server options page of the create game server dialog
@@ -29,6 +29,8 @@ public:
 	void SetMap(const char *name);
 	bool IsRandomMapSelected();
 	const char *GetMapName();
+
+	vgui::ComboBox *GetMapList( void ) { return m_pMapList; }
 
 	// CS Bots
 	void EnableBots( KeyValues *data );

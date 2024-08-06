@@ -2860,6 +2860,9 @@ bool C_BasePlayer::IsSplitScreenPlayer() const
 
 bool C_BasePlayer::ShouldRegenerateOriginFromCellBits() const
 {
+#ifdef PORTAL // hax
+	return true;
+#endif
 	// Don't use cell bits for local players.
 	// Assumes full update for local players!
 	int nSlot = GET_ACTIVE_SPLITSCREEN_SLOT();

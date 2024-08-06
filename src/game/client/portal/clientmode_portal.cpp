@@ -170,7 +170,11 @@ void CHLModeManager::CreateMove( float flInputSampleTime, CUserCmd *cmd )
 
 void CHLModeManager::LevelInit( const char *newmap )
 {
-	GetClientMode()->LevelInit( newmap );
+	for( int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i )
+	{
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( i );
+		GetClientMode()->LevelInit( newmap );
+	}
 
 	if ( g_nKillCamMode > OBS_MODE_NONE )
 	{
@@ -184,7 +188,11 @@ void CHLModeManager::LevelInit( const char *newmap )
 
 void CHLModeManager::LevelShutdown( void )
 {
-	GetClientMode()->LevelShutdown();
+	for( int i = 0; i < MAX_SPLITSCREEN_PLAYERS; ++i )
+	{
+		ACTIVE_SPLITSCREEN_PLAYER_GUARD( i );
+		GetClientMode()->LevelShutdown();
+	}
 }
 
 

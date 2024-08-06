@@ -1,8 +1,9 @@
-//========= Copyright © Valve Corporation, All rights reserved. ============//
+//========= Copyright Valve Corporation, All rights reserved. ============//
 //
 // Purpose: 
 //
-//==========================================================================//
+// $NoKeywords: $
+//=============================================================================//
 
 #ifndef OPTIONS_SUB_VOICE_H
 #define OPTIONS_SUB_VOICE_H
@@ -57,18 +58,10 @@ private:
 	vgui::Slider			*m_pMicrophoneVolume;
     vgui::Label             *m_pReceiveSliderLabel;
     CCvarSlider             *m_pReceiveVolume;
-	
-	// "Open mic" settings
-	vgui::Label             *m_pThresholdSliderLabel;
-	CCvarSlider             *m_pThresholdVolume;
-	CCvarToggleCheckButton  *m_pOpenMicEnableCheckButton;
-
     CCvarToggleCheckButton  *m_pVoiceEnableCheckButton;
 
-	int						m_nVoiceThresholdValue;
-	int                     m_nMicVolumeValue;
+    int                     m_nMicVolumeValue;
     bool                    m_bMicBoostSelected;
-	bool					m_bOpenMicSelected;
     float                   m_fReceiveVolume;
     int                     m_nReceiveSliderValue;
 
