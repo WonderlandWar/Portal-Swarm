@@ -237,11 +237,6 @@ void CGameUI::PostInit()
 		enginesound->PrecacheSound( "UI/menu_back.wav", true, true );
 		enginesound->PrecacheSound( "UI/menu_countdown.wav", true, true );
 	}
-
-#ifdef SDK_CLIENT_DLL
-	// to know once client dlls have been loaded
-	BaseModUI::CUIGameData::Get()->OnGameUIPostInit();
-#endif
 }
 
 //-----------------------------------------------------------------------------
@@ -601,21 +596,9 @@ void CGameUI::OnGameUIHidden()
 //-----------------------------------------------------------------------------
 void CGameUI::RunFrame()
 {
-	if ( IsX360() && m_bOpenProgressOnStart )
-	{
-		StartProgressBar();
-		m_bOpenProgressOnStart = false;
-	}
-
 	int wide, tall;
-
-	// resize the background panel to the screen size
-	vgui::VPANEL clientDllPanel = enginevguifuncs->GetPanel( PANEL_ROOT );
-
-	int x, y;
-	vgui::ipanel()->GetPos( clientDllPanel, x, y );
-	vgui::ipanel()->GetSize( clientDllPanel, wide, tall );
-	staticPanel->SetBounds( x, y, wide,tall );
+	vgui::surface()->GetScreenSize(wide, tall);
+	staticPanel->SetSize(wide, tall);
 
 	// Run frames
 	g_VModuleLoader.RunFrame();

@@ -284,10 +284,6 @@ public:
 
 	int  GetMenuAlpha( void );
 
-	void SetMainMenuOverride( vgui::VPANEL panel );
-
-
-
 protected:
 	virtual void PaintBackground();
 	virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
