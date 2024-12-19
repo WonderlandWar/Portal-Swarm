@@ -24,6 +24,11 @@
 #include "engine/iserverplugin.h"
 #include "tier1/bitbuf.h"
 
+// IVEngineClient doesn't have a HasPaintMap() function, so we need a macro.
+#ifdef GAME_DLL
+#define HASPAINTMAP engine->HasPaintMap()
+#endif
+
 //-----------------------------------------------------------------------------
 // forward declarations
 //-----------------------------------------------------------------------------

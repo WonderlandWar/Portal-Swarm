@@ -53,4 +53,13 @@ void RegisterUserMessages()
 	usermessages->Register( "CloseCaptionDirect", -1 ); // Show a forced caption (by string id number)(duration in 10th of a second)
 	usermessages->Register( "CurrentTimescale", 4 );	// Send one float for the new timescale
 	usermessages->Register( "DesiredTimescale", 13 );	// Send timescale and some blending vars
+	
+	// Paint messages
+	usermessages->Register( "PaintWorld", -1 );
+	usermessages->Register( "PaintEntity", sizeof( long ) + sizeof( uint8 ) + sizeof( Vector ) );
+	usermessages->Register( "ChangePaintColor", sizeof( long ) + sizeof( uint8 ) );
+	usermessages->Register( "PaintBombExplode", sizeof( Vector ) + sizeof( uint8 ) + sizeof( uint8 ) + sizeof( BYTE ) );
+	usermessages->Register( "RemoveAllPaint", 0 );
+	usermessages->Register( "PaintAllSurfaces", sizeof( BYTE ) );
+	usermessages->Register( "RemovePaint", sizeof( long ) );
 }

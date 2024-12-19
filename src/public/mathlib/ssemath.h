@@ -156,6 +156,7 @@ extern const fltx4 Four_2ToThe23s;								// (1<<23)..
 extern const fltx4 Four_2ToThe24s;								// (1<<24)..
 extern const fltx4 Four_Origin;									// 0 0 0 1 (origin point, like vr0 on the PS2)
 extern const fltx4 Four_NegativeOnes;							// -1 -1 -1 -1 
+extern const fltx4 Four_DegToRad;								// (float)(M_PI_F / 180.f) times four
 #else
 #define			   Four_Zeros XMVectorZero()					// 0 0 0 0
 #define			   Four_Ones XMVectorSplatOne()					// 1 1 1 1
@@ -188,6 +189,7 @@ extern const ALIGN16 int32 g_SIMD_lsbmask[] ALIGN16_POST;				// 0xfffffffe x 4
 extern const ALIGN16 int32 g_SIMD_clear_wmask[] ALIGN16_POST;			// -1 -1 -1 0
 extern const ALIGN16 int32 g_SIMD_ComponentMask[4][4] ALIGN16_POST;		// [0xFFFFFFFF 0 0 0], [0 0xFFFFFFFF 0 0], [0 0 0xFFFFFFFF 0], [0 0 0 0xFFFFFFFF]
 extern const ALIGN16 int32 g_SIMD_AllOnesMask[] ALIGN16_POST;			// ~0,~0,~0,~0
+extern const fltx4 g_SIMD_Identity[4];									// [1 0 0 0], [0 1 0 0], [0 0 1 0], [0 0 0 1]
 extern const ALIGN16 int32 g_SIMD_Low16BitsMask[] ALIGN16_POST;			// 0xffff x 4
 
 // this mask is used for skipping the tail of things. If you have N elements in an array, and wish
@@ -2448,6 +2450,12 @@ FORCEINLINE fltx4 DivSIMD( const fltx4 & a, const fltx4 & b )				// a/b
 	return _mm_div_ps( a, b );
 };
 
+fltx4 ReciprocalEstSIMD( const fltx4 & a );
+FORCEINLINE fltx4 DivEstSIMD( const fltx4 & a, const fltx4 & b )			// Est(a/b)
+{
+	return MulSIMD( ReciprocalEstSIMD( b ), a );
+};
+
 FORCEINLINE fltx4 MaddSIMD( const fltx4 & a, const fltx4 & b, const fltx4 & c )				// a*b + c
 {
 	return AddSIMD( MulSIMD(a,b), c );
@@ -2627,6 +2635,7 @@ FORCEINLINE fltx4 CeilSIMD( const fltx4 &a )
 
 }
 
+fltx4 AbsSIMD( const fltx4 & x );		// To make it more coherent with the whole API (the whole SIMD API is postfixed with SIMD except a couple of methods. Well...)
 fltx4 fabs( const fltx4 & x );
 // Round towards negative infinity
 // This is the implementation that was here before; it assumes
@@ -2869,6 +2878,74 @@ FORCEINLINE void ExpandSIMD( fltx4 const &a, fltx4 &fl4OutA, fltx4 &fl4OutB )
 
 }
 
+// construct a fltx4 from four different scalars, which are assumed to be neither aligned nor contiguous
+FORCEINLINE fltx4 LoadGatherSIMD( const float &x, const float &y, const float &z, const float &w )
+{
+	// load the float into the low word of each vector register (this exploits the unaligned load op)
+	fltx4 vx = _mm_load_ss( &x );
+	fltx4 vy = _mm_load_ss( &y );
+	fltx4 vz = _mm_load_ss( &z );
+	fltx4 vw = _mm_load_ss( &w );
+	return Compress4SIMD( vx, vy, vz, vw );
+}
+
+// These are not optimized right now for some platforms. We should be able to shuffle the values in some platforms.
+// As the methods are hard-coded we can actually avoid loading memory to do the transfer.
+// We should be able to create all versions.
+FORCEINLINE fltx4 SetWFromXSIMD( const fltx4 & a, const fltx4 & x )
+{
+	fltx4 value = SplatXSIMD( x );
+	return SetWSIMD( a, value );
+}
+
+FORCEINLINE fltx4 SetWFromYSIMD( const fltx4 & a, const fltx4 & y )
+{
+	fltx4 value = SplatYSIMD( y );
+	return SetWSIMD( a, value );
+}
+
+FORCEINLINE fltx4 SetWFromZSIMD( const fltx4 & a, const fltx4 & z )
+{
+	fltx4 value = SplatZSIMD( z );
+	return SetWSIMD( a, value );
+}
+
+FORCEINLINE fltx4 CrossProductSIMD( const fltx4 &A, const fltx4 &B )
+{
+#if defined( _X360 )
+	return XMVector3Cross( A, B );
+#elif defined( _WIN32 )
+	fltx4 A1 = _mm_shuffle_ps( A, A, MM_SHUFFLE_REV( 1, 2, 0, 3 ) );
+	fltx4 B1 = _mm_shuffle_ps( B, B, MM_SHUFFLE_REV( 2, 0, 1, 3 ) );
+	fltx4 Result1 = MulSIMD( A1, B1 );
+	fltx4 A2 = _mm_shuffle_ps( A, A, MM_SHUFFLE_REV( 2, 0, 1, 3 ) );
+	fltx4 B2 = _mm_shuffle_ps( B, B, MM_SHUFFLE_REV( 1, 2, 0, 3 ) );
+	fltx4 Result2 = MulSIMD( A2, B2 );
+	return SubSIMD( Result1, Result2 );
+
+#elif defined(_PS3)
+	/*
+	fltx4 perm1 = (vector unsigned char){0x04,0x05,0x06,0x07,0x08,0x09,0x0a,0x0b,0x00,0x01,0x02,0x03,0x0c,0x0d,0x0e,0x0f};
+	fltx4 perm2 = (vector unsigned char){0x08,0x09,0x0a,0x0b,0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x0c,0x0d,0x0e,0x0f};
+
+	fltx4 A1 = __vpermwi( A, A, perm1 );
+	fltx4 A2 = __vpermwi( B, B, perm2 );
+	fltx4 Result1 = MulSIMD( A1, B1 );
+	fltx4 A2 = __vpermwi( A, A, perm2 );
+	fltx4 B2 = __vpermwi( B, B, perm1 );
+	return MsubSIMD( A2, B2, Result1 );
+	*/
+	return _vmathVfCross( A, B );
+#else
+	fltx4 CrossVal;
+	SubFloat( CrossVal, 0 ) = SubFloat( A, 1 )*SubFloat( B, 2 ) - SubFloat( A, 2 )*SubFloat( B, 1 );
+	SubFloat( CrossVal, 1 ) = SubFloat( A, 2 )*SubFloat( B, 0 ) - SubFloat( A, 0 )*SubFloat( B, 2 );
+	SubFloat( CrossVal, 2 ) = SubFloat( A, 0 )*SubFloat( B, 1 ) - SubFloat( A, 1 )*SubFloat( B, 0 );
+	SubFloat( CrossVal, 3 ) = 0;
+	return CrossVal;
+#endif
+}
+
 // CHRISG: the conversion functions all seem to operate on m64's only...
 // how do we make them work here?
 
@@ -2950,6 +3027,13 @@ FORCEINLINE void RotateLeftDoubleSIMD( fltx4 &a, fltx4 &b )
 	b = RotateLeft( b );
 }
 
+inline const fltx4 Normalized3SIMD (const fltx4 vec)
+{
+	fltx4 scLengthSqr = Dot3SIMD(vec,vec);
+	fltx4 isSignificant = CmpGtSIMD(scLengthSqr, Four_Epsilons);
+	fltx4 scLengthInv = ReciprocalSqrtSIMD(scLengthSqr);
+	return AndSIMD(isSignificant, MulSIMD(vec, scLengthInv));
+}
 
 // // Some convenience operator overloads, which are just aliasing the functions above.
 // Unneccessary on 360, as you already have them from xboxmath.h
@@ -3827,6 +3911,12 @@ FourVectors CurlNoiseSIMD( FourVectors const &v );
 inline fltx4 fabs( const fltx4 & x )
 {
 	return AndSIMD( x, LoadAlignedSIMD( g_SIMD_clear_signmask ) );
+}
+
+// Convenience version
+inline fltx4 AbsSIMD( const fltx4 & x )
+{
+	return fabs( x );
 }
 
 /// negate all four components of a SIMD packed single

@@ -171,6 +171,8 @@ SendPropBool( SENDINFO( m_bSuppressingCrosshair ) ),
 
 SendPropExclude( "DT_BaseAnimating", "m_flPoseParameter" ),
 
+SendPropDataTable(SENDINFO_DT(m_PortalLocal), &REFERENCE_SEND_TABLE(DT_PortalLocal), SendProxy_SendLocalDataTable),
+
 END_SEND_TABLE()
 
 BEGIN_DATADESC( CPortal_Player )
@@ -188,6 +190,7 @@ BEGIN_DATADESC( CPortal_Player )
 	DEFINE_FIELD( m_fTimeLastNumSecondsUpdate, FIELD_TIME ),
 	DEFINE_FIELD( m_iNumCamerasDetatched, FIELD_INTEGER ),
 	DEFINE_FIELD( m_bPitchReorientation, FIELD_BOOLEAN ),
+
 #if 0 // Swarm already has its own regeneration in CBasePlayer
 	DEFINE_FIELD( m_bIsRegenerating, FIELD_BOOLEAN ),
 #endif
@@ -208,6 +211,8 @@ BEGIN_DATADESC( CPortal_Player )
 	DEFINE_FIELD( m_hSurroundingLiquidPortal, FIELD_EHANDLE ),
 	//DEFINE_FIELD ( m_PlayerAnimState, CPortalPlayerAnimState ),
 	//DEFINE_FIELD ( m_StatsThisLevel, PortalPlayerStatistics_t ),
+	
+	DEFINE_EMBEDDED( m_PortalLocal ),
 
 	DEFINE_EMBEDDEDBYREF( m_pExpresser ),
 
@@ -240,6 +245,12 @@ extern float IntervalDistance( float x, float x0, float x1 );
 #pragma warning( disable : 4355 )
 
 CPortal_Player::CPortal_Player()
+	: m_vInputVector( 0.0f, 0.0f, 0.0f ),
+	m_flCachedJumpPowerTime( -FLT_MAX ),
+	m_flSpeedDecelerationTime( 0.0f ),
+	m_nBounceCount( 0 ),
+	m_LastGroundBouncePlaneDistance( 0.0f ),
+	m_flLastSuppressedBounceTime( 0 )
 {
 
 	m_PlayerAnimState = CreatePortalPlayerAnimState( this );
@@ -423,6 +434,10 @@ void CPortal_Player::Spawn(void)
 	m_Local.m_bDucked = false;
 
 	SetPlayerUnderwater(false);
+
+	// Reset bounce count
+	m_nBounceCount = 0;
+	m_LastGroundBouncePlaneDistance = 0.0f;
 
 #ifdef PORTAL_MP
 	PickTeam();

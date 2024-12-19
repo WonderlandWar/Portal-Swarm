@@ -16,6 +16,7 @@
 #include "particle_parse.h"
 #include "KeyValues.h"
 #include "icommandline.h"
+#include "mathlib/ssemath.h"
 
 #ifdef CLIENT_DLL
 	#include "clientleafsystem.h"
@@ -343,6 +344,22 @@ bool CTraceFilterNoNPCsOrPlayer::ShouldHitEntity( IHandleEntity *pHandleEntity, 
 			return false; // CS hostages are CLASS_PLAYER_ALLY but not IsNPC()
 #endif
 		return (!pEntity->IsNPC() && !pEntity->IsPlayer());
+	}
+	return false;
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: Trace filter that doesn't hit players
+//-----------------------------------------------------------------------------
+bool CTraceFilterNoPlayers::ShouldHitEntity( IHandleEntity *pHandleEntity, int contentsMask )
+{
+	if ( CTraceFilterSimple::ShouldHitEntity( pHandleEntity, contentsMask ) )
+	{
+		CBaseEntity *pEntity = EntityFromEntityHandle( pHandleEntity );
+		if ( !pEntity )
+			return NULL;
+
+		return !pEntity->IsPlayer();
 	}
 	return false;
 }
@@ -2023,4 +2040,196 @@ int UTIL_EntitiesAlongRay( const Ray_t &ray, CFlaggedEntitiesEnum *pEnum )
 	partition->EnumerateElementsAlongRay( PARTITION_ENGINE_NON_STATIC_EDICTS, ray, false, pEnum );
 #endif
 	return pEnum->GetCount();
+}
+
+
+// Should be in mathlib, but whatever
+
+int ClipPolyToPlane_SIMD( fltx4 *pInVerts, int nVertCount, fltx4 *pOutVerts, const fltx4& plane, float fOnPlaneEpsilon )
+{
+	vec_t	*dists = (vec_t *)stackalloc( sizeof(vec_t) * nVertCount * 4 ); //4* nVertCount should cover all cases
+	uint8	*sides = (uint8 *)stackalloc( sizeof(uint8) * nVertCount * 4 );
+	int		i;
+
+/*
+ * It seems something could be done here... Especially in relation with the code below i, i + 1, etc...
+	fltx4 f4OnPlaneEpsilonP = ReplicateX4( fOnPlaneEpsilon );
+	fltx4 f4OnPlaneEpsilonM = -f4OnPlaneEpsilonP;
+	Also we could store the full fltx4 instead of a single float. It would avoid doing a SubFloat() here,
+	and a ReplicateX4() later. Trading off potential LHS against L2 cache misses?
+*/
+	// determine sides for each point
+	int nAllSides = 0;
+	fltx4 f4Dist = SplatWSIMD( plane );
+	for ( i = 0; i < nVertCount; i++ )
+	{
+		// dot = DotProduct( pInVerts[i], normal) - dist;
+		fltx4 dot = Dot3SIMD( pInVerts[i], plane );
+		dot = SubSIMD( dot, f4Dist );
+		float fDot = SubFloat( dot, 0 );
+		dists[i] = fDot;
+		// Look how to update sides with a branch-less version
+		int nSide = OR_SIDE_ON;
+		if ( fDot > fOnPlaneEpsilon )
+		{
+			nSide = OR_SIDE_FRONT;
+		}
+		else if ( fDot < -fOnPlaneEpsilon )
+		{
+			nSide = OR_SIDE_BACK;
+		}
+		sides[i] = nSide;
+		nAllSides |= nSide;
+	}
+	sides[i] = sides[0];
+	dists[i] = dists[0];
+
+	// Shortcuts (either completely clipped or not clipped at all)
+	if ( ( nAllSides & OR_SIDE_FRONT ) == 0 )
+	{
+		return 0;	// Completely clipped
+	}
+
+	if ( ( nAllSides & OR_SIDE_BACK ) == 0 )
+	{
+		// Not clipped at all, copy to output verts
+		Assert ( i == nVertCount );
+		int nIndex = 0;
+		while ( i >= 4 )
+		{
+			pOutVerts[nIndex] = pInVerts[nIndex];
+			pOutVerts[nIndex + 1] = pInVerts[nIndex + 1];
+			pOutVerts[nIndex + 2] = pInVerts[nIndex + 2];
+			pOutVerts[nIndex + 3] = pInVerts[nIndex + 3];
+			nIndex += 4;
+			i -= 4;
+		}
+		while ( i > 0 )
+		{
+			pOutVerts[nIndex] = pInVerts[nIndex];
+			++nIndex;
+			--i;
+		}
+		return nVertCount;
+	}
+
+	fltx4 f4one = Four_Ones;
+	fltx4 f4MOne = -f4one;
+
+	fltx4 f4OneMask = (fltx4)CmpEqSIMD( plane, f4one );
+	fltx4 f4mOneMask = (fltx4)CmpEqSIMD( plane, f4MOne );
+	fltx4 f4AllMask = OrSIMD( f4OneMask, f4mOneMask );					// 0xffffffff where normal was 1 or -1, 0 otherwise
+	f4OneMask = AndSIMD( f4OneMask, f4Dist );							// Dist where normal.* was 1
+	f4mOneMask = AndSIMD( f4mOneMask, -f4Dist );						// -Dist where normal.* was -1
+	fltx4 f4AllValue = OrSIMD( f4OneMask, f4mOneMask );					// Dist and -Dist where normal.* was 1 and -1
+	// f4AllMask and f4AllValue will be used together (to override the default calculation).
+
+	int nOutCount = 0;
+	for ( i = 0; i < nVertCount; i++ )
+	{
+		const fltx4& p1 = pInVerts[i];
+
+		if (sides[i] == OR_SIDE_ON)
+		{
+			pOutVerts[nOutCount++] = p1;
+			continue;
+		}
+
+		if (sides[i] == OR_SIDE_FRONT)
+		{
+			pOutVerts[nOutCount++] = p1;
+		}
+
+		if (sides[i+1] == OR_SIDE_ON || sides[i+1] == sides[i])
+			continue;
+
+		// generate a split point
+		fltx4& p2 = pInVerts[(i+1)%nVertCount];
+
+		float fDot = dists[i] / (dists[i]-dists[i+1]);
+		fltx4 f4Dot = ReplicateX4( fDot );
+
+		// mid[j] = v1[j] + dot*(v2[j]-v1[j]);		- For j=0...2
+		fltx4 f4Result = MaddSIMD( f4Dot, SubSIMD( p2, p1) , p1);
+		// If normal.* is 1, it should be dist, if -1, it should be -dist, otherwise it should be mid[j] = v1[j] + dot*(v2[j]-v1[j]);
+		fltx4 mid = MaskedAssign( (fltx4)f4AllMask, f4AllValue, f4Result );
+		pOutVerts[nOutCount++] = mid;
+	}
+
+	return nOutCount;
+}
+
+
+// Returns void as it was impossible for the function to returns anything other than 4.
+// Any absolute of a floating value will always return a number greater than -16384. That test seemed bogus.
+void PolyFromPlane_SIMD( fltx4 *pOutVerts, const fltx4 & plane, float fHalfScale )
+{
+	// So we need to find the biggest component of all three,
+	// And depending of the value, we need to build a unit vector along something that is not the major axis.
+
+	fltx4 f4Abs = AbsSIMD( plane );
+	fltx4 x = SplatXSIMD( f4Abs );
+	fltx4 y = SplatYSIMD( f4Abs );
+	fltx4 z = SplatZSIMD( f4Abs );
+	fltx4 max = MaxSIMD( x, y );
+	max = MaxSIMD( max, z );
+
+	// Simplify the code, if Z is the biggest component, we will use 1 0 0.
+	// If X or Y are the biggest, we will use 0 0 1.
+	fltx4 fIsMax = CmpEqSIMD( max, f4Abs );		// isMax will be set for the components that are the max
+	fltx4 fIsZMax = SplatZSIMD( (fltx4)fIsMax );	// 0 if Z is not the max, 0xffffffff is Z is the max
+	// And depending if Z is max or not, we are going to select one unit vector or the other
+	fltx4 vup = MaskedAssign( (fltx4)fIsZMax, g_SIMD_Identity[0], g_SIMD_Identity[2] );
+
+	fltx4 normal = SetWToZeroSIMD( plane );
+	fltx4 dist = SplatWSIMD( plane );
+
+	// Remove the component of this vector along the normal
+	fltx4 v = Dot3SIMD( vup, normal );
+	vup = MaddSIMD( -v, normal, vup);
+	// Make it a unit (perpendicular)
+	vup = Normalized3SIMD( vup );
+
+	// Center of the poly is at normal * dist
+	fltx4 org = MulSIMD( dist, normal );
+	// Calculate the third orthonormal basis vector for our plane space (this one and vup are in the plane)
+	fltx4 vright = CrossProductSIMD( vup, normal);
+
+	// Make the plane's basis vectors big (these are the half-sides of the polygon we're making)
+	fltx4 f4HalfScale = ReplicateX4( fHalfScale );
+	vup = MulSIMD( f4HalfScale, vup );
+	vright = MulSIMD( f4HalfScale, vright );
+
+	// Move diagonally away from org to create the corner verts
+	fltx4 vleft = SubSIMD( org, vright );
+	vright = AddSIMD( org, vright );
+
+	pOutVerts[0] = AddSIMD( vleft, vup );		// left + up
+	pOutVerts[1] = AddSIMD( vright, vup );		// right + up
+	pOutVerts[2] = SubSIMD( vright, vup );		// right + down
+	pOutVerts[3] = SubSIMD( vleft, vup );		// left + down
+}
+
+const fltx4 g_SIMD_Identity[4] =
+{
+	{ 1.0, 0, 0, 0 }, { 0, 1.0, 0, 0 }, { 0, 0, 1.0, 0 }, { 0, 0, 0, 1.0 }
+};
+
+const fltx4 Four_DegToRad = { ((float)(M_PI_F / 180.f)), ((float)(M_PI_F / 180.f)), ((float)(M_PI_F / 180.f)), ((float)(M_PI_F / 180.f)) };
+
+
+void Vector4DPlane( const Vector4D &v4D, cplane_t *plane )
+{
+	plane->normal.x = v4D.x;
+	plane->normal.y = v4D.y;
+	plane->normal.z = v4D.z;
+	plane->dist = v4D.w;
+}
+
+void PlaneVector4D( const cplane_t plane, Vector4D *v4D )
+{
+	v4D->x = plane.normal.x;
+	v4D->y = plane.normal.y;
+	v4D->z = plane.normal.z;
+	v4D->w = plane.dist;
 }

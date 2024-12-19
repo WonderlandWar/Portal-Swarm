@@ -12,6 +12,7 @@
 #include "portal_collideable_enumerator.h"
 #include "prop_portal_shared.h"
 #include "rumble_shared.h"
+#include "hl2_shareddefs.h"
 
 #if defined( CLIENT_DLL )
 	#include "c_portal_player.h"
@@ -120,6 +121,7 @@ inline CPortal_Player	*CPortalGameMovement::GetPortalPlayer()
 void CPortalGameMovement::ProcessMovement( CBasePlayer *pPlayer, CMoveData *pMove )
 {
 	Assert( pMove && pPlayer );
+	CPortal_Player *pPortalPlayer = static_cast<CPortal_Player*>( pPlayer );
 
 	float flStoreFrametime = gpGlobals->frametime;
 
@@ -142,6 +144,36 @@ void CPortalGameMovement::ProcessMovement( CBasePlayer *pPlayer, CMoveData *pMov
 
 	g_bAllowForcePortalTrace = m_bInPortalEnv;
 	g_bForcePortalTrace = m_bInPortalEnv;
+	
+	// Figure out move direction
+	Vector vForward, vRight;
+	AngleVectors( mv->m_vecViewAngles, &vForward, &vRight, NULL );  // Determine movement angles
+
+	const Vector worldUp( 0, 0, 1 );
+	bool shouldProjectInputVectorsOntoGround = pPlayer->GetGroundEntity() != NULL;
+
+	if( shouldProjectInputVectorsOntoGround )
+	{
+		vForward -= DotProduct( vForward, worldUp ) * worldUp;
+		vRight -= DotProduct( vRight, worldUp ) * worldUp;
+
+		vForward.NormalizeInPlace();
+		vRight.NormalizeInPlace();
+	}
+
+	Vector vWishVel = vForward*mv->m_flForwardMove + vRight*mv->m_flSideMove;
+	vWishVel -= worldUp * DotProduct( vWishVel, worldUp );
+	
+	// Figure out paint power
+	pPortalPlayer->SetInputVector( vWishVel );
+	pPortalPlayer->UpdatePaintPowers();
+
+	// Using the paint power may change the velocity
+	mv->m_vecVelocity = player->GetAbsVelocity();
+	
+	// Use this player's max speed (dependent on whether he's on speed paint)
+	const float maxSpeed = pPlayer->MaxSpeed();
+	mv->m_flClientMaxSpeed = mv->m_flMaxSpeed = maxSpeed;
 
 	// Run the command.
 	PlayerMove();
@@ -675,8 +707,56 @@ void CPortalGameMovement::SetGroundEntity( trace_t *pm )
 		}
 	}
 #endif
+	
+	CBaseEntity *newGround = pm ? pm->m_pEnt : NULL;
 
-	BaseClass::SetGroundEntity( pm );
+	//Adrian: Special case for combine balls.
+	if ( newGround && newGround->GetCollisionGroup() == HL2COLLISION_GROUP_COMBINE_BALL_NPC )
+	{
+		return;
+	}
+
+	CBaseEntity *oldGround = player->GetGroundEntity();
+	Vector vecBaseVelocity = player->GetBaseVelocity();
+
+	if ( !oldGround && newGround )
+	{
+		// Subtract ground velocity at instant we hit ground jumping
+		vecBaseVelocity -= newGround->GetAbsVelocity(); 
+		vecBaseVelocity.z = newGround->GetAbsVelocity().z;
+#ifdef GAME_DLL
+		CPortal_Player* pPlayer = static_cast<CPortal_Player*>( player );
+		pPlayer->ResetBounceCount();
+#endif
+	}
+	else if ( oldGround && !newGround )
+	{
+		// Add in ground velocity at instant we started jumping
+ 		vecBaseVelocity += oldGround->GetAbsVelocity();
+		vecBaseVelocity.z = oldGround->GetAbsVelocity().z;
+	}
+
+	player->SetBaseVelocity( vecBaseVelocity );
+	player->SetGroundEntity( newGround );
+
+	// If we are on something...
+
+	if ( newGround )
+	{
+		CategorizeGroundSurface( *pm );
+
+		// Then we are not in water jump sequence
+		player->m_flWaterJumpTime = 0;
+
+		// Standing on an entity other than the world, so signal that we are touching something.
+		if ( !pm->DidHitWorld() )
+		{
+			MoveHelper()->AddToTouched( *pm, mv->m_vecVelocity );
+		}
+
+		if( player->GetMoveType() != MOVETYPE_NOCLIP )
+			mv->m_vecVelocity.z = 0.0f;
+	}
 }
 
 void CPortalGameMovement::TracePlayerBBox( const Vector& start, const Vector& end, unsigned int fMask, int collisionGroup, trace_t& pm )

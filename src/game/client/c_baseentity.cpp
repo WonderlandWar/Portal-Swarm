@@ -574,7 +574,9 @@ BEGIN_RECV_TABLE_NOBASE(C_BaseEntity, DT_BaseEntity)
 	
 	RecvPropInt( RECVINFO ( m_iTextureFrameIndex ) ),
 	
-
+#if defined ( PORTAL )
+	RecvPropInt		( RECVINFO( m_iObjectCapsCache ) ),
+#endif
 	
 #if !defined( NO_ENTITY_PREDICTION ) && defined( USE_PREDICTABLEID )
 	RecvPropEHandle (RECVINFO(m_hPlayerSimulationOwner)),

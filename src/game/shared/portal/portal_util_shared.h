@@ -11,6 +11,7 @@
 #endif
 
 #include "engine/IEngineTrace.h"
+#include "paint_color_manager.h"
 
 extern bool g_bBulletPortalTrace;
 
@@ -25,6 +26,15 @@ extern bool g_bBulletPortalTrace;
 	class CProp_Portal;
 	class CBeam;
 #endif
+	
+//When tracing through portals, a line becomes a discontinuous collection of segments as it travels
+struct ComplexPortalTrace_t
+{
+	CProp_Portal *pSegmentStartPortal;
+	CProp_Portal *pSegmentEndPortal;
+	Vector vNormalizedDelta;
+	trace_t trSegment;
+};
 
 Color UTIL_Portal_Color( int iPortal );
 
@@ -46,12 +56,23 @@ void UTIL_Portal_TraceRay( const CProp_Portal *pPortal, const Ray_t &ray, unsign
 void UTIL_PortalLinked_TraceRay( const CProp_Portal *pPortal, const Ray_t &ray, unsigned int fMask, ITraceFilter *pTraceFilter, trace_t *pTrace, bool bTraceHolyWall = true ); //traces against a specific portal's environment, does no *real* tracing
 void UTIL_PortalLinked_TraceRay( const CProp_Portal *pPortal, const Ray_t &ray, unsigned int fMask, const IHandleEntity *ignore, int collisionGroup, trace_t *pTrace, bool bTraceHolyWall = true );
 
+abstract_class ICountedPartitionEnumerator : public IPartitionEnumerator
+{
+public:
+	virtual int GetCount() const = 0;
+};
+
+int UTIL_Portal_EntitiesAlongRayComplex( int *entSegmentIndices, int *segCount, int maxEntities, ComplexPortalTrace_t *pResultSegmentArray, int maxSegments, const Ray_t& ray, ICountedPartitionEnumerator* pEnum, ITraceFilter* pTraceFilter, int fStopTraceContents );
+
 // tests if a ray's trace hits any portals
 bool UTIL_DidTraceTouchPortals ( const Ray_t& ray, const trace_t& trace, CProp_Portal** pOutLocal = NULL, CProp_Portal** pOutRemote = NULL );
 
 // Version of the TraceEntity functions which trace through portals
 void UTIL_Portal_TraceEntity( CBaseEntity *pEntity, const Vector &vecAbsStart, const Vector &vecAbsEnd, 
 							 unsigned int mask, ITraceFilter *pFilter, trace_t *ptr );
+
+//Starts off as a normal trace, but as it hits portals it adds segments up to the limit. Returns number of segments used. Assumes a ray only travels through a portal if the ray's center hits the quad
+int UTIL_Portal_ComplexTraceRay( const Ray_t &ray, unsigned int mask, ITraceFilter *pTraceFilter, ComplexPortalTrace_t *pResultSegmentArray, int iMaxSegments );
 
 void UTIL_Portal_PointTransform( const VMatrix matThisToLinked, const Vector &ptSource, Vector &ptTransformed );
 void UTIL_Portal_VectorTransform( const VMatrix matThisToLinked, const Vector &vSource, Vector &vTransformed );
@@ -98,6 +119,32 @@ void UTIL_TransformInterpolatedPosition( CInterpolatedVar< Vector > &vInterped, 
 #endif
 
 bool UTIL_Portal_EntityIsInPortalHole( const CProp_Portal *pPortal, CBaseEntity *pEntity );
+
+extern const Vector UTIL_ProjectPointOntoPlane( const Vector& point, const cplane_t& plane );
+bool UTIL_PointIsNearPortal( const Vector& point, const CProp_Portal* pPortal, float planeDist, float radiusReduction = 0.0f );
+
+// PAINT
+bool UTIL_IsPaintableSurface( const csurface_t& surface );
+
+float UTIL_PaintBrushEntity( CBaseEntity* pBrushEntity, const Vector& contactPoint, PaintPowerType power, float flPaintRadius, float flAlphaPercent );
+PaintPowerType UTIL_Paint_TracePower( CBaseEntity* pBrushEntity, const Vector& contactPoint, const Vector& vContactNormal );
+
+// output start point and reflect dir
+bool UTIL_Paint_Reflect( const trace_t& tr, Vector& vStart, Vector& vDir, PaintPowerType reflectPower = REFLECT_POWER );
+
+#ifdef GAME_DLL
+
+class CBrushEntityList : public IEntityEnumerator
+{
+public:
+	virtual bool EnumEntity( IHandleEntity *pHandleEntity );
+
+	CUtlVectorFixedGrowable< CBaseEntity*, 32 > m_BrushEntitiesToPaint;
+};
+
+void UTIL_FindBrushEntitiesInSphere( CBrushEntityList& brushEnum, const Vector& vCenter, float flRadius );
+
+#endif
 
 #endif //#ifndef PORTAL_UTIL_SHARED_H
 

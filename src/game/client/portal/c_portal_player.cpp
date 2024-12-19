@@ -270,6 +270,9 @@ void C_PortalRagdoll::OnDataChanged( DataUpdateType_t type )
 LINK_ENTITY_TO_CLASS( player, C_Portal_Player );
 
 IMPLEMENT_CLIENTCLASS_DT(C_Portal_Player, DT_Portal_Player, CPortal_Player)
+
+RecvPropDataTable( RECVINFO_DT(m_PortalLocal),0, &REFERENCE_RECV_TABLE(DT_PortalLocal) ),
+
 RecvPropFloat( RECVINFO( m_angEyeAngles[0] ) ),
 RecvPropFloat( RECVINFO( m_angEyeAngles[1] ) ),
 RecvPropEHandle( RECVINFO( m_hRagdoll ) ),
@@ -285,6 +288,7 @@ END_RECV_TABLE()
 
 
 BEGIN_PREDICTION_DATA( C_Portal_Player )
+	DEFINE_PRED_TYPEDESCRIPTION( m_PortalLocal, C_PortalPlayerLocalData ),
 END_PREDICTION_DATA()
 
 #define	_WALK_SPEED 150

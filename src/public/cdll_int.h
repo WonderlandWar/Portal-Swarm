@@ -25,6 +25,12 @@
 #include "xbox/xboxstubs.h"
 #endif
 
+// IVEngineClient doesn't have a HasPaintMap() function, so we need a macro.
+#ifdef CLIENT_DLL
+#define HASPAINTMAP GetClientWorldEntity()->HasPaintMap()
+#endif
+
+
 //-----------------------------------------------------------------------------
 // forward declarations
 //-----------------------------------------------------------------------------

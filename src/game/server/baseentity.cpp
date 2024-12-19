@@ -636,8 +636,10 @@ IMPLEMENT_SERVERCLASS_ST_NOBASE( CBaseEntity, DT_BaseEntity )
 #endif
 
 	SendPropInt		( SENDINFO( m_iTextureFrameIndex ),		8, SPROP_UNSIGNED ),
-
-
+	
+#if defined ( PORTAL )
+	SendPropInt		( SENDINFO( m_iObjectCapsCache ),		6, SPROP_UNSIGNED ),
+#endif
 
 #if !defined( NO_ENTITY_PREDICTION ) && defined( USE_PREDICTABLEID )
 	SendPropEHandle (SENDINFO(m_hPlayerSimulationOwner)),
@@ -1757,8 +1759,10 @@ void CBaseEntity::Activate( void )
 	{
 		AddContext( m_iszResponseContext.ToCStr() );
 	}
-
-
+	
+#if defined ( PORTAL )
+	UpdateObjectCapsCache();
+#endif
 }
 
 ////////////////////////////  old CBaseEntity stuff ///////////////////////////////////
@@ -2256,7 +2260,9 @@ BEGIN_DATADESC_NO_BASE( CBaseEntity )
 
 //	DEFINE_FIELD( m_bSentLastFrame, FIELD_INTEGER ),
 
-
+#if defined ( PORTAL )
+	DEFINE_FIELD( m_iObjectCapsCache, FIELD_INTEGER ),
+#endif 
 
 	DEFINE_FIELD( m_hGroundEntity, FIELD_EHANDLE ),
 	DEFINE_FIELD( m_flGroundChangeTime, FIELD_TIME ),
@@ -2507,9 +2513,9 @@ void CBaseEntity::UpdateOnRemove( void )
 	if ( edict() )
 	{
 		AddFlag( FL_KILLME );
-		if ( GetFlags() & FL_GRAPHED )
+		/*if ( GetFlags() & FL_GRAPHED )
 		{
-			/*	<<TODO>>
+				<<TODO>>
 			// this entity was a LinkEnt in the world node graph, so we must remove it from
 			// the graph since we are removing it from the world.
 			for ( int i = 0 ; i < WorldGraph.m_cLinks ; i++ )
@@ -2520,8 +2526,7 @@ void CBaseEntity::UpdateOnRemove( void )
 					WorldGraph.m_pLinkPool [ i ].m_pLinkEnt = NULL;
 				}
 			}
-			*/
-		}
+		}*/
 	}
 
 	if ( m_iGlobalname != NULL_STRING )
@@ -2613,7 +2618,14 @@ int CBaseEntity::ObjectCaps( void )
 #endif
 }
 
-
+#if defined ( PORTAL )
+void CBaseEntity::UpdateObjectCapsCache( void )
+{
+	// Send the first six bits of the object caps to the client
+	// those should be the +use logic capabilities
+	m_iObjectCapsCache = 0x0000003f & ObjectCaps();
+}
+#endif
 
 void CBaseEntity::StartTouch( CBaseEntity *pOther )
 {

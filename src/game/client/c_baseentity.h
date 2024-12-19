@@ -1564,9 +1564,11 @@ public:
 	int								GetMaxCPULevel( ) const;
 	int								GetMinGPULevel( ) const;
 	int								GetMaxGPULevel( ) const;
+	
 
-
-
+#if defined ( PORTAL )
+	int								GetServerObjectCaps() { return m_iObjectCapsCache; }
+#endif	
 
 protected:
 	// FIXME: Should I move the functions handling these out of C_ClientEntity
@@ -1611,8 +1613,11 @@ protected:
 	virtual int						GetStudioBody( void ) { return 0; }
 	// call this in postdataupdate to detect hierarchy changes
 	bool							IsParentChanging();
-
-
+		
+#if defined ( PORTAL )
+	// Received caps from server. Using this for +use validity checking.
+	int								m_iObjectCapsCache;
+#endif
 
 private:
 	friend void OnRenderStart();

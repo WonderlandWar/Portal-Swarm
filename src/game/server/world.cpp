@@ -36,6 +36,7 @@
 #include "vscript/ivscript.h"
 #include "vscript_server.h"
 
+#include "paint_stream_manager.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -514,6 +515,7 @@ BEGIN_DATADESC( CWorld )
 	DEFINE_KEYFIELD( m_bDisplayTitle,	FIELD_BOOLEAN, "gametitle" ),
 	DEFINE_FIELD( m_WorldMins, FIELD_VECTOR ),
 	DEFINE_FIELD( m_WorldMaxs, FIELD_VECTOR ),
+	DEFINE_FIELD( m_bHasPaintMap, FIELD_BOOLEAN ),
 
 	// DEFINE_FIELD( m_flMaxOccludeeArea,	FIELD_CLASSCHECK_IGNORE ) // do this or else we get a warning about multiply-defined fields	
 	// DEFINE_FIELD( m_flMinOccluderArea,	FIELD_CLASSCHECK_IGNORE ) // do this or else we get a warning about multiply-defined fields	
@@ -528,6 +530,8 @@ BEGIN_DATADESC( CWorld )
 	DEFINE_KEYFIELD( m_flMinPropScreenSpaceWidth, FIELD_FLOAT, "minpropscreenwidth" ),
 	DEFINE_KEYFIELD( m_iszDetailSpriteMaterial, FIELD_STRING, "detailmaterial" ),
 	DEFINE_KEYFIELD( m_bColdWorld,		FIELD_BOOLEAN, "coldworld" ),
+	
+	DEFINE_KEYFIELD( m_nMaxBlobCount,	FIELD_INTEGER, "maxblobcount" ),
 
 END_DATADESC()
 
@@ -544,6 +548,12 @@ IMPLEMENT_SERVERCLASS_ST(CWorld, DT_WORLD)
 	SendPropFloat	(SENDINFO(m_flMinPropScreenSpaceWidth), 0, SPROP_NOSCALE ),
 	SendPropStringT (SENDINFO(m_iszDetailSpriteMaterial) ),
 	SendPropInt		(SENDINFO(m_bColdWorld), 1, SPROP_UNSIGNED ),
+	
+#ifdef PORTAL
+	SendPropInt		(SENDINFO(m_nMaxBlobCount), 0, SPROP_UNSIGNED),
+#endif
+	
+	SendPropBool	(SENDINFO(m_bHasPaintMap) ),
 END_SEND_TABLE()
 
 //
@@ -582,12 +592,27 @@ bool CWorld::KeyValue( const char *szKeyName, const char *szValue )
 	{
 		SetTimeOfDay( atoi( szValue ) );
 	}
+	else if ( FStrEq(szKeyName, "maxblobcount" ) )
+	{
+		m_nMaxBlobCount = atoi( szValue );
+		PaintStreamManager.AllocatePaintBlobPool( m_nMaxBlobCount );
+	}
 	else
 		return BaseClass::KeyValue( szKeyName, szValue );
 
 	return true;
 }
 
+int CWorld::Restore( IRestore &restore )
+{
+	if ( !BaseClass::Restore( restore ) )
+		return 0;
+
+	// world is the first thing that gets loaded, so we want to do our pool allocation here
+	PaintStreamManager.AllocatePaintBlobPool( m_nMaxBlobCount );
+
+	return 1;
+}
 
 extern bool		g_fGameOver;
 CWorld *g_WorldEntity = NULL;
@@ -679,6 +704,8 @@ void CWorld::Spawn( void )
 	Precache( );
 	GlobalEntity_Add( "is_console", STRING(gpGlobals->mapname), ( IsConsole() ) ? GLOBAL_ON : GLOBAL_OFF );
 	GlobalEntity_Add( "is_pc", STRING(gpGlobals->mapname), ( !IsConsole() ) ? GLOBAL_ON : GLOBAL_OFF );
+	
+	m_bHasPaintMap = engine->HasPaintMap();
 }
 
 static const char *g_DefaultLightstyles[] =

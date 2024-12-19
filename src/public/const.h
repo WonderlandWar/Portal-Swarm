@@ -126,7 +126,11 @@
 #define	FL_AIMTARGET			(1<<16)	// set if the crosshair needs to aim onto the entity
 #define	FL_PARTIALGROUND		(1<<17)	// not all corners are valid
 #define FL_STATICPROP			(1<<18)	// Eetsa static prop!		
+#ifdef PORTAL
+#define FL_AFFECTED_BY_PAINT	(1<<19)
+#else
 #define FL_GRAPHED				(1<<19) // worldgraph has this ent listed as something that blocks a connection
+#endif
 #define FL_GRENADE				(1<<20)
 #define FL_STEPMOVEMENT			(1<<21)	// Changes the SV_Movestep() behavior to not do any processing
 #define FL_DONTTOUCH			(1<<22)	// Doesn't generate touch functions, generates Untouch() for anything it was touching when this flag was set
@@ -138,8 +142,11 @@
 #define FL_DISSOLVING			(1<<28) // We're dissolving!
 #define FL_TRANSRAGDOLL			(1<<29) // In the process of turning into a client side ragdoll.
 #define FL_UNBLOCKABLE_BY_PLAYER (1<<30) // pusher that can't be blocked by the player
+#ifdef PORTAL
+#define FL_UNPAINTABLE			(1<<31)
+#else
 #define FL_FREEZING				(1<<31) // We're becoming frozen!
-
+#endif
 // edict->movetype values
 enum MoveType_t
 {

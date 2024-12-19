@@ -16,14 +16,17 @@
 #include "weapon_portalbase.h"
 #include "c_func_liquidportal.h"
 #include "colorcorrectionmgr.h"
+#include "paint_power_user.h"
+#include "paintable_entity.h"
+#include "c_portal_playerlocaldata.h"
 
 //=============================================================================
 // >> Portal_Player
 //=============================================================================
-class C_Portal_Player : public C_BaseHLPlayer
+class C_Portal_Player : public PaintPowerUser< CPaintableEntity< C_BaseHLPlayer > >
 {
 public:
-	DECLARE_CLASS( C_Portal_Player, C_BaseHLPlayer );
+	DECLARE_CLASS( C_Portal_Player, PaintPowerUser< CPaintableEntity< C_BaseHLPlayer > > );
 
 	DECLARE_CLIENTCLASS();
 	DECLARE_PREDICTABLE();
@@ -204,6 +207,81 @@ public:
 
 	CHandle<C_Prop_Portal>	m_hPortalEnvironment; //a portal whose environment the player is currently in, should be invalid most of the time
 	CHandle<C_Func_LiquidPortal>	m_hSurroundingLiquidPortal; //a liquid portal whose volume the player is standing in
+
+	float GetNormalSpeed() const;
+
+public: // PAINT SPECIFIC
+
+	// Find all the contacts
+	void DeterminePaintContacts();
+	void PredictPaintContacts( const Vector& contactBoxMin,
+								const Vector& contactBoxMax,
+								const Vector& traceBoxMin,
+								const Vector& traceBoxMax,
+								float lookAheadTime,
+								char const* context );
+	void ChooseBestPaintPowersInRange( PaintPowerChoiceResultArray& bestPowers,
+										PaintPowerConstIter begin,
+										PaintPowerConstIter end,
+										const PaintPowerChoiceCriteria_t& info ) const;
+
+	// Paint Power User Implementation
+	virtual PaintPowerState ActivateSpeedPower( PaintPowerInfo_t& powerInfo );
+	virtual PaintPowerState UseSpeedPower( PaintPowerInfo_t& powerInfo );
+	virtual PaintPowerState DeactivateSpeedPower( PaintPowerInfo_t& powerInfo );
+
+	virtual PaintPowerState ActivateBouncePower( PaintPowerInfo_t& powerInfo );
+	virtual PaintPowerState UseBouncePower( PaintPowerInfo_t& powerInfo );
+	virtual PaintPowerState DeactivateBouncePower( PaintPowerInfo_t& powerInfo );
+
+	void PlayPaintSounds( const PaintPowerChoiceResultArray& touchedPowers );
+	void UpdatePaintedPower();
+	bool LateSuperJumpIsValid() const;
+	void CachePaintPowerChoiceResults( const PaintPowerChoiceResultArray& choiceInfo );
+	
+	using BaseClass::AddSurfacePaintPowerInfo;
+	void AddSurfacePaintPowerInfo( const BrushContact& contact, char const* context = 0 );
+	void AddSurfacePaintPowerInfo( const trace_t& trace, char const* context = 0 );
+	
+	float SpeedPaintAcceleration( float flDefaultMaxSpeed,
+								  float flSpeed,
+								  float flWishCos,
+								  float flWishDirSpeed ) const;
+
+	bool CheckToUseBouncePower( PaintPowerInfo_t& info );
+	
+	float PredictedAirTimeEnd( void );	// Uses the current velocity
+	void OnBounced( float fTimeOffset = 0.0f );
+	
+	bool IsPressingJumpKey() const;
+	bool IsHoldingJumpKey() const;
+	bool IsTryingToSuperJump( const PaintPowerInfo_t* pInfo = NULL ) const;
+	void SetJumpedThisFrame( bool jumped );
+	bool JumpedThisFrame() const;
+	void SetBouncedThisFrame( bool bounced );
+	bool BouncedThisFrame() const;
+	InAirState GetInAirState() const;
+
+	Vector GetPaintGunShootPosition();
+	
+	virtual void ChooseActivePaintPowers( PaintPowerInfoVector& activePowers );
+	
+	const Vector& GetInputVector() const;
+	void SetInputVector( const Vector& vInput );
+
+	C_PortalPlayerLocalData		m_PortalLocal;
+	
+	// PAINT POWER STATE
+	PaintPowerInfo_t m_CachedJumpPower;
+	CUtlReference< CNewParticleEffect > m_PaintScreenSpaceEffect;
+	// commenting out the 3rd person drop effect
+	//CUtlReference< CNewParticleEffect > m_PaintDripEffect;
+	CountdownTimer m_PaintScreenEffectCooldownTimer;
+	Vector m_vInputVector;
+	float m_flCachedJumpPowerTime;
+	float m_flSpeedDecelerationTime;
+
+	float m_flTimeSinceLastTouchedPower[3];
 };
 
 inline C_Portal_Player *ToPortalPlayer( CBaseEntity *pEntity )

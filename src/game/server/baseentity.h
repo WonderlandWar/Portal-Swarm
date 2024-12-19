@@ -574,8 +574,13 @@ public:
 
 	// capabilities
 	virtual int	ObjectCaps( void );
-
-
+	
+#if defined ( PORTAL )
+	// For portal 2, the use traces are on the client so
+	// we network down entities current use capabilities for validity checking.
+	CNetworkVar( int,			m_iObjectCapsCache );
+	void		UpdateObjectCapsCache();
+#endif 
 
 	// Verifies that the data description is valid in debug builds.
 	#ifdef _DEBUG
@@ -930,7 +935,12 @@ public:
 	virtual bool	CanStandOn( edict_t	*ent ) const { return CanStandOn( GetContainingEntity( ent ) ); }
 	virtual CBaseEntity		*GetEnemy( void ) { return NULL; }
 	virtual CBaseEntity		*GetEnemy( void ) const { return NULL; }
-
+	
+	// Paint helper
+	// Should never be called on anything that doesn't use PropPaintPowerUser, which overrides this.
+#ifdef PORTAL
+	virtual void UpdatePaintPowersFromContacts() { Assert(0); }
+#endif
 
 	void	ViewPunch( const QAngle &angleOffset );
 	void	VelocityPunch( const Vector &vecForce );

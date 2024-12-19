@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Portal\GameUI - Embedded\External Stuff">
       <UniqueIdentifier>{386AD749-77CB-A9B0-043E-898E3051D63A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Portal\Paint">
+      <UniqueIdentifier>{52843938-2792-1522-55EE-9098C0B0809D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Portal\Paint\Additional Link Libraries">
+      <UniqueIdentifier>{6BDC7F16-3530-09C1-11D8-EB0FEA1F0167}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Portal\Weapons">
       <UniqueIdentifier>{63885006-58CF-723C-AB9C-B87B6D33FF09}</UniqueIdentifier>
     </Filter>
@@ -122,6 +128,9 @@
     </Library>
     <Library Include="..\..\lib\public\vtf.lib">
       <Filter>Link Libraries</Filter>
+    </Library>
+    <Library Include="..\..\lib\public\meshutils.lib">
+      <Filter>Source Files\Portal\Paint\Additional Link Libraries</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
@@ -1943,6 +1952,9 @@
     <ClInclude Include="portal\c_portal_player.h">
       <Filter>Source Files\Portal</Filter>
     </ClInclude>
+    <ClInclude Include="portal\c_portal_playerlocaldata.h">
+      <Filter>Source Files\Portal</Filter>
+    </ClInclude>
     <ClInclude Include="portal\C_PortalGhostRenderable.h">
       <Filter>Source Files\Portal</Filter>
     </ClInclude>
@@ -2188,6 +2200,72 @@
     </ClInclude>
     <ClInclude Include="portal\gameui\vguisystemmoduleloader.h">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\c_paint_sprayer.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\c_paint_stream.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\c_paintblob.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\c_paintblob_render.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\c_prop_paint_bomb.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\c_trigger_paint_cleanser.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="portal\c_weapon_paintgun.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_blobs_shared.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_cleanser_manager.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_color_manager.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_power_info.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_power_user.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_power_user_interface.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_saverestore.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_sprayer_shared.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_stream_manager.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paint_stream_shared.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\paintable_entity.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\player_pickup_paint_power_user.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\prop_paint_power_user.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\stick_partner.h">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\game\shared\portal\weapon_paintgun_shared.h">
+      <Filter>Source Files\Portal\Paint</Filter>
     </ClInclude>
     <ClInclude Include="portal\c_weapon_portalgun.h">
       <Filter>Source Files\Portal\Weapons</Filter>
@@ -3559,6 +3637,9 @@
     <ClCompile Include="portal\c_portal_player.cpp">
       <Filter>Source Files\Portal</Filter>
     </ClCompile>
+    <ClCompile Include="portal\c_portal_playerlocaldata.cpp">
+      <Filter>Source Files\Portal</Filter>
+    </ClCompile>
     <ClCompile Include="portal\C_PortalGhostRenderable.cpp">
       <Filter>Source Files\Portal</Filter>
     </ClCompile>
@@ -3846,6 +3927,63 @@
     </ClCompile>
     <ClCompile Include="portal\gameui\vguisystemmoduleloader.cpp">
       <Filter>Source Files\Portal\GameUI - Embedded\Base GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_paint_messages.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_paint_sprayer.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_paint_stream.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_paintblob.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_paintblob_render.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_prop_paint_bomb.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_trigger_paint_cleanser.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="portal\c_weapon_paintgun.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_blobs_shared.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_cleanser_manager.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_color_manager.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_power_info.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_power_user_interface.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_saverestore.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_sprayer_shared.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_stream_manager.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\paint_stream_shared.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\stick_partner.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\game\shared\portal\weapon_paintgun_shared.cpp">
+      <Filter>Source Files\Portal\Paint</Filter>
     </ClCompile>
     <ClCompile Include="portal\c_weapon_physcannon.cpp">
       <Filter>Source Files\Portal\Weapons</Filter>
