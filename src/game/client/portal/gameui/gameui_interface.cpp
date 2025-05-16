@@ -58,6 +58,8 @@
 #include "tier3/tier3.h"
 #include "matsys_controls/matsyscontrols.h"
 #include "steam/steam_api.h"
+#include "BonusMapsDatabase.h"
+#include "BonusMapsDialog.h"
 #include "protocol.h"
 
 #ifdef _X360
@@ -230,12 +232,6 @@ void CGameUI::PostInit()
 		enginesound->PrecacheSound( "UI/buttonclick.wav", true, true );
 		enginesound->PrecacheSound( "UI/buttonclickrelease.wav", true, true );
 		enginesound->PrecacheSound( "player/suit_denydevice.wav", true, true );
-
-		enginesound->PrecacheSound( "UI/menu_accept.wav", true, true );
-		enginesound->PrecacheSound( "UI/menu_focus.wav", true, true );
-		enginesound->PrecacheSound( "UI/menu_invalid.wav", true, true );
-		enginesound->PrecacheSound( "UI/menu_back.wav", true, true );
-		enginesound->PrecacheSound( "UI/menu_countdown.wav", true, true );
 	}
 }
 
@@ -247,6 +243,123 @@ void CGameUI::PostInit()
 void CGameUI::SetLoadingBackgroundDialog( vgui::VPANEL panel )
 {
 	g_hLoadingBackgroundDialog = panel;
+}
+
+void CGameUI::BonusMapUnlock( const char *pchFileName, const char *pchMapName )
+{
+	if ( !pchFileName || pchFileName[ 0 ] == '\0' || 
+		 !pchMapName || pchMapName[ 0 ] == '\0' )
+	{
+		if ( !g_pBonusMapsDialog )
+			return;
+
+		g_pBonusMapsDialog->SetSelectedBooleanStatus( "lock", false );
+		return;
+	}
+
+	if ( BonusMapsDatabase()->SetBooleanStatus( "lock", pchFileName, pchMapName, false ) )
+	{
+		BonusMapsDatabase()->RefreshMapData();
+
+		if ( !g_pBonusMapsDialog )
+		{
+			// It unlocked without the bonus maps menu open, so flash the menu item
+			CBasePanel *pBasePanel = BasePanel();
+			if ( pBasePanel )
+			{
+				if ( GameUI().IsConsoleUI() )
+				{
+					if ( Q_stricmp( pchFileName, "scripts/advanced_chambers" ) == 0 )
+					{
+						pBasePanel->SetMenuItemBlinkingState( "OpenNewGameDialog", true );
+					}
+				}
+				else
+				{
+					pBasePanel->SetMenuItemBlinkingState( "OpenBonusMapsDialog", true );
+				}
+			}
+
+			BonusMapsDatabase()->SetBlink( true );
+		}
+		else
+			g_pBonusMapsDialog->RefreshData();	// Update the open dialog
+	}
+}
+
+void CGameUI::BonusMapComplete( const char *pchFileName, const char *pchMapName )
+{
+	if ( !pchFileName || pchFileName[ 0 ] == '\0' || 
+		 !pchMapName || pchMapName[ 0 ] == '\0' )
+	{
+		if ( !g_pBonusMapsDialog )
+			return;
+
+		g_pBonusMapsDialog->SetSelectedBooleanStatus( "complete", true );
+		BonusMapsDatabase()->RefreshMapData();
+		g_pBonusMapsDialog->RefreshData();
+		return;
+	}
+
+	if ( BonusMapsDatabase()->SetBooleanStatus( "complete", pchFileName, pchMapName, true ) )
+	{
+		BonusMapsDatabase()->RefreshMapData();
+
+		// Update the open dialog
+		if ( g_pBonusMapsDialog )
+			g_pBonusMapsDialog->RefreshData();
+	}
+}
+
+void CGameUI::BonusMapChallengeUpdate( const char *pchFileName, const char *pchMapName, const char *pchChallengeName, int iBest )
+{
+	if ( !pchFileName || pchFileName[ 0 ] == '\0' || 
+		 !pchMapName || pchMapName[ 0 ] == '\0' || 
+		 !pchChallengeName || pchChallengeName[ 0 ] == '\0' )
+	{
+		return;
+	}
+	else
+	{
+		if ( BonusMapsDatabase()->UpdateChallengeBest( pchFileName, pchMapName, pchChallengeName, iBest ) )
+		{
+			// The challenge best changed, so write it to the file
+			BonusMapsDatabase()->WriteSaveData();
+			BonusMapsDatabase()->RefreshMapData();
+
+			// Update the open dialog
+			if ( g_pBonusMapsDialog )
+				g_pBonusMapsDialog->RefreshData();
+		}
+	}
+}
+
+void CGameUI::BonusMapChallengeNames( char *pchFileName, char *pchMapName, char *pchChallengeName )
+{
+	if ( !pchFileName || !pchMapName || !pchChallengeName )
+		return;
+
+	BonusMapsDatabase()->GetCurrentChallengeNames( pchFileName, pchMapName, pchChallengeName );
+}
+
+void CGameUI::BonusMapChallengeObjectives( int &iBronze, int &iSilver, int &iGold )
+{
+	BonusMapsDatabase()->GetCurrentChallengeObjectives( iBronze, iSilver, iGold );
+}
+
+void CGameUI::BonusMapDatabaseSave( void )
+{
+	BonusMapsDatabase()->WriteSaveData();
+}
+
+int CGameUI::BonusMapNumAdvancedCompleted( void )
+{
+	return BonusMapsDatabase()->NumAdvancedComplete();
+}
+
+void CGameUI::BonusMapNumMedals( int piNumMedals[ 3 ] )
+{
+	BonusMapsDatabase()->NumMedals( piNumMedals );
 }
 
 //-----------------------------------------------------------------------------
@@ -569,6 +682,16 @@ void CGameUI::OnGameUIActivated()
 	
 	// notify taskbar
 	BasePanel()->OnGameUIActivated();
+
+	if ( GameClientExports() )
+	{
+		const char *pGameName = CommandLine()->ParmValue( "-game", "hl2" );
+		// only want to run this for TF2
+		if ( ( Q_stricmp( pGameName, "tf" ) == 0 ) || ( Q_stricmp( pGameName, "tf_beta" ) == 0 ) )
+		{
+			GameClientExports()->OnGameUIActivated();
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -576,6 +699,16 @@ void CGameUI::OnGameUIActivated()
 //-----------------------------------------------------------------------------
 void CGameUI::OnGameUIHidden()
 {
+	if ( GameClientExports() )
+	{
+		const char *pGameName = CommandLine()->ParmValue( "-game", "hl2" );
+		// only want to run this for TF2
+		if ( ( Q_stricmp( pGameName, "tf" ) == 0 ) || ( Q_stricmp( pGameName, "tf_beta" ) == 0 ) )
+		{
+			GameClientExports()->OnGameUIHidden();
+		}
+	}
+
 	bool bWasActive = m_bActivatedUI;
 	m_bActivatedUI = false;
 

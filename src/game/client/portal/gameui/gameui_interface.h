@@ -47,6 +47,16 @@ public:
 
 	virtual void SetLoadingBackgroundDialog( vgui::VPANEL panel );
 
+	// Bonus maps interfaces
+	virtual void BonusMapUnlock( const char *pchFileName = NULL, const char *pchMapName = NULL );
+	virtual void BonusMapComplete( const char *pchFileName = NULL, const char *pchMapName = NULL );
+	virtual void BonusMapChallengeUpdate( const char *pchFileName, const char *pchMapName, const char *pchChallengeName, int iBest );
+	virtual void BonusMapChallengeNames( char *pchFileName, char *pchMapName, char *pchChallengeName );
+	virtual void BonusMapChallengeObjectives( int &iBronze, int &iSilver, int &iGold );
+	virtual void BonusMapDatabaseSave( void );
+	virtual int BonusMapNumAdvancedCompleted( void );
+	virtual void BonusMapNumMedals( int piNumMedals[ 3 ] );
+
 	// notifications
 	virtual void OnGameUIActivated();
 	virtual void OnGameUIHidden();

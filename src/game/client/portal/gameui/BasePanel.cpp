@@ -223,8 +223,6 @@ public:
 		{
 			m_pConsoleFooter = NULL;
 		}
-
-		m_hMainMenuOverridePanel = NULL;
 	}
 
 	virtual void ApplySchemeSettings(IScheme *pScheme)
@@ -243,18 +241,6 @@ public:
 
 	virtual void SetVisible(bool state)
 	{
-		if ( m_hMainMenuOverridePanel )
-		{
-			// force to be always visible
-			ipanel()->SetVisible( m_hMainMenuOverridePanel, true );
-
-			// move us to the back instead of going invisible
-			if ( !state )
-			{
-				ipanel()->MoveToBack(m_hMainMenuOverridePanel);
-			}
-		}
-
 		// force to be always visible
 		BaseClass::SetVisible(true);
 
@@ -265,20 +251,17 @@ public:
 		}
 	}
 
-	virtual int AddMenuItem(const char *itemName, const char *itemText, const char *command, Panel *target, KeyValues *userData = NULL)
+	virtual int AddMenuItem(const char *itemName, const char *itemText, const char *command, Panel *target, const KeyValues *userData = NULL)
 	{
 		MenuItem *item = new CGameMenuItem(this, itemName);
 		item->AddActionSignalTarget(target);
 		item->SetCommand(command);
 		item->SetText(itemText);
 		item->SetUserData(userData);
-
-		Msg( "Adding Menu Item: %s\n", itemName );
-
 		return BaseClass::AddMenuItem(item);
 	}
 
-	virtual int AddMenuItem(const char *itemName, const char *itemText, KeyValues *command, Panel *target, KeyValues *userData = NULL)
+	virtual int AddMenuItem(const char *itemName, const char *itemText, KeyValues *command, Panel *target, const KeyValues *userData = NULL)
 	{
 		CGameMenuItem *item = new CGameMenuItem(this, itemName);
 		item->AddActionSignalTarget(target);
@@ -286,8 +269,6 @@ public:
 		item->SetText(itemText);
 		item->SetRightAlignedText(true);
 		item->SetUserData(userData);
-		
-		Msg( "Adding Menu Item 2: %s\n", itemName );
 		return BaseClass::AddMenuItem(item);
 	}
 
@@ -310,15 +291,6 @@ public:
 
 	virtual void OnSetFocus()
 	{
-		if ( m_hMainMenuOverridePanel )
-		{
-			Panel *pMainMenu = ipanel()->GetPanel( m_hMainMenuOverridePanel, "ClientDLL" );
-			if ( pMainMenu )
-			{
-				pMainMenu->PerformLayout();
-			}
-		}
-
 		BaseClass::OnSetFocus();
 	}
 
@@ -326,17 +298,8 @@ public:
 	{
 		if (!stricmp(command, "Open"))
 		{
-			if ( m_hMainMenuOverridePanel )
-			{
-				// force to be always visible
-				ipanel()->MoveToFront( m_hMainMenuOverridePanel );
-				ipanel()->RequestFocus( m_hMainMenuOverridePanel );
-			}
-			else
-			{
-				MoveToFront();
-				RequestFocus();
-			}
+			MoveToFront();
+			RequestFocus();
 		}
 		else
 		{
@@ -426,16 +389,8 @@ public:
 	{
 		BaseClass::OnKillFocus();
 
-		if ( m_hMainMenuOverridePanel )
-		{
-			// force us to the rear when we lose focus (so it looks like the menu is always on the background)
-			surface()->MovePopupToBack( m_hMainMenuOverridePanel );
-		}
-		else
-		{
-			// force us to the rear when we lose focus (so it looks like the menu is always on the background)
-			surface()->MovePopupToBack(GetVPanel());
-		}
+		// force us to the rear when we lose focus (so it looks like the menu is always on the background)
+		surface()->MovePopupToBack(GetVPanel());
 	}
 
 	void ShowFooter( bool bShow )
@@ -446,7 +401,7 @@ public:
 		}
 	}
 
-	void UpdateMenuItemState( bool isInGame, bool isMultiplayer, bool isInReplay, bool isVREnabled, bool isVRActive )
+	void UpdateMenuItemState( bool isInGame, bool isMultiplayer )
 	{
 		bool isSteam = IsPC() && ( CommandLine()->FindParm("-steam") != 0 );
 		bool bIsConsoleUI = GameUI().IsConsoleUI();
@@ -468,22 +423,6 @@ public:
 				{
 					shouldBeVisible = false;
 				}
-				if (!isInReplay && kv->GetInt("OnlyInReplay") )
-				{
-					shouldBeVisible = false;
-				}
-				else if (!isVREnabled && kv->GetInt("OnlyWhenVREnabled") )
-				{
-					shouldBeVisible = false;
-				}
-				else if ( ( !isVRActive ) && kv->GetInt( "OnlyWhenVRActive" ) )
-				{
-					shouldBeVisible = false;
-				}
-				else if (isVRActive && kv->GetInt("OnlyWhenVRInactive") )
-				{
-					shouldBeVisible = false;
-				}
 				else if (isMultiplayer && kv->GetInt("notmulti"))
 				{
 					shouldBeVisible = false;
@@ -497,12 +436,6 @@ public:
 					shouldBeVisible = false;
 				}
 				else if ( !bIsConsoleUI && kv->GetInt( "ConsoleOnly" ) )
-				{
-					shouldBeVisible = false;
-				}
-
-				// If we're playing back a replay, hide everything else
-				if ( isInReplay && !kv->GetInt("OnlyInReplay") )
 				{
 					shouldBeVisible = false;
 				}
@@ -569,7 +502,6 @@ public:
 
 private:
 	CFooterPanel *m_pConsoleFooter;
-	vgui::VPANEL	m_hMainMenuOverridePanel;
 };
 
 //-----------------------------------------------------------------------------
@@ -677,7 +609,6 @@ CBasePanel::CBasePanel() : Panel(NULL, "BaseGameUIPanel")
 
 	m_pGameMenu = NULL;
 	m_pGameLogo = NULL;
-	m_hMainMenuOverridePanel = NULL;
 
 	if ( SteamClient() )
 	{
@@ -1299,17 +1230,9 @@ void CBasePanel::UpdateGameMenus()
 	// check our current state
 	bool isInGame = GameUI().IsInLevel();
 	bool isMulti = isInGame && (engine->GetMaxClients() > 1);
-	bool isInReplay = false; //GameUI().IsInReplay();
-	bool isVREnabled = false; //materials->GetCurrentConfigForVideoCard().m_nVRModeAdapter == materials->GetCurrentAdapter();
-	bool isVRActive = false; //UseVR();
 
 	// iterate all the menu items
-	m_pGameMenu->UpdateMenuItemState( isInGame, isMulti, isInReplay, isVREnabled, isVRActive );
-
-	if ( m_hMainMenuOverridePanel )
-	{
-		vgui::ivgui()->PostMessage( m_hMainMenuOverridePanel, new KeyValues( "UpdateMenu" ), NULL );
-	}
+	m_pGameMenu->UpdateMenuItemState( isInGame, isMulti );
 
 	// position the menu
 	InvalidateLayout();
@@ -1817,20 +1740,6 @@ void CBasePanel::RunMenuCommand(const char *command)
 	}
 	else if ( !Q_stricmp( command, "QuitNoConfirm" ) )
 	{
-        //=============================================================================
-        // HPE_BEGIN:
-        // [dwenger] Shut down achievements panel
-        //=============================================================================
-
-        if ( GameClientExports() )
-        {
-            // GameClientExports()->ShutdownAchievementPanel();
-        }
-
-        //=============================================================================
-        // HPE_END
-        //=============================================================================
-
         // hide everything while we quit
 		SetVisible( false );
 		vgui::surface()->RestrictPaintToSinglePanel( GetVPanel() );

@@ -350,8 +350,6 @@ private:
 	CGameMenu *m_pGameMenu;
 	bool m_bPlatformMenuInitialized;
 	int m_iGameMenuInset;
-	
-	vgui::VPANEL	m_hMainMenuOverridePanel;
 
 	struct coord {
 		int x;
